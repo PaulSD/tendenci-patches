@@ -1,0 +1,157 @@
+Allow embedding of some specific Tendenci django template tags in Tendenci pages.
+diff --git a/tendenci/apps/pages/feeds.py b/tendenci/apps/pages/feeds.py
+index 12f099f..ff528d7 100644
+--- a/tendenci/apps/pages/feeds.py
++++ b/tendenci/apps/pages/feeds.py
+@@ -6,6 +6,8 @@ from tendenci.apps.sitemaps import TendenciSitemap
+ from tendenci.apps.pages.models import Page
+ from django.utils.translation import ugettext_lazy as _
+ 
++from tendenci.apps.pages.templatetags.page_tags import render_content_tags
++
+ class LatestEntriesFeed(SubFeed):
+     title =  _('%(dname)s Latest Pages' % {'dname':get_setting('site','global','sitedisplayname')})
+     link =  "/pages/"
+@@ -19,7 +21,7 @@ class LatestEntriesFeed(SubFeed):
+         return item.title
+ 
+     def item_description(self, item):
+-        return item.content
++        return render_content_tags(item.content)
+ 
+     def item_pubdate(self, item):
+         return item.create_dt
+diff --git a/tendenci/apps/pages/templates/pages/preview.html b/tendenci/apps/pages/templates/pages/preview.html
+index e1e1173..5f9e498 100644
+--- a/tendenci/apps/pages/templates/pages/preview.html
++++ b/tendenci/apps/pages/templates/pages/preview.html
+@@ -1,5 +1,6 @@
+ {% extends page.template %}
+ {% load i18n %}
++{% load page_tags %}
+ 
+ {% block title %}{% blocktrans with t=page.get_title %}{{ t }}{% endblocktrans %}{% endblock %}
+ {% block meta_description %}{% blocktrans with d=page.get_description %}{{ d }}{% endblocktrans %}{% endblock %}
+@@ -7,6 +8,7 @@
+ {% block meta_canonical_url %}<link rel="canonical" href="{{ page.get_canonical_url }}" />{% endblock %}
+ {% block extra_head %}
+ {{ block.super }}
++<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/photos.css">
+ {% endblock %}
+ 
+ {% block content %}
+@@ -20,7 +22,9 @@
+         <h1>{% blocktrans with t=page.title %}{{ t }}{% endblocktrans %}</h1>
+         {% endif %}
+ 
++{% parse_content_tags %}
+         <div class="content">{% blocktrans with c=page.content|safe %}{{ c }}{% endblocktrans %}</div>
++{% end_parse_content_tags %}
+ 
+         <form action="{% if edit_button %}{% url "page.edit" page.pk %}{% else %}{% url "page.add" %}{% endif %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+             <div style="display:none;">
+diff --git a/tendenci/apps/pages/templates/pages/print-view.html b/tendenci/apps/pages/templates/pages/print-view.html
+index 35bb829..aa21935 100644
+--- a/tendenci/apps/pages/templates/pages/print-view.html
++++ b/tendenci/apps/pages/templates/pages/print-view.html
+@@ -1,6 +1,7 @@
+ {% extends "base-print.html" %}
+ {% load base_filters %}
+ {% load i18n %}
++{% load page_tags %}
+ 
+ {% block title %}{% blocktrans with t=page.get_title %}{{ t }}{% endblocktrans %}{% endblock %}
+ {% block meta_description %}{% blocktrans with d=page.get_description %}{{ d }}{% endblocktrans %}{% endblock %}
+@@ -9,6 +10,7 @@
+ 
+ {% block extra_head %}
+ {{ block.super }}
++<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/photos.css">
+ {% endblock %}
+ 
+ {% block content %}
+@@ -26,7 +28,9 @@
+     <div class="page-wrap">
+         <p>{{SITE_GLOBAL_SITEURL}}{{ page.get_absolute_url }}</p>
+         <h2>{% blocktrans with t=page.title %}{{ t }}{% endblocktrans %}</h2>
++{% parse_content_tags %}
+         <div class="content">{% blocktrans with c=page.content|safe %}{{ c }}{% endblocktrans %}</div>
++{% end_parse_content_tags %}
+     </div>
+ 
+ </div>
+diff --git a/tendenci/apps/pages/templates/pages/view.html b/tendenci/apps/pages/templates/pages/view.html
+index 00f2df5..364e15f 100644
+--- a/tendenci/apps/pages/templates/pages/view.html
++++ b/tendenci/apps/pages/templates/pages/view.html
+@@ -2,6 +2,7 @@
+ {% load i18n %}
+ {% load staticfiles %}
+ {% load meta_tags %}
++{% load page_tags %}
+ 
+ 
+ {% block title %}{% blocktrans with t=page.get_title %}{{ t }}{% endblocktrans %}{% endblock %}
+@@ -13,6 +14,7 @@
+     {% meta_og_image page "header_image" %}
+     {% meta_og_image page "content" %}
+     {{ block.super }}
++<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/photos.css">
+ {% endblock %}
+ 
+ {% block banner %}{% endblock %}
+@@ -45,7 +47,9 @@
+         {% endif %}
+ 
+         <div class="t-pages-page-body">
++{% parse_content_tags %}
+             {% blocktrans with c=page.content|safe %}{{ c }}{% endblocktrans %}
++{% end_parse_content_tags %}
+         </div>
+ 
+         {% include "pages/meta.html" %}
+diff --git a/tendenci/apps/pages/templatetags/page_tags.py b/tendenci/apps/pages/templatetags/page_tags.py
+index 95979d7..627ffe6 100644
+--- a/tendenci/apps/pages/templatetags/page_tags.py
++++ b/tendenci/apps/pages/templatetags/page_tags.py
+@@ -97,3 +97,40 @@ def list_pages(parser, token):
+         kwargs['order'] = '-create_dt'
+ 
+     return ListPageNode(context_var, *args, **kwargs)
++
++
++
++from django.template import Context, Node
++from django.template.loader import get_template
++import re
++photo_set_regex = re.compile(r'{% photo_set (\d+) %}')
++from tendenci.apps.photos.models import PhotoSet
++
++def render_photo_set_tags(content):
++    match = photo_set_regex.search(content)
++    if match and match.group(1):
++        try:
++            photo_set = PhotoSet.objects.get(id=match.group(1))
++            template = get_template('photos/photo-set/search-result.html')
++            c = Context({'photo_set':photo_set})
++            photo_set_html = template.render(c)
++            content = photo_set_regex.sub(photo_set_html, content)
++        except PhotoSet.DoesNotExist:
++            False  # Ignore
++    return content
++
++def render_content_tags(content):
++    content = render_photo_set_tags(content)
++    return content
++
++@register.tag
++def parse_content_tags(parser, token):
++    nodelist = parser.parse('end_parse_content_tags',)
++    parser.delete_first_token()
++    return ContentNode(nodelist)
++class ContentNode(Node):
++    def __init__(self, nodelist):
++        self.nodelist = nodelist
++    def render(self, context):
++        content = self.nodelist.render(context)
++        return render_content_tags(content)
