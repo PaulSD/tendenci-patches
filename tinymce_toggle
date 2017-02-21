@@ -1,0 +1,13 @@
+Add a button above TinyMCE fields to allow toggling between TinyMCE and a normal textarea.
+diff --git a/tendenci/libs/tinymce/widgets.py b/tendenci/libs/tinymce/widgets.py
+index 54b3152..432c5ae 100644
+--- a/tendenci/libs/tinymce/widgets.py
++++ b/tendenci/libs/tinymce/widgets.py
+@@ -102,6 +102,7 @@ class TinyMCE(forms.Textarea):
+             final_attrs['data-mce-gz-conf'] = json.dumps(compressor_config)
+         final_attrs['data-mce-conf'] = mce_json
+         html = ['<textarea%s>%s</textarea>' % (flatatt(final_attrs), escape(value))]
++        html.insert(0, '<span style="font-size:.75rem;"><a href="javascript:void(0)" onclick="tinymce.EditorManager.execCommand(\'mceToggleEditor\', true, \''+final_attrs['id']+'\');">Toggle WYSIWYG Editor</a></span>')
+         return mark_safe('\n'.join(html))
+ 
+     def _media(self):

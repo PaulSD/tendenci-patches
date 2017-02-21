@@ -1,4 +1,7 @@
 Allow embedding of some specific Tendenci django template tags in Tendenci pages.
+
+This is a proof-of-concept.  It causes some CSS issues due to the use of photos.css, so we currently
+are not using this.  I'm working on an improved patch in a branch on my tendenci fork.
 diff --git a/tendenci/apps/pages/feeds.py b/tendenci/apps/pages/feeds.py
 index 12f099f..ff528d7 100644
 --- a/tendenci/apps/pages/feeds.py

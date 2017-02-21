@@ -1,0 +1,980 @@
+Fix typos: Registations -> Registrations
+
+(This should be pushed upstream)
+
+diff --git a/tendenci/apps/events/management/commands/events_convert_conf_to_pricing.py b/tendenci/apps/events/management/commands/events_convert_conf_to_pricing.py
+index cdb01a4..4f2875e 100644
+--- a/tendenci/apps/events/management/commands/events_convert_conf_to_pricing.py
++++ b/tendenci/apps/events/management/commands/events_convert_conf_to_pricing.py
+@@ -19,7 +19,7 @@ class Command(BaseCommand):
+         reg8n_configs = RegistrationConfiguration.objects.raw(select_sql)
+         cursor = connection.cursor()
+ 
+-        # add the pricing and update registations
++        # add the pricing and update registrations
+         for config in reg8n_configs:
+             reg_conf_pricing = RegConfPricing()
+             reg_conf_pricing.title = ''
+diff --git a/tendenci/apps/events/templates/events/reg8n/register-confirm.html b/tendenci/apps/events/templates/events/reg8n/register-confirm.html
+index 0cb21da..6c8035c 100644
+--- a/tendenci/apps/events/templates/events/reg8n/register-confirm.html
++++ b/tendenci/apps/events/templates/events/reg8n/register-confirm.html
+@@ -91,9 +91,9 @@
+             {% if registrants_count >= 1 or registration.reg_conf_price.quantity > 1 %}
+                     &nbsp;&nbsp;
+                   {% if user.is_authenticated %}
+-                      <a href="{% url "event.cancel_registration" event.pk registration.pk %}">{% trans "Cancel Registation" %}</a>
++                      <a href="{% url "event.cancel_registration" event.pk registration.pk %}">{% trans "Cancel Registration" %}</a>
+                   {% else %}
+-                      <a href="{% url "event.cancel_registration" event.pk registration.pk registration.hash %}">{% trans "Cancel Registation" %}</a>
++                      <a href="{% url "event.cancel_registration" event.pk registration.pk registration.hash %}">{% trans "Cancel Registration" %}</a>
+                   {% endif %}
+              {% endif %}
+               </div>
+diff --git a/tendenci/locale/af_ZA/LC_MESSAGES/django.po b/tendenci/locale/af_ZA/LC_MESSAGES/django.po
+index 6a29475..6b62dbb 100644
+--- a/tendenci/locale/af_ZA/LC_MESSAGES/django.po
++++ b/tendenci/locale/af_ZA/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/ar/LC_MESSAGES/django.po b/tendenci/locale/ar/LC_MESSAGES/django.po
+index 9cb954f..f29cf6a 100644
+--- a/tendenci/locale/ar/LC_MESSAGES/django.po
++++ b/tendenci/locale/ar/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "رقم التسجيل:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "إلغاء Registation"
++msgid "Cancel Registration"
++msgstr "إلغاء Registration"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/az/LC_MESSAGES/django.po b/tendenci/locale/az/LC_MESSAGES/django.po
+index 93633e9..7402dcc 100644
+--- a/tendenci/locale/az/LC_MESSAGES/django.po
++++ b/tendenci/locale/az/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/bg/LC_MESSAGES/django.po b/tendenci/locale/bg/LC_MESSAGES/django.po
+index 31c3d63..d4698a1 100644
+--- a/tendenci/locale/bg/LC_MESSAGES/django.po
++++ b/tendenci/locale/bg/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/bn/LC_MESSAGES/django.po b/tendenci/locale/bn/LC_MESSAGES/django.po
+index c7ecf6c..6eecc8d 100644
+--- a/tendenci/locale/bn/LC_MESSAGES/django.po
++++ b/tendenci/locale/bn/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/bs/LC_MESSAGES/django.po b/tendenci/locale/bs/LC_MESSAGES/django.po
+index 82c39d0..9ff2b16 100644
+--- a/tendenci/locale/bs/LC_MESSAGES/django.po
++++ b/tendenci/locale/bs/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/ca_ES/LC_MESSAGES/django.po b/tendenci/locale/ca_ES/LC_MESSAGES/django.po
+index c87d0bc..28be422 100644
+--- a/tendenci/locale/ca_ES/LC_MESSAGES/django.po
++++ b/tendenci/locale/ca_ES/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/cs/LC_MESSAGES/django.po b/tendenci/locale/cs/LC_MESSAGES/django.po
+index c23101b..37bf42f 100644
+--- a/tendenci/locale/cs/LC_MESSAGES/django.po
++++ b/tendenci/locale/cs/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/cy/LC_MESSAGES/django.po b/tendenci/locale/cy/LC_MESSAGES/django.po
+index 0ca3ff5..f8cd26f 100644
+--- a/tendenci/locale/cy/LC_MESSAGES/django.po
++++ b/tendenci/locale/cy/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/da/LC_MESSAGES/django.po b/tendenci/locale/da/LC_MESSAGES/django.po
+index 7b4c339..8101f63 100644
+--- a/tendenci/locale/da/LC_MESSAGES/django.po
++++ b/tendenci/locale/da/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/de/LC_MESSAGES/django.po b/tendenci/locale/de/LC_MESSAGES/django.po
+index 790df9a..8436d4f 100644
+--- a/tendenci/locale/de/LC_MESSAGES/django.po
++++ b/tendenci/locale/de/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "Registernummer:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Abbrechen Registation"
++msgid "Cancel Registration"
++msgstr "Abbrechen Registration"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/de_CH/LC_MESSAGES/django.po b/tendenci/locale/de_CH/LC_MESSAGES/django.po
+index 39f43cb..7cac386 100644
+--- a/tendenci/locale/de_CH/LC_MESSAGES/django.po
++++ b/tendenci/locale/de_CH/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "Registernummer:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Abbrechen Registation"
++msgid "Cancel Registration"
++msgstr "Abbrechen Registration"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/el/LC_MESSAGES/django.po b/tendenci/locale/el/LC_MESSAGES/django.po
+index 21f7bd3..e79f6b7 100644
+--- a/tendenci/locale/el/LC_MESSAGES/django.po
++++ b/tendenci/locale/el/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/en/LC_MESSAGES/django.po b/tendenci/locale/en/LC_MESSAGES/django.po
+index 898c506..3d272d0 100644
+--- a/tendenci/locale/en/LC_MESSAGES/django.po
++++ b/tendenci/locale/en/LC_MESSAGES/django.po
+@@ -5897,7 +5897,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/en_GB/LC_MESSAGES/django.po b/tendenci/locale/en_GB/LC_MESSAGES/django.po
+index 51a7e4e..390b67d 100644
+--- a/tendenci/locale/en_GB/LC_MESSAGES/django.po
++++ b/tendenci/locale/en_GB/LC_MESSAGES/django.po
+@@ -5888,7 +5888,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/eo/LC_MESSAGES/django.po b/tendenci/locale/eo/LC_MESSAGES/django.po
+index 7f7bdb5..9f7df47 100644
+--- a/tendenci/locale/eo/LC_MESSAGES/django.po
++++ b/tendenci/locale/eo/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/es/LC_MESSAGES/django.po b/tendenci/locale/es/LC_MESSAGES/django.po
+index 4683517..333df07 100644
+--- a/tendenci/locale/es/LC_MESSAGES/django.po
++++ b/tendenci/locale/es/LC_MESSAGES/django.po
+@@ -5893,7 +5893,7 @@ msgstr "Número de registro:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr "Cancelar Inscripción de"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/es_AR/LC_MESSAGES/django.po b/tendenci/locale/es_AR/LC_MESSAGES/django.po
+index 13b9fb1..eedd488 100644
+--- a/tendenci/locale/es_AR/LC_MESSAGES/django.po
++++ b/tendenci/locale/es_AR/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/es_CL/LC_MESSAGES/django.po b/tendenci/locale/es_CL/LC_MESSAGES/django.po
+index d896f3d..e156525 100644
+--- a/tendenci/locale/es_CL/LC_MESSAGES/django.po
++++ b/tendenci/locale/es_CL/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr "Número de registro:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr "Cancelar Inscripción de"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/es_MX/LC_MESSAGES/django.po b/tendenci/locale/es_MX/LC_MESSAGES/django.po
+index 46b739d..a070e22 100644
+--- a/tendenci/locale/es_MX/LC_MESSAGES/django.po
++++ b/tendenci/locale/es_MX/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/es_NI/LC_MESSAGES/django.po b/tendenci/locale/es_NI/LC_MESSAGES/django.po
+index 8b48b8e..b135d97 100644
+--- a/tendenci/locale/es_NI/LC_MESSAGES/django.po
++++ b/tendenci/locale/es_NI/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/et/LC_MESSAGES/django.po b/tendenci/locale/et/LC_MESSAGES/django.po
+index e21e164..7e3e3d6 100644
+--- a/tendenci/locale/et/LC_MESSAGES/django.po
++++ b/tendenci/locale/et/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/eu/LC_MESSAGES/django.po b/tendenci/locale/eu/LC_MESSAGES/django.po
+index a99fb46..23bb1c4 100644
+--- a/tendenci/locale/eu/LC_MESSAGES/django.po
++++ b/tendenci/locale/eu/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/fi/LC_MESSAGES/django.po b/tendenci/locale/fi/LC_MESSAGES/django.po
+index 7d5cd7f..03c54a5 100644
+--- a/tendenci/locale/fi/LC_MESSAGES/django.po
++++ b/tendenci/locale/fi/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/fr/LC_MESSAGES/django.po b/tendenci/locale/fr/LC_MESSAGES/django.po
+index 81f5034..5f32ff4 100644
+--- a/tendenci/locale/fr/LC_MESSAGES/django.po
++++ b/tendenci/locale/fr/LC_MESSAGES/django.po
+@@ -5889,7 +5889,7 @@ msgstr "Numéro d&#39;enregistrement:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr "Annuler Enregistrement"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/fr_CH/LC_MESSAGES/django.po b/tendenci/locale/fr_CH/LC_MESSAGES/django.po
+index b47e465..fb7bd21 100644
+--- a/tendenci/locale/fr_CH/LC_MESSAGES/django.po
++++ b/tendenci/locale/fr_CH/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr "Numéro d&#39;enregistrement:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr "Annuler Enregistrement"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/fy_NL/LC_MESSAGES/django.po b/tendenci/locale/fy_NL/LC_MESSAGES/django.po
+index ab4e2d6..9d0e313 100644
+--- a/tendenci/locale/fy_NL/LC_MESSAGES/django.po
++++ b/tendenci/locale/fy_NL/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/gd/LC_MESSAGES/django.po b/tendenci/locale/gd/LC_MESSAGES/django.po
+index e2810ef..a2957c0 100644
+--- a/tendenci/locale/gd/LC_MESSAGES/django.po
++++ b/tendenci/locale/gd/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/gl/LC_MESSAGES/django.po b/tendenci/locale/gl/LC_MESSAGES/django.po
+index f1356a3..8a12d40 100644
+--- a/tendenci/locale/gl/LC_MESSAGES/django.po
++++ b/tendenci/locale/gl/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/he/LC_MESSAGES/django.po b/tendenci/locale/he/LC_MESSAGES/django.po
+index 6085d2e..4a99a3f 100644
+--- a/tendenci/locale/he/LC_MESSAGES/django.po
++++ b/tendenci/locale/he/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "מספר רישום:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "לבטל Registation"
++msgid "Cancel Registration"
++msgstr "לבטל Registration"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/hi/LC_MESSAGES/django.po b/tendenci/locale/hi/LC_MESSAGES/django.po
+index e9a2ab6..526f7b9 100644
+--- a/tendenci/locale/hi/LC_MESSAGES/django.po
++++ b/tendenci/locale/hi/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "पंजीकरण संख्या:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Registation रद्द"
++msgid "Cancel Registration"
++msgstr "Registration रद्द"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/hr/LC_MESSAGES/django.po b/tendenci/locale/hr/LC_MESSAGES/django.po
+index 7ce034c..f475f61 100644
+--- a/tendenci/locale/hr/LC_MESSAGES/django.po
++++ b/tendenci/locale/hr/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/hu/LC_MESSAGES/django.po b/tendenci/locale/hu/LC_MESSAGES/django.po
+index e9b79b5..8f3df01 100644
+--- a/tendenci/locale/hu/LC_MESSAGES/django.po
++++ b/tendenci/locale/hu/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/id/LC_MESSAGES/django.po b/tendenci/locale/id/LC_MESSAGES/django.po
+index 4ec68da..42d9834 100644
+--- a/tendenci/locale/id/LC_MESSAGES/django.po
++++ b/tendenci/locale/id/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/is/LC_MESSAGES/django.po b/tendenci/locale/is/LC_MESSAGES/django.po
+index bd14935..775aac7 100644
+--- a/tendenci/locale/is/LC_MESSAGES/django.po
++++ b/tendenci/locale/is/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/it/LC_MESSAGES/django.po b/tendenci/locale/it/LC_MESSAGES/django.po
+index 9b7bc37..cd72024 100644
+--- a/tendenci/locale/it/LC_MESSAGES/django.po
++++ b/tendenci/locale/it/LC_MESSAGES/django.po
+@@ -5888,7 +5888,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/ja/LC_MESSAGES/django.po b/tendenci/locale/ja/LC_MESSAGES/django.po
+index 161f298..0ebf5c9 100644
+--- a/tendenci/locale/ja/LC_MESSAGES/django.po
++++ b/tendenci/locale/ja/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "登録番号："
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Registationキャンセル"
++msgid "Cancel Registration"
++msgstr "Registrationキャンセル"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/ka/LC_MESSAGES/django.po b/tendenci/locale/ka/LC_MESSAGES/django.po
+index 5a03daf..053a8ae 100644
+--- a/tendenci/locale/ka/LC_MESSAGES/django.po
++++ b/tendenci/locale/ka/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/kk/LC_MESSAGES/django.po b/tendenci/locale/kk/LC_MESSAGES/django.po
+index 62ea386..565d125 100644
+--- a/tendenci/locale/kk/LC_MESSAGES/django.po
++++ b/tendenci/locale/kk/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/kn/LC_MESSAGES/django.po b/tendenci/locale/kn/LC_MESSAGES/django.po
+index a6f18e2..22da9e7 100644
+--- a/tendenci/locale/kn/LC_MESSAGES/django.po
++++ b/tendenci/locale/kn/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/ko/LC_MESSAGES/django.po b/tendenci/locale/ko/LC_MESSAGES/django.po
+index f5f8e3f..d3f9b3e 100644
+--- a/tendenci/locale/ko/LC_MESSAGES/django.po
++++ b/tendenci/locale/ko/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "등록 번호 :"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Registation 취소"
++msgid "Cancel Registration"
++msgstr "Registration 취소"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/lt/LC_MESSAGES/django.po b/tendenci/locale/lt/LC_MESSAGES/django.po
+index 85d2610..3d39ede 100644
+--- a/tendenci/locale/lt/LC_MESSAGES/django.po
++++ b/tendenci/locale/lt/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/lv_LV/LC_MESSAGES/django.po b/tendenci/locale/lv_LV/LC_MESSAGES/django.po
+index 38e3de8..f39ec12 100644
+--- a/tendenci/locale/lv_LV/LC_MESSAGES/django.po
++++ b/tendenci/locale/lv_LV/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/mk/LC_MESSAGES/django.po b/tendenci/locale/mk/LC_MESSAGES/django.po
+index 851fa6d..af41c37 100644
+--- a/tendenci/locale/mk/LC_MESSAGES/django.po
++++ b/tendenci/locale/mk/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/ml/LC_MESSAGES/django.po b/tendenci/locale/ml/LC_MESSAGES/django.po
+index f535394..33be876 100644
+--- a/tendenci/locale/ml/LC_MESSAGES/django.po
++++ b/tendenci/locale/ml/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/mn/LC_MESSAGES/django.po b/tendenci/locale/mn/LC_MESSAGES/django.po
+index 64155fe..c77e32d 100644
+--- a/tendenci/locale/mn/LC_MESSAGES/django.po
++++ b/tendenci/locale/mn/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/ne_NP/LC_MESSAGES/django.po b/tendenci/locale/ne_NP/LC_MESSAGES/django.po
+index bdbaa7e..fee749b 100644
+--- a/tendenci/locale/ne_NP/LC_MESSAGES/django.po
++++ b/tendenci/locale/ne_NP/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/nl/LC_MESSAGES/django.po b/tendenci/locale/nl/LC_MESSAGES/django.po
+index e1c46a2..77a2b75 100644
+--- a/tendenci/locale/nl/LC_MESSAGES/django.po
++++ b/tendenci/locale/nl/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/no/LC_MESSAGES/django.po b/tendenci/locale/no/LC_MESSAGES/django.po
+index ebd6db4..19b8d97 100644
+--- a/tendenci/locale/no/LC_MESSAGES/django.po
++++ b/tendenci/locale/no/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/pa/LC_MESSAGES/django.po b/tendenci/locale/pa/LC_MESSAGES/django.po
+index 061114a..16ca54c 100644
+--- a/tendenci/locale/pa/LC_MESSAGES/django.po
++++ b/tendenci/locale/pa/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "ਰਜਿਸਟਰੇਸ਼ਨ ਨੰਬਰ:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Registation ਰੱਦ ਕਰੋ"
++msgid "Cancel Registration"
++msgstr "Registration ਰੱਦ ਕਰੋ"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/pa_IN/LC_MESSAGES/django.po b/tendenci/locale/pa_IN/LC_MESSAGES/django.po
+index a22e083..699c569 100644
+--- a/tendenci/locale/pa_IN/LC_MESSAGES/django.po
++++ b/tendenci/locale/pa_IN/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "ਰਜਿਸਟਰੇਸ਼ਨ ਨੰਬਰ:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Registation ਰੱਦ ਕਰੋ"
++msgid "Cancel Registration"
++msgstr "Registration ਰੱਦ ਕਰੋ"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/pl/LC_MESSAGES/django.po b/tendenci/locale/pl/LC_MESSAGES/django.po
+index 3d539d7..b298edf 100644
+--- a/tendenci/locale/pl/LC_MESSAGES/django.po
++++ b/tendenci/locale/pl/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr "Numer rejestracyjny:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr "Anuluj Kontakt Rejestracja"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/pt/LC_MESSAGES/django.po b/tendenci/locale/pt/LC_MESSAGES/django.po
+index bb37bb8..98a8c04 100644
+--- a/tendenci/locale/pt/LC_MESSAGES/django.po
++++ b/tendenci/locale/pt/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/pt_BR/LC_MESSAGES/django.po b/tendenci/locale/pt_BR/LC_MESSAGES/django.po
+index f365bc8..a325d01 100644
+--- a/tendenci/locale/pt_BR/LC_MESSAGES/django.po
++++ b/tendenci/locale/pt_BR/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/ro/LC_MESSAGES/django.po b/tendenci/locale/ro/LC_MESSAGES/django.po
+index 799560a..d13c8ae 100644
+--- a/tendenci/locale/ro/LC_MESSAGES/django.po
++++ b/tendenci/locale/ro/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/ru/LC_MESSAGES/django.po b/tendenci/locale/ru/LC_MESSAGES/django.po
+index e38626b..6e6dcd7 100644
+--- a/tendenci/locale/ru/LC_MESSAGES/django.po
++++ b/tendenci/locale/ru/LC_MESSAGES/django.po
+@@ -5889,7 +5889,7 @@ msgstr "Регистрационный номер:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr "Отменить Контакты Регистрация"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/sk/LC_MESSAGES/django.po b/tendenci/locale/sk/LC_MESSAGES/django.po
+index 9a03b05..8795a37 100644
+--- a/tendenci/locale/sk/LC_MESSAGES/django.po
++++ b/tendenci/locale/sk/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/sr/LC_MESSAGES/django.po b/tendenci/locale/sr/LC_MESSAGES/django.po
+index 2f25ec9..d8dfda4 100644
+--- a/tendenci/locale/sr/LC_MESSAGES/django.po
++++ b/tendenci/locale/sr/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/sr@ijekavianlatin/LC_MESSAGES/django.po b/tendenci/locale/sr@ijekavianlatin/LC_MESSAGES/django.po
+index ed2f834..0312b16 100644
+--- a/tendenci/locale/sr@ijekavianlatin/LC_MESSAGES/django.po
++++ b/tendenci/locale/sr@ijekavianlatin/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/sw/LC_MESSAGES/django.po b/tendenci/locale/sw/LC_MESSAGES/django.po
+index 87203e1..7d32526 100644
+--- a/tendenci/locale/sw/LC_MESSAGES/django.po
++++ b/tendenci/locale/sw/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "Namba ya Usajili:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Kufuta Registation"
++msgid "Cancel Registration"
++msgstr "Kufuta Registration"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/ta/LC_MESSAGES/django.po b/tendenci/locale/ta/LC_MESSAGES/django.po
+index d0b1ca7..c01da20 100644
+--- a/tendenci/locale/ta/LC_MESSAGES/django.po
++++ b/tendenci/locale/ta/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/te/LC_MESSAGES/django.po b/tendenci/locale/te/LC_MESSAGES/django.po
+index 306d2f4..737fb58 100644
+--- a/tendenci/locale/te/LC_MESSAGES/django.po
++++ b/tendenci/locale/te/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/tl/LC_MESSAGES/django.po b/tendenci/locale/tl/LC_MESSAGES/django.po
+index b3b78ba..e1f3a47 100644
+--- a/tendenci/locale/tl/LC_MESSAGES/django.po
++++ b/tendenci/locale/tl/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "Numero ng Pagpaparehistro:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Kanselahin Registation"
++msgid "Cancel Registration"
++msgstr "Kanselahin Registration"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/tl_PH/LC_MESSAGES/django.po b/tendenci/locale/tl_PH/LC_MESSAGES/django.po
+index f7120d7..a203daa 100644
+--- a/tendenci/locale/tl_PH/LC_MESSAGES/django.po
++++ b/tendenci/locale/tl_PH/LC_MESSAGES/django.po
+@@ -5887,8 +5887,8 @@ msgstr "Numero ng Pagpaparehistro:"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
+-msgstr "Kanselahin Registation"
++msgid "Cancel Registration"
++msgstr "Kanselahin Registration"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+ msgid "Table/Team of "
+diff --git a/tendenci/locale/tr/LC_MESSAGES/django.po b/tendenci/locale/tr/LC_MESSAGES/django.po
+index 3bd5ca6..ba04681 100644
+--- a/tendenci/locale/tr/LC_MESSAGES/django.po
++++ b/tendenci/locale/tr/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/tt/LC_MESSAGES/django.po b/tendenci/locale/tt/LC_MESSAGES/django.po
+index b8dd44d..52b360e 100644
+--- a/tendenci/locale/tt/LC_MESSAGES/django.po
++++ b/tendenci/locale/tt/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/uk/LC_MESSAGES/django.po b/tendenci/locale/uk/LC_MESSAGES/django.po
+index ae3f8ea..95c271d 100644
+--- a/tendenci/locale/uk/LC_MESSAGES/django.po
++++ b/tendenci/locale/uk/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/ur/LC_MESSAGES/django.po b/tendenci/locale/ur/LC_MESSAGES/django.po
+index f7d6352..72e0472 100644
+--- a/tendenci/locale/ur/LC_MESSAGES/django.po
++++ b/tendenci/locale/ur/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/vi/LC_MESSAGES/django.po b/tendenci/locale/vi/LC_MESSAGES/django.po
+index 4f20edf..2d2464c 100644
+--- a/tendenci/locale/vi/LC_MESSAGES/django.po
++++ b/tendenci/locale/vi/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/zh_CN/LC_MESSAGES/django.po b/tendenci/locale/zh_CN/LC_MESSAGES/django.po
+index cd4f81c..dd18ca0 100644
+--- a/tendenci/locale/zh_CN/LC_MESSAGES/django.po
++++ b/tendenci/locale/zh_CN/LC_MESSAGES/django.po
+@@ -5888,7 +5888,7 @@ msgstr "注册号："
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr "取消工商注册"
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
+diff --git a/tendenci/locale/zh_TW/LC_MESSAGES/django.po b/tendenci/locale/zh_TW/LC_MESSAGES/django.po
+index 12fac4e..02a62e0 100644
+--- a/tendenci/locale/zh_TW/LC_MESSAGES/django.po
++++ b/tendenci/locale/zh_TW/LC_MESSAGES/django.po
+@@ -5887,7 +5887,7 @@ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:96
+ #: addons/events/templates/events/reg8n/register-confirm.html:98
+-msgid "Cancel Registation"
++msgid "Cancel Registration"
+ msgstr ""
+ 
+ #: addons/events/templates/events/reg8n/register-confirm.html:113
