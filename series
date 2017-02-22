@@ -3,6 +3,7 @@ education_fix
 tinymce_content_type
 tinymce_toggle
 disable_skills
+custom_field_types
 resend_new_member_email
 menu_carets
 migrations

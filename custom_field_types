@@ -1,0 +1,40 @@
+The Demographics fields listed on /admin/memberships/membershipdefault/1/ use text fields instead
+of the correct custom field type by default.  Is this intentional to allow access to those field
+values if the custom field type is subsequently changed?
+
+This patch changes them to the correct custom field type.
+
+This only covers Demographics fields.  Some other fields (for example, "Referral Source") are still
+text fields.
+diff --git a/tendenci/apps/memberships/utils.py b/tendenci/apps/memberships/utils.py
+index c4ae85e..e818841 100644
+--- a/tendenci/apps/memberships/utils.py
++++ b/tendenci/apps/memberships/utils.py
+@@ -140,16 +140,19 @@ def get_selected_demographic_fields(membership_app, forms):
+     app_fields = MembershipAppField.objects.filter(
+                                 membership_app=membership_app,
+                                 display=True
+-                                ).values(
+-                        'label', 'field_name', 'required')
++                                )
+     selected_fields = []
+     for app_field in app_fields:
+-        if app_field['field_name'] in demographic_field_names:
+-            field = forms.CharField(
+-                    widget=forms.TextInput({'size': 30}),
+-                    label=app_field['label'],
+-                    required=app_field['required'])
+-            selected_fields.append((app_field['field_name'], field))
++        if app_field.field_name in demographic_field_names:
++            if app_field.field_type:
++                # create form field with customized behavior
++                field = app_field.get_field_class()
++            else:
++                field = forms.CharField(
++                        widget=forms.TextInput({'size': 30}),
++                        label=app_field.label,
++                        required=app_field.required)
++            selected_fields.append((app_field.field_name, field))
+     return selected_fields
+ 
+ 
