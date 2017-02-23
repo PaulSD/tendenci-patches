@@ -23,7 +23,7 @@ index 54b3152..45c5039 100644
 +        ]
 +        toggle_html = [
 +            '<span style="font-size:.75rem;">',
-+            '<a href="javascript:void(0)" onclick="tinymce.EditorManager.get("'+final_attrs['id']+'").remove();">Disable WYSIWYG Editor</a>',
++            '<a href="javascript:void(0)" onclick="tinymce.EditorManager.get(\''+final_attrs['id']+'\').remove();">Disable WYSIWYG Editor</a>',
 +            '</span>',
 +        ]
 +        toggle_html.extend(html)
