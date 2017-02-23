@@ -8,3 +8,4 @@ resend_new_member_email
 menu_carets
 migrations
 disable_new_member_email.temp
+hack_username_help_text

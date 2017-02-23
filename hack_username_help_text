@@ -1,0 +1,38 @@
+diff --git a/tendenci/apps/memberships/forms.py b/tendenci/apps/memberships/forms.py
+index 11d6687..b29ed49 100644
+--- a/tendenci/apps/memberships/forms.py
++++ b/tendenci/apps/memberships/forms.py
+@@ -589,7 +589,7 @@ class UserForm(FormControlWidgetMixin, forms.ModelForm):
+             self.fields['password'] = forms.CharField(
+                 initial=u'',
+                 widget=forms.PasswordInput,
+-                required=False,
++                required=True,
+                 help_text=passwd.help_text
+             )
+             self.fields['password'].widget.attrs.update({'size': 28})
+@@ -597,19 +597,19 @@ class UserForm(FormControlWidgetMixin, forms.ModelForm):
+             self.fields['confirm_password'] = forms.CharField(
+                 initial=u'',
+                 widget=forms.PasswordInput,
+-                required=False,
++                required=True,
+             )
+             self.fields['confirm_password'].widget.attrs.update({'size': 28})
+ 
+         if 'username' in self_fields_keys:
+-            self.fields['username'] = forms.RegexField(regex=r'^[\w.@+-]+$',
+-                                required=False,
++            self.fields['username'] = forms.RegexField(regex=r'^[\w-]+$',
++                                required=True,
+                                 max_length=30,
+                                 widget=forms.TextInput,
+                                 label=_(u'Username'),
+-                                help_text = _("Allowed characters are letters, digits, at sign (@), period (.), plus sign (+), dash (-), and underscore (_)."),
++                                help_text = _("Preferred format is capitalized first name and last initial (eg \"JohnD\")."),
+                                 error_messages = {
+-                                    'invalid' : _("Allowed characters are letters, digits, at sign (@), period (.), plus sign (+), dash (-), and underscore (_).")
++                                    'invalid' : _("Allowed characters are letters, digits, dash (-), and underscore (_).")
+                                 })
+ 
+         self.field_names = [name for name in self.fields.keys()]
