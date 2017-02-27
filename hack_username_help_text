@@ -29,7 +29,7 @@ index 11d6687..b29ed49 100644
                                  widget=forms.TextInput,
                                  label=_(u'Username'),
 -                                help_text = _("Allowed characters are letters, digits, at sign (@), period (.), plus sign (+), dash (-), and underscore (_)."),
-+                                help_text = _("Preferred format is capitalized first name and last initial (eg \"JohnD\")."),
++                                help_text = _("Preferred format is capitalized first name and last initial (e.g. \"JohnD\")."),
                                  error_messages = {
 -                                    'invalid' : _("Allowed characters are letters, digits, at sign (@), period (.), plus sign (+), dash (-), and underscore (_).")
 +                                    'invalid' : _("Allowed characters are letters, digits, dash (-), and underscore (_).")

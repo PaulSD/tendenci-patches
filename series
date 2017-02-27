@@ -1,11 +1,9 @@
-registration_typos
-education_fix
-tinymce_content_type
+events_links
+menu_carets
 tinymce_toggle
 disable_skills
 custom_field_types
-resend_new_member_email
-menu_carets
-migrations
-disable_new_member_email.temp
 hack_username_help_text
+resend_new_member_email
+disable_new_member_email.temp
+migrations
