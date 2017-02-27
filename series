@@ -3,7 +3,7 @@ menu_carets
 tinymce_toggle
 disable_skills
 custom_field_types
-hack_username_help_text
+user_pass_required
 resend_new_member_email
 disable_new_member_email.temp
 migrations
