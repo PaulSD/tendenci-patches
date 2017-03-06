@@ -2,7 +2,6 @@ events_links
 menu_carets
 tinymce_toggle
 disable_skills
-custom_field_types
 user_pass_required
 resend_new_member_email
 disable_new_member_email.temp

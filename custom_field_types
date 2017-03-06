@@ -1,40 +1,61 @@
-The Demographics fields listed on /admin/memberships/membershipdefault/1/ use text fields instead
-of the correct custom field type by default.  Is this intentional to allow access to those field
-values if the custom field type is subsequently changed?
+Details are on To-Do page on wiki
 
-This patch changes them to the correct custom field type.
-
-This only covers Demographics fields.  Some other fields (for example, "Referral Source") are still
-text fields.
-diff --git a/tendenci/apps/memberships/utils.py b/tendenci/apps/memberships/utils.py
-index c4ae85e..e818841 100644
---- a/tendenci/apps/memberships/utils.py
-+++ b/tendenci/apps/memberships/utils.py
-@@ -140,16 +140,19 @@ def get_selected_demographic_fields(membership_app, forms):
-     app_fields = MembershipAppField.objects.filter(
-                                 membership_app=membership_app,
-                                 display=True
--                                ).values(
--                        'label', 'field_name', 'required')
-+                                )
-     selected_fields = []
-     for app_field in app_fields:
--        if app_field['field_name'] in demographic_field_names:
--            field = forms.CharField(
--                    widget=forms.TextInput({'size': 30}),
--                    label=app_field['label'],
--                    required=app_field['required'])
--            selected_fields.append((app_field['field_name'], field))
-+        if app_field.field_name in demographic_field_names:
-+            if app_field.field_type:
-+                # create form field with customized behavior
-+                field = app_field.get_field_class()
-+            else:
-+                field = forms.CharField(
-+                        widget=forms.TextInput({'size': 30}),
-+                        label=app_field.label,
-+                        required=app_field.required)
-+            selected_fields.append((app_field.field_name, field))
-     return selected_fields
+Incomplete fix for "Multi select (Checkboxes)" fields on membership application are displayed as text fields with raw database content ("[u'Option 1', u'Option 3']") when viewing profile and in admin pages
+diff --git a/tendenci/apps/memberships/forms.py b/tendenci/apps/memberships/forms.py
+index 232bddc..b2964e8 100644
+--- a/tendenci/apps/memberships/forms.py
++++ b/tendenci/apps/memberships/forms.py
+@@ -499,16 +499,17 @@ def get_field_size(app_field_obj):
+     return field_size_dict.get(app_field_obj.field_name, '') or 28
  
  
+-def assign_fields(form, app_field_objs):
++def assign_fields(form, app_field_objs, strip_missing_fields=True):
+     form_field_keys = form.fields.keys()
+     # a list of names of app fields
+     field_names = [field.field_name for field in app_field_objs \
+                    if field.field_name != '' and \
+                    field.field_name in form_field_keys]
+ 
+-    for name in form_field_keys:
+-        if name not in field_names and name != 'discount_code':
+-            del form.fields[name]
++    if strip_missing_fields:
++        for name in form_field_keys:
++            if name not in field_names and name != 'discount_code':
++                del form.fields[name]
+     # update the field attrs - label, required...
+     for obj in app_field_objs:
+         if obj.field_name in field_names:
+@@ -1582,6 +1583,12 @@ class MembershipDefaultForm(TendenciBaseForm):
+         super(MembershipDefaultForm, self).__init__(*args, **kwargs)
+ 
+         # initialize field widgets ---------------------------
++        if self.instance and self.instance.app:
++            app = self.instance.app
++        else:
++            app = MembershipApp.objects.current_app()
++        assign_fields(self, app.fields.filter(display=True), False)
++
+         self.fields['payment_method'].empty_label = None
+         # make payment_method not required for admin - this form is used only at admin backend
+         self.fields['payment_method'].required = False
+@@ -1710,16 +1717,12 @@ class MembershipDefaultForm(TendenciBaseForm):
+ 
+         demographics = self.instance.demographics
+ 
+-        if self.instance and self.instance.app:
+-            app = self.instance.app
+-        else:
+-            app = MembershipApp.objects.current_app()
+-
+         self._app = app
+         demographic_fields = get_selected_demographic_fields(app, forms)
+         self.demographic_field_names = [field_item[0] for field_item in demographic_fields]
+         for field_name, field in demographic_fields:
+-            self.fields[field_name] = field
++            # Commenting out the line below because it loses the field widget as the field has already been assigned
++            #self.fields[field_name] = field
+             # set initial value
+             if demographics:
+                 ud_field = MembershipAppField.objects.get(field_name=field_name,
