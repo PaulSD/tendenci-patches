@@ -31,23 +31,28 @@ index 4de7bba..1838a5f 100644
          {% if tags %}
          <li><strong>{% trans "Tags:" %} </strong>
 diff --git a/tendenci/apps/events/templates/events/month-view.html b/tendenci/apps/events/templates/events/month-view.html
-index f548500..7b6c6f4 100644
+index f548500..b19c5fb 100644
 --- a/tendenci/apps/events/templates/events/month-view.html
 +++ b/tendenci/apps/events/templates/events/month-view.html
-@@ -20,6 +20,13 @@
+@@ -20,12 +20,12 @@
  {% block content %}
  
  <div class="month-view">
+-  
+-  <div class="event-buttons pull-right">
+-    <ul class="nav nav-pills">
+-        <br /><br /><br />
+-      <li><a href="/events/search/" class="btn btn-primary">List View</a></li>
+-    </ul>
 +
 +  <div class="events-pages">
 +    <a href="{% url "event.search" %}">{% trans "List View" %}</a> |
 +    <span class="events-pages-current">{% trans "Month View" %}</span> |
 +    <a href="{% url "event.week" %}">{% trans "Week View" %}</a> |
 +    <a href="{% url "event.ics" %}" id="event_export_link">{% trans "Download" %}</a>
-+  </div>
+   </div>
    
-   <div class="event-buttons pull-right">
-     <ul class="nav nav-pills">
+   <div class="row">
 diff --git a/tendenci/apps/events/templates/events/search.html b/tendenci/apps/events/templates/events/search.html
 index 298459c..44b734d 100644
 --- a/tendenci/apps/events/templates/events/search.html
