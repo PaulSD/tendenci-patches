@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/events/static/css/events.css b/tendenci/apps/events/static/css/events.css
-index a7adbae..eb92ac0 100644
+index 1ff5037..0f970dc 100644
 --- a/tendenci/apps/events/static/css/events.css
 +++ b/tendenci/apps/events/static/css/events.css
 @@ -11,6 +11,14 @@
@@ -31,23 +31,23 @@ index 4de7bba..1838a5f 100644
          {% if tags %}
          <li><strong>{% trans "Tags:" %} </strong>
 diff --git a/tendenci/apps/events/templates/events/month-view.html b/tendenci/apps/events/templates/events/month-view.html
-index 78ec77d..89b4e15 100644
+index f548500..7b6c6f4 100644
 --- a/tendenci/apps/events/templates/events/month-view.html
 +++ b/tendenci/apps/events/templates/events/month-view.html
-@@ -21,6 +21,13 @@
+@@ -20,6 +20,13 @@
+ {% block content %}
  
  <div class="month-view">
- 
-+    <div class="events-pages">
-+        <a href="{% url "event.search" %}">{% trans "List View" %}</a> |
-+        <span class="events-pages-current">{% trans "Month View" %}</span> |
-+        <a href="{% url "event.week" %}">{% trans "Week View" %}</a> |
-+        <a href="{% url "event.ics" %}" id="event_export_link">{% trans "Download" %}</a>
-+    </div>
 +
-     <div class="month-names">
-         <div class="month-name previous"><a href="{{ prev_month_url }}"> &laquo;</a></div>
-         <div class="month-name current"><a href="">{{ month_names.1 }} {{ year }}</a></div>
++  <div class="events-pages">
++    <a href="{% url "event.search" %}">{% trans "List View" %}</a> |
++    <span class="events-pages-current">{% trans "Month View" %}</span> |
++    <a href="{% url "event.week" %}">{% trans "Week View" %}</a> |
++    <a href="{% url "event.ics" %}" id="event_export_link">{% trans "Download" %}</a>
++  </div>
+   
+   <div class="event-buttons pull-right">
+     <ul class="nav nav-pills">
 diff --git a/tendenci/apps/events/templates/events/search.html b/tendenci/apps/events/templates/events/search.html
 index 298459c..44b734d 100644
 --- a/tendenci/apps/events/templates/events/search.html

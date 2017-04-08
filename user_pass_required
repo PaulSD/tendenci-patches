@@ -29,7 +29,7 @@ index 232bddc..1daf78a 100644
                                  max_length=30,
                                  widget=forms.TextInput,
                                  label=username.label,
-                                 help_text=username.label,
+                                 help_text=username.help_text,
                                  error_messages = {
 -                                    'invalid' : _("Allowed characters are letters, digits, at sign (@), period (.), plus sign (+), dash (-), and underscore (_).")
 +                                    'invalid' : _("Allowed characters are letters, digits, dash (-), and underscore (_).")
