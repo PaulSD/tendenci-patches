@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/events/static/css/events.css b/tendenci/apps/events/static/css/events.css
-index 1ff5037..0f970dc 100644
+index 1ff5037..a44bc91 100644
 --- a/tendenci/apps/events/static/css/events.css
 +++ b/tendenci/apps/events/static/css/events.css
 @@ -11,6 +11,14 @@
@@ -17,6 +17,15 @@ index 1ff5037..0f970dc 100644
  .t .events-wrap {
      margin-bottom: 20px;
  }
+@@ -592,7 +600,7 @@ ul.errorlist {;
+     float: left;
+     background-color: white;
+     padding-right: 10px;
+-    width: 76%;
++    width: 100%;
+ }
+ 
+ .month-view div.month-grid {
 diff --git a/tendenci/apps/events/templates/events/meta.html b/tendenci/apps/events/templates/events/meta.html
 index 4de7bba..1838a5f 100644
 --- a/tendenci/apps/events/templates/events/meta.html
