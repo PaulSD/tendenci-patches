@@ -3,6 +3,7 @@ menu_carets
 tinymce_toggle
 disable_skills
 user_pass_required
+improve_profile_page
 resend_new_member_email
 disable_new_member_email.temp
 migrations
