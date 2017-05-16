@@ -1,0 +1,24 @@
+# Require 'Car #' field on AutoX Registrations to be unique per Event
+diff --git a/tendenci/apps/events/forms.py b/tendenci/apps/events/forms.py
+index 0448b25..807fbb1 100644
+--- a/tendenci/apps/events/forms.py
++++ b/tendenci/apps/events/forms.py
+@@ -483,6 +483,18 @@ class FormForCustomRegForm(forms.ModelForm):
+         return use_free_pass
+ 
+ 
++    # AutoX 'Car #' must be unique per Event
++    def clean_field_52(self):
++        event = self.event
++        car_num = self.cleaned_data['field_52']
++        if CustomRegFieldEntry.objects.filter(
++            field_id = 52,
++            entry__registrants__registration__event = event,
++            value = car_num,
++        ).exists():
++            raise forms.ValidationError(_('This Car # is already taken.'))
++
++
+     def save(self, event, **kwargs):
+         """
+         Create a FormEntry instance and related FieldEntry instances for each
