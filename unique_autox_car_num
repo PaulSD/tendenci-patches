@@ -16,12 +16,12 @@ index 0bbccba..6d72ae4 100644
 +        if not self.event:
 +            raise forms.ValidationError(_('Server error while validating Car #.'))
 +        car_num = self.cleaned_data['field_52']
-+        if CustomRegFieldEntry.objects.filter(
++        if CustomRegFieldEntry.objects.exclude(entry=self.entry).filter(
 +            field_id=52,
 +            entry__registrants__registration__event=self.event,
 +            entry__registrants__cancel_dt=None,
 +            value=car_num,
-+        ).exclude(entry=self.entry).exists():
++        ).exists():
 +            raise forms.ValidationError(_('This Car # is already taken.'))
 +        return car_num
 +
