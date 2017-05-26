@@ -1,9 +1,9 @@
 # Require 'Car #' field on AutoX Registrations to be unique per Event
 diff --git a/tendenci/apps/events/forms.py b/tendenci/apps/events/forms.py
-index 0bbccba..6d72ae4 100644
+index 0bbccba..e77227e 100644
 --- a/tendenci/apps/events/forms.py
 +++ b/tendenci/apps/events/forms.py
-@@ -483,6 +483,25 @@ class FormForCustomRegForm(forms.ModelForm):
+@@ -483,6 +483,27 @@ class FormForCustomRegForm(forms.ModelForm):
          return use_free_pass
  
  
@@ -16,6 +16,8 @@ index 0bbccba..6d72ae4 100644
 +        if not self.event:
 +            raise forms.ValidationError(_('Server error while validating Car #.'))
 +        car_num = self.cleaned_data['field_52']
++        if self.field_52_values.count(car_num) > 1:
++            raise forms.ValidationError(_('Each driver must use a unique Car #.'))
 +        if CustomRegFieldEntry.objects.exclude(entry=self.entry).filter(
 +            field_id=52,
 +            entry__registrants__registration__event=self.event,
@@ -29,3 +31,31 @@ index 0bbccba..6d72ae4 100644
      def save(self, event, **kwargs):
          """
          Create a FormEntry instance and related FieldEntry instances for each
+diff --git a/tendenci/apps/events/views.py b/tendenci/apps/events/views.py
+index 9cbe1f9..64ae19d 100644
+--- a/tendenci/apps/events/views.py
++++ b/tendenci/apps/events/views.py
+@@ -2469,6 +2469,23 @@ def registration_edit(request, reg8n_id=0, hash='', template_name="events/reg8n/
+ 
+ 
+     if request.method == 'POST':
++
++        # Collect AutoX 'Car #' fields from all forms so we can enforce uniqueness across forms.
++        field_52_values = []
++        for form in formset.forms:
++            for name, field in form.fields.items():
++                if name != "field_52":
++                    continue
++                value = field.widget.value_from_datadict(form.data, form.files, form.add_prefix(name))
++                try:
++                    value = int(value)
++                    field_52_values.append(value)
++                except ValueError:
++                    pass
++        if field_52_values:
++            for form in formset.forms:
++                form.field_52_values = field_52_values
++
+         if formset.is_valid():
+             updated = False
+             if custom_reg_form:
