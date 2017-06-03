@@ -1,6 +1,6 @@
 # Require 'Car #' field on AutoX Registrations to be unique per Event
 diff --git a/tendenci/apps/events/forms.py b/tendenci/apps/events/forms.py
-index 0bbccba..e77227e 100644
+index 0bbccba..165dee6 100644
 --- a/tendenci/apps/events/forms.py
 +++ b/tendenci/apps/events/forms.py
 @@ -483,6 +483,27 @@ class FormForCustomRegForm(forms.ModelForm):
@@ -32,29 +32,59 @@ index 0bbccba..e77227e 100644
          """
          Create a FormEntry instance and related FieldEntry instances for each
 diff --git a/tendenci/apps/events/views.py b/tendenci/apps/events/views.py
-index 9cbe1f9..64ae19d 100644
+index c662943..1d501f1 100644
 --- a/tendenci/apps/events/views.py
 +++ b/tendenci/apps/events/views.py
-@@ -2469,6 +2469,23 @@ def registration_edit(request, reg8n_id=0, hash='', template_name="events/reg8n/
+@@ -1641,6 +1641,24 @@ def member_register(request, event_id,
+     }, context_instance=RequestContext(request))
+ 
+ 
++def collect_autox_car_numbers(formset):
++    # Collect AutoX 'Car #' fields from all forms so we can enforce uniqueness across forms.
++    field_52_values = []
++    for form in formset.forms:
++        for name, field in form.fields.items():
++            if name != "field_52":
++                continue
++            value = field.widget.value_from_datadict(form.data, form.files, form.add_prefix(name))
++            try:
++                value = int(value)
++                field_52_values.append(value)
++            except ValueError:
++                pass
++    if field_52_values:
++        for form in formset.forms:
++            form.field_52_values = field_52_values
++
++
+ @is_enabled('events')
+ def register(request, event_id=0,
+              individual=False,
+@@ -1877,6 +1895,8 @@ def register(request, event_id=0,
+             #if not request.user.profile.is_superuser:
+             within_available_spots = event.limit==0 or event.spots_available >= int(total_regt_forms)
+ 
++            collect_autox_car_numbers(formset)
++
+             if all([within_available_spots,
+                     reg_form.is_valid(),
+                     registrant.is_valid(),
+@@ -2262,6 +2282,9 @@ def multi_register(request, event_id=0, template_name="events/reg8n/multi_regist
+ 
+     if request.method == 'POST':
+         if 'submit' in request.POST:
++
++            collect_autox_car_numbers(formset)
++
+             if False not in (reg_form.is_valid(), registrant.is_valid(), addon_formset.is_valid()):
+ 
+                 # override event_price to price specified by admin
+@@ -2469,6 +2492,9 @@ def registration_edit(request, reg8n_id=0, hash='', template_name="events/reg8n/
  
  
      if request.method == 'POST':
 +
-+        # Collect AutoX 'Car #' fields from all forms so we can enforce uniqueness across forms.
-+        field_52_values = []
-+        for form in formset.forms:
-+            for name, field in form.fields.items():
-+                if name != "field_52":
-+                    continue
-+                value = field.widget.value_from_datadict(form.data, form.files, form.add_prefix(name))
-+                try:
-+                    value = int(value)
-+                    field_52_values.append(value)
-+                except ValueError:
-+                    pass
-+        if field_52_values:
-+            for form in formset.forms:
-+                form.field_52_values = field_52_values
++        collect_autox_car_numbers(formset)
 +
          if formset.is_valid():
              updated = False
