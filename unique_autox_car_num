@@ -1,6 +1,6 @@
 # Require 'Car #' field on AutoX Registrations to be unique per Event
 diff --git a/tendenci/apps/events/forms.py b/tendenci/apps/events/forms.py
-index 0bbccba..165dee6 100644
+index 0bbccba9e..165dee622 100644
 --- a/tendenci/apps/events/forms.py
 +++ b/tendenci/apps/events/forms.py
 @@ -483,6 +483,27 @@ class FormForCustomRegForm(forms.ModelForm):
@@ -32,7 +32,7 @@ index 0bbccba..165dee6 100644
          """
          Create a FormEntry instance and related FieldEntry instances for each
 diff --git a/tendenci/apps/events/views.py b/tendenci/apps/events/views.py
-index c662943..1d501f1 100644
+index c66294370..ed65c13cd 100644
 --- a/tendenci/apps/events/views.py
 +++ b/tendenci/apps/events/views.py
 @@ -1641,6 +1641,24 @@ def member_register(request, event_id,
@@ -64,7 +64,7 @@ index c662943..1d501f1 100644
              #if not request.user.profile.is_superuser:
              within_available_spots = event.limit==0 or event.spots_available >= int(total_regt_forms)
  
-+            collect_autox_car_numbers(formset)
++            collect_autox_car_numbers(registrant)
 +
              if all([within_available_spots,
                      reg_form.is_valid(),
@@ -74,7 +74,7 @@ index c662943..1d501f1 100644
      if request.method == 'POST':
          if 'submit' in request.POST:
 +
-+            collect_autox_car_numbers(formset)
++            collect_autox_car_numbers(registrant)
 +
              if False not in (reg_form.is_valid(), registrant.is_valid(), addon_formset.is_valid()):
  
