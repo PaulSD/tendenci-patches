@@ -6,5 +6,5 @@ disable_skills
 user_pass_required
 improve_profile_page
 resend_new_member_email
-disable_new_member_email.temp
+disable_new_member_email
 migrations
