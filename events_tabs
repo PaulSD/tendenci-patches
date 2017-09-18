@@ -1,0 +1,80 @@
+diff --git a/tendenci/apps/events/templates/events/view.html b/tendenci/apps/events/templates/events/view.html
+index f1fa2aee5..772e9c475 100644
+--- a/tendenci/apps/events/templates/events/view.html
++++ b/tendenci/apps/events/templates/events/view.html
+@@ -43,17 +43,6 @@
+             {% endif %}
+             <span itemprop="name">{% blocktrans with title=event.title %}{{ title }}{% endblocktrans %}</span></h1>
+ 
+-            <div class="event-tabs">
+-                <ul class="nav nav-tabs">
+-                    <li role="presentation" class="dropdown active">
+-                        <a id="event_detail_tab" href="#">{% trans "Event Details" %}</a>
+-                    </li>
+-                    <li role="presentation" class="dropdown">
+-                        <a id="event_files_tab" href="#">{% trans "Event Files" %}</a>
+-                    </li>
+-                </ul>
+-            </div>
+-
+             <!-- Event Details -->
+             <div class="details-wrap clearfix">
+                 <!-- event description -->
+@@ -153,32 +142,6 @@
+                     </div>
+                 {% endif %}
+             </div>
+-            <div class="files-wrap">
+-                {% if event_files %}
+-                    <h3>{% trans "Event Files" %}</h3>
+-                    {% for file in event_files %}
+-                        {% file_detail file %}
+-                    {% endfor %}
+-                {% endif %}
+-                {% if speaker_files %}
+-                    <h3>{% trans "Speaker Files" %}</h3>
+-                    {% for file in speaker_files %}
+-                        {% file_detail file %}
+-                    {% endfor %}
+-                {% endif %}
+-                {% if organizer_files %}
+-                    <h3>{% trans "Organizer Files" %}</h3>
+-                    {% for file in organizer_files %}
+-                        {% file_detail file %}
+-                    {% endfor %}
+-                {% endif %}
+-                {% if place_files %}
+-                    <h3>{% trans "Location Files" %}</h3>
+-                    {% for file in place_files %}
+-                        {% file_detail file %}
+-                    {% endfor %}
+-                {% endif %}
+-            </div>
+             {% include 'events/meta.html' %}
+         </div> <!-- end info -->
+ 
+@@ -284,24 +247,6 @@
+                 live: true
+             });
+ 
+-            $('.files-wrap').hide();
+-            $('a#event_detail_tab').click(function(){
+-                var _this = $(this);
+-                $('.event-wrap .event-tabs .dropdown').removeClass('active');
+-                _this.parent().addClass('active');
+-                $('.details-wrap').show();
+-                $('.files-wrap').hide();
+-                return false;
+-            });
+-            $('a#event_files_tab').click(function(){
+-                var _this = $(this);
+-               $('.event-wrap .event-tabs .dropdown').removeClass('active');
+-                _this.parent().addClass('active');
+-                $('.details-wrap').hide();
+-                $('.files-wrap').show();
+-                return false;
+-            });
+-
+             // speaker description toggle
+             $('a.speaker-desc-toggle').click(function() {
+                 var _this = $(this);
