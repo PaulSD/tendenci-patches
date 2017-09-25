@@ -9,4 +9,6 @@ improve_logout_page
 improve_profile_page
 resend_new_member_email
 disable_new_member_email
+custom_new_member_email
+no_contact_users
 migrations

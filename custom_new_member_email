@@ -1,0 +1,54 @@
+diff --git a/tendenci/apps/memberships/models.py b/tendenci/apps/memberships/models.py
+index 502e0dd83..e9f5bd5eb 100644
+--- a/tendenci/apps/memberships/models.py
++++ b/tendenci/apps/memberships/models.py
+@@ -2046,10 +2046,12 @@ class Notice(models.Model):
+     )
+ 
+     STATUS_DETAIL_ACTIVE = 'active'
++    STATUS_DETAIL_CUSTOM = 'custom'
+     STATUS_DETAIL_HOLD = 'admin_hold'
+ 
+     STATUS_DETAIL_CHOICES = (
+         (STATUS_DETAIL_ACTIVE, 'Active'),
++        (STATUS_DETAIL_CUSTOM, 'CCA Custom'),
+         (STATUS_DETAIL_HOLD, 'Admin Hold')
+     )
+ 
+@@ -2286,7 +2288,8 @@ class Notice(models.Model):
+         # send email to admins
+         membership_recipients = get_notice_recipients('module', 'memberships', 'membershiprecipients')
+         admin_recipients = get_notice_recipients('site', 'global', 'allnoticerecipients')
+-        recipients = list(set(membership_recipients + admin_recipients))
++        #recipients = list(set(membership_recipients + admin_recipients))
++        recipients = admin_recipients
+ 
+         if recipients:
+             notification.send_emails(
+@@ -2297,6 +2300,26 @@ class Notice(models.Model):
+                 'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count(),
+             })
+ 
++        # custom email to membership recipients
++        recipients = membership_recipients
++        field_dict.status_detail = 'custom'
++        for notice in Notice.objects.filter(**field_dict):
++            notice_requirments = (
++                notice.membership_type == membership_type,
++                not notice.membership_type
++            )
++            if any(notice_requirments):
++                notification.send_emails(
++                    emails,
++                    'membership_%s_to_member' % template_type, {
++                    'subject': notice.get_subject(membership=membership),
++                    'content': notice.get_content(membership=membership),
++                    'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count(),
++                    'reply_to': notice.sender,
++                    'sender': get_setting('site', 'global', 'siteemailnoreplyaddress'),
++                    'sender_display': notice.sender_display,
++                })
++
+         return True
+ 
+     @models.permalink
