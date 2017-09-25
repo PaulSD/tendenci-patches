@@ -4,6 +4,8 @@ unique_autox_car_num
 menu_carets
 tinymce_toggle
 disable_skills
+captcha_text
+improve_membership_form
 user_pass_required
 improve_logout_page
 improve_profile_page

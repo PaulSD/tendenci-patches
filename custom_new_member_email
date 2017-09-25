@@ -1,8 +1,37 @@
 diff --git a/tendenci/apps/memberships/models.py b/tendenci/apps/memberships/models.py
-index 502e0dd83..e9f5bd5eb 100644
+index 07a908f22..7967a812a 100644
 --- a/tendenci/apps/memberships/models.py
 +++ b/tendenci/apps/memberships/models.py
-@@ -2046,10 +2046,12 @@ class Notice(models.Model):
+@@ -2,6 +2,7 @@ import os
+ import hashlib
+ import uuid
+ import time
++import re
+ from copy import deepcopy
+ from functools import partial
+ from datetime import datetime, timedelta
+@@ -94,6 +95,8 @@ FIELD_MAX_LENGTH = 2000
+ 
+ VALID_MEMBERSHIP_STATUS_DETAIL = ['active', 'pending', 'expired', 'archive', 'disapproved']
+ 
++ARRAY_STRING_SPLIT_REGEX = re.compile(r"['\"], u['\"]")
++
+ 
+ class MembershipType(OrderingBaseModel, TendenciBaseModel):
+     PRICE_FORMAT = u'%s - %s'
+@@ -1811,8 +1814,9 @@ class MembershipDefault(TendenciBaseModel):
+ 
+             for name, value in items.iteritems():
+                 if hasattr(value, 'all'):
+-                    items[name] = ', '.join([item.__unicode__() \
+-                                             for item in value.all()])
++                    items[name] = [item.__unicode__() for item in value.all()]
++                elif hasattr(value, 'startswith') and value.startswith("[u") and value.endswith("]"):
++                    items[name] = ARRAY_STRING_SPLIT_REGEX.split(value[3:-2])
+ 
+         return items
+ 
+@@ -2046,10 +2050,12 @@ class Notice(models.Model):
      )
  
      STATUS_DETAIL_ACTIVE = 'active'
@@ -15,7 +44,21 @@ index 502e0dd83..e9f5bd5eb 100644
          (STATUS_DETAIL_HOLD, 'Admin Hold')
      )
  
-@@ -2286,7 +2288,8 @@ class Notice(models.Model):
+@@ -2158,6 +2164,13 @@ class Notice(models.Model):
+             'corporate_membership_notice': corporate_msg,
+         })
+ 
++        context.update({ 'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count() })
++        context.update({ 'join_dt': time.strftime("%B %d, %Y %I:%M %p", membership.join_dt.timetuple()) })
++        if membership.renew_dt:
++            context.update({ 'renew_dt': time.strftime("%B %d, %Y %I:%M %p", membership.renew_dt.timetuple()) })
++        if membership.expire_dt:
++            context.update({ 'expire_dt': time.strftime("%B %d, %Y %I:%M %p", membership.expire_dt.timetuple()) })
++
+         return context
+ 
+     def get_subject(self, membership=None):
+@@ -2288,7 +2301,8 @@ class Notice(models.Model):
          # send email to admins
          membership_recipients = get_notice_recipients('module', 'memberships', 'membershiprecipients')
          admin_recipients = get_notice_recipients('site', 'global', 'allnoticerecipients')
@@ -25,13 +68,13 @@ index 502e0dd83..e9f5bd5eb 100644
  
          if recipients:
              notification.send_emails(
-@@ -2297,6 +2300,26 @@ class Notice(models.Model):
+@@ -2299,6 +2313,25 @@ class Notice(models.Model):
                  'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count(),
              })
  
 +        # custom email to membership recipients
-+        recipients = membership_recipients
-+        field_dict.status_detail = 'custom'
++        emails = membership_recipients
++        field_dict['status_detail'] = 'custom'
 +        for notice in Notice.objects.filter(**field_dict):
 +            notice_requirments = (
 +                notice.membership_type == membership_type,
@@ -43,7 +86,6 @@ index 502e0dd83..e9f5bd5eb 100644
 +                    'membership_%s_to_member' % template_type, {
 +                    'subject': notice.get_subject(membership=membership),
 +                    'content': notice.get_content(membership=membership),
-+                    'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count(),
 +                    'reply_to': notice.sender,
 +                    'sender': get_setting('site', 'global', 'siteemailnoreplyaddress'),
 +                    'sender_display': notice.sender_display,
