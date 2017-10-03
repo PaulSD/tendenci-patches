@@ -9,6 +9,7 @@ improve_membership_form
 user_pass_required
 improve_logout_page
 improve_profile_page
+no_email_footer
 resend_new_member_email
 disable_new_member_email
 custom_new_member_email
