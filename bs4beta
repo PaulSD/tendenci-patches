@@ -1,0 +1,28 @@
+diff --git a/tendenci/apps/navs/templates/navs/load_nav.html b/tendenci/apps/navs/templates/navs/load_nav.html
+index c522a3a..32af8c7 100644
+--- a/tendenci/apps/navs/templates/navs/load_nav.html
++++ b/tendenci/apps/navs/templates/navs/load_nav.html
+@@ -9,7 +9,7 @@
+ {% if is_site_map %}
+ <ul>
+ {% else %}
+-<ul class="nav navbar-nav t-main-navbar-nav" id="t-main-navbar-nav-{{ nav.id }}">
++<ul class="navbar-nav t-main-navbar-nav" id="t-main-navbar-nav-{{ nav.id }}">
+ {% endif %}
+     {% for item in items %}
+         {% nav_item item is_site_map=is_site_map %}
+diff --git a/tendenci/apps/navs/templates/navs/navigation_item.html b/tendenci/apps/navs/templates/navs/navigation_item.html
+index 89a9e77..850afa4 100644
+--- a/tendenci/apps/navs/templates/navs/navigation_item.html
++++ b/tendenci/apps/navs/templates/navs/navigation_item.html
+@@ -16,8 +16,8 @@
+     {% endif %}
+ </li>
+ {% else %}
+-<li {% if item.children %}class="dropdown"{% endif %}>{% spaceless %}
+-    <a class="{% if item.css %}{{ item.css }}{% endif %}{% if item.children %} dropdown-toggle{% endif %}"{% if item.new_window %} target="_blank"{% endif %} href="{{ item.get_url }}"{% if item.children %} data-toggle="dropdown" role="button" aria-expanded="false"{% endif %}>
++<li {% if item.children %}class="nav-item dropdown"{% else %}class="nav-item"{% endif %}>{% spaceless %}
++    <a class="nav-link{% if item.css %} {{ item.css }}{% endif %}{% if item.children %} dropdown-toggle{% endif %}"{% if item.new_window %} target="_blank"{% endif %} href="{{ item.get_url }}"{% if item.children %} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"{% endif %}>
+         {% blocktrans with l=item.label|removetags:"a"|safe %}{{ l }}{% endblocktrans %}
+     </a>{% endspaceless %}
+ 

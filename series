@@ -15,3 +15,5 @@ disable_new_member_email
 custom_new_member_email
 no_contact_users
 migrations
+bs4beta
+calendar
