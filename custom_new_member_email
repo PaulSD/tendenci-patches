@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/memberships/models.py b/tendenci/apps/memberships/models.py
-index 61cfe6275..3ad623de0 100644
+index 9986519e3..5a4d24407 100644
 --- a/tendenci/apps/memberships/models.py
 +++ b/tendenci/apps/memberships/models.py
 @@ -2,6 +2,7 @@ import os
@@ -46,12 +46,13 @@ index 61cfe6275..3ad623de0 100644
          (STATUS_DETAIL_HOLD, 'Admin Hold')
      )
  
-@@ -2161,6 +2169,13 @@ class Notice(models.Model):
+@@ -2161,6 +2169,14 @@ class Notice(models.Model):
              'corporate_membership_notice': corporate_msg,
          })
  
 +        context.update({ 'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count() })
-+        context.update({ 'join_dt': time.strftime("%B %d, %Y %I:%M %p", membership.join_dt.timetuple()) })
++        if membership.join_dt:
++            context.update({ 'join_dt': time.strftime("%B %d, %Y %I:%M %p", membership.join_dt.timetuple()) })
 +        if membership.renew_dt:
 +            context.update({ 'renew_dt': time.strftime("%B %d, %Y %I:%M %p", membership.renew_dt.timetuple()) })
 +        if membership.expire_dt:
@@ -60,7 +61,7 @@ index 61cfe6275..3ad623de0 100644
          return context
  
      def get_subject(self, membership=None):
-@@ -2291,7 +2306,8 @@ class Notice(models.Model):
+@@ -2291,7 +2307,8 @@ class Notice(models.Model):
          # send email to admins
          membership_recipients = get_notice_recipients('module', 'memberships', 'membershiprecipients')
          admin_recipients = get_notice_recipients('site', 'global', 'allnoticerecipients')
@@ -70,7 +71,7 @@ index 61cfe6275..3ad623de0 100644
  
          if recipients:
              notification.send_emails(
-@@ -2302,6 +2318,25 @@ class Notice(models.Model):
+@@ -2302,6 +2319,25 @@ class Notice(models.Model):
                  'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count(),
              })
  
