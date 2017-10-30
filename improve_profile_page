@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/profiles/templates/profiles/index.html b/tendenci/apps/profiles/templates/profiles/index.html
-index 8bde13d..a70866e 100644
+index 22775b8a0..9f8adf312 100644
 --- a/tendenci/apps/profiles/templates/profiles/index.html
 +++ b/tendenci/apps/profiles/templates/profiles/index.html
 @@ -167,9 +167,12 @@
@@ -32,7 +32,7 @@ index 8bde13d..a70866e 100644
  {% if request.user == user_this or request.user.profile.is_superuser %}
      <div class="events info">
 diff --git a/tendenci/apps/profiles/templates/profiles/meta.html b/tendenci/apps/profiles/templates/profiles/meta.html
-index f1ad924..911e760 100644
+index f1ad92473..911e76074 100644
 --- a/tendenci/apps/profiles/templates/profiles/meta.html
 +++ b/tendenci/apps/profiles/templates/profiles/meta.html
 @@ -41,9 +41,11 @@
@@ -48,7 +48,7 @@ index f1ad924..911e760 100644
                  <li>
                      <a href="{% url 'auth_password_change' profile.user_id %}" class="changepassword" title="Change Password">{% trans "Change Password" %}</a>
 diff --git a/tendenci/apps/profiles/templates/profiles/top_nav_items.html b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-index a2c1147..7ee3f4d 100644
+index a2c114701..7ee3f4de8 100644
 --- a/tendenci/apps/profiles/templates/profiles/top_nav_items.html
 +++ b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
 @@ -116,11 +116,13 @@
@@ -66,7 +66,7 @@ index a2c1147..7ee3f4d 100644
  
                              {% if user.profile.is_staff %}
 diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
-index 426c1f6..f0d4d5f 100644
+index 9469ae6f6..eddc0bc92 100644
 --- a/tendenci/templates/top_menu/_profile_dropdown.html
 +++ b/tendenci/templates/top_menu/_profile_dropdown.html
 @@ -69,11 +69,13 @@

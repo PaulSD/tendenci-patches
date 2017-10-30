@@ -1,7 +1,55 @@
 Bootstrap 4 automatically adds carets to menu items, Bootstrap 3 does not.
 Since we upgraded Tendenci to use Bootstrap 4 instead of 3, we need to remove the old carets.
+diff --git a/tendenci/apps/events/templates/events/meta.html b/tendenci/apps/events/templates/events/meta.html
+index de9e99a95..c436c73ce 100644
+--- a/tendenci/apps/events/templates/events/meta.html
++++ b/tendenci/apps/events/templates/events/meta.html
+@@ -63,7 +63,7 @@
+                 <li><a class="t-meta-edit-link" href="{% url "event.edit" event.pk %}">{% trans "Edit" %}</a></li>
+                 <li class="dropup">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% spaceless %}
+-                        {% trans "Options" %} <span class="caret"></span>
++                        {% trans "Options" %}
+                     {% endspaceless %}</a>
+ 
+                     <ul class="dropdown-menu" role="menu">
+diff --git a/tendenci/templates/admin/base.html b/tendenci/templates/admin/base.html
+index 3f8453b6f..e92dfa23c 100644
+--- a/tendenci/templates/admin/base.html
++++ b/tendenci/templates/admin/base.html
+@@ -68,7 +68,7 @@
+                     <ul class="nav navbar-nav">
+                         {% if user.is_active and user.is_staff %}
+                         <li class="dropdown">
+-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Welcome,' %} <strong>{% filter force_escape %}{% firstof user.get_short_name user.get_username user.first_name user.username %}{% endfilter %}</strong> <span class="caret"></span></a>
++                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Welcome,' %} <strong>{% filter force_escape %}{% firstof user.get_short_name user.get_username user.first_name user.username %}{% endfilter %}</strong></a>
+                             <ul class="dropdown-menu">
+                                 {% if user.has_usable_password %}
+                                 <li><a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a></li>
+@@ -82,7 +82,7 @@
+                         {% endblock languages %}
+                         {% block logs %}
+                         <li class="dropdown" id="recent-actions-module">
+-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Recent Actions' %} <b class="caret"></b></a>
++                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Recent Actions' %}</a>
+                             {% load log %}
+                             {% get_admin_log 10 as admin_log for_user user %}
+                             <ul class="dropdown-menu">
+diff --git a/tendenci/templates/admin/index.html b/tendenci/templates/admin/index.html
+index 2b456711f..a84555244 100644
+--- a/tendenci/templates/admin/index.html
++++ b/tendenci/templates/admin/index.html
+@@ -20,7 +20,7 @@
+ {% block object-tools %}
+ <ul class="nav navbar-nav">
+     <li class="dropdown">
+-        <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Applications" %} <span class="caret"></span></a>
++        <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Applications" %}</a>
+         <ul class="dropdown-menu" role="menu">
+             {% for app in app_list %}
+                 {% if app.name|check_enabled %}
 diff --git a/tendenci/templates/top_menu/_apps_dropdown.html b/tendenci/templates/top_menu/_apps_dropdown.html
-index ddad3c1..f6669ce 100644
+index ddad3c150..f6669ce64 100644
 --- a/tendenci/templates/top_menu/_apps_dropdown.html
 +++ b/tendenci/templates/top_menu/_apps_dropdown.html
 @@ -5,8 +5,6 @@
@@ -14,7 +62,7 @@ index ddad3c1..f6669ce 100644
  
      <ul id="t-admin-megamenu-apps-dd" class="dropdown-menu apps-dropdown" role="menu">
 diff --git a/tendenci/templates/top_menu/_community_dropdown.html b/tendenci/templates/top_menu/_community_dropdown.html
-index 02417b7..632e818 100644
+index 6550b1cea..94f363820 100644
 --- a/tendenci/templates/top_menu/_community_dropdown.html
 +++ b/tendenci/templates/top_menu/_community_dropdown.html
 @@ -5,7 +5,7 @@
@@ -27,7 +75,7 @@ index 02417b7..632e818 100644
  
      {% get_community_dropdown_column_size as col_size %}
 diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
-index 9469ae6..426c1f6 100644
+index eddc0bc92..f0d4d5ff6 100644
 --- a/tendenci/templates/top_menu/_profile_dropdown.html
 +++ b/tendenci/templates/top_menu/_profile_dropdown.html
 @@ -16,7 +16,7 @@
@@ -40,7 +88,7 @@ index 9469ae6..426c1f6 100644
      </a>
  
 diff --git a/tendenci/templates/top_menu/_support_dropdown.html b/tendenci/templates/top_menu/_support_dropdown.html
-index cd24e28..0a125fb 100644
+index 204e18a9c..d7a8a1444 100644
 --- a/tendenci/templates/top_menu/_support_dropdown.html
 +++ b/tendenci/templates/top_menu/_support_dropdown.html
 @@ -7,7 +7,6 @@
@@ -52,19 +100,19 @@ index cd24e28..0a125fb 100644
      </a>
  
 diff --git a/tendenci/templates/top_menu/admin_top-new.html b/tendenci/templates/top_menu/admin_top-new.html
-index c53bf9d..4947d77 100644
+index 485c42c68..e3c07c9e6 100644
 --- a/tendenci/templates/top_menu/admin_top-new.html
 +++ b/tendenci/templates/top_menu/admin_top-new.html
-@@ -39,7 +39,6 @@
- 					        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% spaceless %}
- 					            <img class="nav-icon" src="{% static 'famfamfam/icons/page_white_stack.png' %}">
- 					            <span class="nav-label">{% trans "Pages" %}</span>
--					            <span class="caret"></span>
- 					        {% endspaceless %}</a>
- 					
- 					        {% if page %}
+@@ -34,7 +34,6 @@
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% spaceless %}
+                         <img class="nav-icon" src="{% block nav_icon_url %}{% static 'famfamfam/icons/page_white_stack.png' %}{% endblock %}">
+                         <span class="nav-label">{% block nav_label %}{% trans "Pages" %}{% endblock %}</span>
+-                        <span class="caret"></span>
+                     {% endspaceless %}</a>
+ 
+                     {# Block containing the navigation for the current app #}
 diff --git a/tendenci/templates/top_menu/change_lang-new.html b/tendenci/templates/top_menu/change_lang-new.html
-index 34fa51a..d5873e2 100644
+index 34fa51a25..d5873e219 100644
 --- a/tendenci/templates/top_menu/change_lang-new.html
 +++ b/tendenci/templates/top_menu/change_lang-new.html
 @@ -4,7 +4,7 @@

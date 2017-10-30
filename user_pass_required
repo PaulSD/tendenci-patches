@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/memberships/forms.py b/tendenci/apps/memberships/forms.py
-index 232bddc..1daf78a 100644
+index e880c150d..827acfda2 100644
 --- a/tendenci/apps/memberships/forms.py
 +++ b/tendenci/apps/memberships/forms.py
 @@ -590,7 +590,7 @@ class UserForm(FormControlWidgetMixin, forms.ModelForm):

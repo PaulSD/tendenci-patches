@@ -1,6 +1,6 @@
 # Require 'Car #' field on AutoX Registrations to be unique per Event
 diff --git a/tendenci/apps/events/forms.py b/tendenci/apps/events/forms.py
-index 0bbccba9e..0995ba3f5 100644
+index 846c16726..7d32b7f45 100644
 --- a/tendenci/apps/events/forms.py
 +++ b/tendenci/apps/events/forms.py
 @@ -483,6 +483,39 @@ class FormForCustomRegForm(forms.ModelForm):
@@ -44,10 +44,10 @@ index 0bbccba9e..0995ba3f5 100644
          """
          Create a FormEntry instance and related FieldEntry instances for each
 diff --git a/tendenci/apps/events/views.py b/tendenci/apps/events/views.py
-index c66294370..833819237 100644
+index 5d085e262..a0c23d1d9 100644
 --- a/tendenci/apps/events/views.py
 +++ b/tendenci/apps/events/views.py
-@@ -1641,6 +1641,18 @@ def member_register(request, event_id,
+@@ -1639,6 +1639,18 @@ def member_register(request, event_id,
      }, context_instance=RequestContext(request))
  
  
@@ -66,7 +66,7 @@ index c66294370..833819237 100644
  @is_enabled('events')
  def register(request, event_id=0,
               individual=False,
-@@ -1877,6 +1889,8 @@ def register(request, event_id=0,
+@@ -1875,6 +1887,8 @@ def register(request, event_id=0,
              #if not request.user.profile.is_superuser:
              within_available_spots = event.limit==0 or event.spots_available >= int(total_regt_forms)
  
@@ -75,7 +75,7 @@ index c66294370..833819237 100644
              if all([within_available_spots,
                      reg_form.is_valid(),
                      registrant.is_valid(),
-@@ -1980,6 +1994,7 @@ def register(request, event_id=0,
+@@ -1978,6 +1992,7 @@ def register(request, event_id=0,
                          flat_registrants.append(form)
  
          elif 'addmore' in request.POST:
@@ -83,7 +83,7 @@ index c66294370..833819237 100644
              add_more_registrants = True
  
      # if not free event, store price in the list for each registrant
-@@ -2262,6 +2277,9 @@ def multi_register(request, event_id=0, template_name="events/reg8n/multi_regist
+@@ -2260,6 +2275,9 @@ def multi_register(request, event_id=0, template_name="events/reg8n/multi_regist
  
      if request.method == 'POST':
          if 'submit' in request.POST:
@@ -93,7 +93,7 @@ index c66294370..833819237 100644
              if False not in (reg_form.is_valid(), registrant.is_valid(), addon_formset.is_valid()):
  
                  # override event_price to price specified by admin
-@@ -2469,6 +2487,9 @@ def registration_edit(request, reg8n_id=0, hash='', template_name="events/reg8n/
+@@ -2467,6 +2485,9 @@ def registration_edit(request, reg8n_id=0, hash='', template_name="events/reg8n/
  
  
      if request.method == 'POST':

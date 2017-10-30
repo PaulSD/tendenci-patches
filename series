@@ -1,7 +1,6 @@
 events_tabs
-events_links
+events_customization
 unique_autox_car_num
-menu_carets
 tinymce_toggle
 disable_skills
 captcha_text
@@ -14,6 +13,7 @@ resend_new_member_email
 disable_new_member_email
 custom_new_member_email
 no_contact_users
+menu_carets
+membership_temp
 migrations
 bs4beta
-calendar

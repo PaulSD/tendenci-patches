@@ -1,0 +1,319 @@
+diff --git a/tendenci/apps/events/static/css/events.css b/tendenci/apps/events/static/css/events.css
+index 87c38b71e..06f4c0eb5 100644
+--- a/tendenci/apps/events/static/css/events.css
++++ b/tendenci/apps/events/static/css/events.css
+@@ -600,7 +600,7 @@ ul.errorlist {;
+ }
+ .month-view div.day {
+     width: 14.25%;
+-    height: 116px;
++    height: 150px;
+     border: 1px solid silver;
+ 
+     border-top: none;
+diff --git a/tendenci/apps/events/templates/events/day-view.html b/tendenci/apps/events/templates/events/day-view.html
+index 5c1bb8455..1b7d1e303 100644
+--- a/tendenci/apps/events/templates/events/day-view.html
++++ b/tendenci/apps/events/templates/events/day-view.html
+@@ -22,11 +22,11 @@
+     <h2>{{ date|date:"l, F j Y" }}</h2>
+ 
+ <div class="btn-group btn-group-sm mb-1" role="group" aria-label="Events Views">
+-  <a href="{% url "event.month" %}" class="btn btn-primary">{% trans "Month View" %}</a>
+-  <a href="{% url "event.week" %}" class="btn btn-primary">{% trans "Week View" %}</a>
++  <a href="{% url "event.month" %}" class="btn btn-outline-secondary">{% trans "Month View" %}</a>
++  <a href="{% url "event.week" %}" class="btn btn-outline-secondary">{% trans "Week View" %}</a>
+   <button class="btn btn-secondary" disabled="true">{% trans "Day View" %}</button>
+-  <a href="{% url "event.search" %}" class="btn btn-primary">{% trans "List/Search" %}</a>
+-  <a href="{% url "event.ics" %}" class="btn btn-primary">{% trans "Download" %}</a>
++  <a href="{% url "event.search" %}" class="btn btn-outline-secondary">{% trans "List/Search" %}</a>
++  <a href="{% url "event.ics" %}" class="btn btn-outline-secondary">{% trans "Download" %}</a>
+ </div>
+ 
+ <form class="search-form" action="{% url "event.today" %}" method="get">
+diff --git a/tendenci/apps/events/templates/events/month-view.html b/tendenci/apps/events/templates/events/month-view.html
+index 3e886ddf0..743c5baf5 100644
+--- a/tendenci/apps/events/templates/events/month-view.html
++++ b/tendenci/apps/events/templates/events/month-view.html
+@@ -19,18 +19,26 @@
+ 
+ {% block content %}
+ 
+-<div class="month-view">
+-  <div class="row">
+-    <div class="col-md-9 col-xs-12">
+-
+-      <div class="page-header">
+-        <ul class="list-inline text-center">
+-          <li><h1>{{ month_names.1 }} {{ year }}</h1></li>
+-          <li class="pull-left"><h1><a href="{{ prev_month_url }}"> <i class="fa fa-angle-left"></i></a></h1></li>
+-          <li class="pull-right"><h1><a href="{{ next_month_url }}"><i class="fa fa-angle-right"></i></a></h1></li>
+-        </ul>
++<div class="page-header">
++  <h1>{% firstof MODULE_EVENTS_LABEL_PLURAL trans 'Events' %}</h1>
++</div>
++
++<div class="text-center">
++      <div class="btn-group btn-group-sm mb-1" role="group" aria-label="Events Views">
++        <button class="btn btn-secondary" disabled="true">{% trans "Month View" %}</button>
++        <a href="{% url "event.week" %}" class="btn btn-outline-secondary">{% trans "Week View" %}</a>
++        <a href="{% url "event.day" %}" class="btn btn-outline-secondary">{% trans "Day View" %}</a>
++        <a href="{% url "event.search" %}" class="btn btn-outline-secondary">{% trans "List/Search" %}</a>
++        <a href="{% url "event.ics" %}" class="btn btn-outline-secondary">{% trans "Download" %}</a>
+       </div>
++        <ul class="list-inline">
++          <li><h2>{{ month_names.1 }} {{ year }}</h2></li>
++          <li class="pull-left"><h2><a href="{{ prev_month_url }}"> <i class="fa fa-chevron-left"></i></a></h2></li>
++          <li class="pull-right"><h2><a href="{{ next_month_url }}"><i class="fa fa-chevron-right"></i></a></h2></li>
++        </ul>
++</div>
+ 
++<div class="month-view">
+       <div style="clear:both;"></div>
+       <div class="calendar-wrap">
+ 
+@@ -57,7 +65,7 @@
+               {% if events %}
+ 
+               {% for event in events|slice:"2" %}
+-              <div class="event-item" title="{{ event.type }}: {{ event }}"
++              <div class="event-item" title="{{ event }}"
+               style="color:{{ event.type.fg_color }}; background-color:{{ event.type.bg_color }}" itemscope itemtype="http://schema.org/Event">
+                 {% if event.priority %}
+                 <div class="event-priority"></div>
+@@ -68,10 +76,10 @@
+                 <a href="{{ event.get_absolute_url }}" class="time-stamp">
+                   {% if not event.all_day %}{{ event.start_dt|date:"f A" }} - {{ event.end_dt|date:"f A" }}<br/>{% endif %}
+                 </a>
+-                <span style="display:none" itemprop="startDate" datetime="{{ event.start_dt|date:'c' }}">{{ event.start_dt|date:"l, M j, Y P" }}</span>
+-                <a href="{{ event.get_absolute_url }}" class="event-title" itemprop="url">
+-                  <span itemprop="name">{% if event.title|length > 15 %}{{ event.title|slice:":15" }} ...{% else %}{{ event.title }}{% endif %}</span>
+-                </a>
++                <span style="display:none" itemprop="startDate" datetime="{{ event.start_dt|date:'c' }}">{{ event.start_dt|date:"D., N j, Y f A" }}</span>
++                <strong><a href="{{ event.get_absolute_url }}" class="event-title" itemprop="url">
++                  <span itemprop="name">{% if event.title|length > 20 %}{{ event.title|slice:":20" }} ...{% else %}{{ event.title }}{% endif %}</span>
++                </a></strong>
+                 <a class='click-mask' href="{{ event.get_absolute_url }}"></a>
+               </div>
+               {% endfor %}
+@@ -94,60 +102,28 @@
+ 
+       </div> <!-- END calendar-wrap -->
+ 
+-    </div> <!-- END col -->
+-    {# TODO: If there are no types, don't show sidebar #}
+-    <div class="col-md-3 col-xs-12">
+-
+-      <div class="event-buttons btn-group-vertical" role="group" aria-label="Events Views">
+-        <button class="btn btn-secondary" disabled="true">{% trans "Month View" %}</button>
+-        <a href="{% url "event.week" %}" class="btn btn-primary">{% trans "Week View" %}</a>
+-        <a href="{% url "event.day" %}" class="btn btn-primary">{% trans "Day View" %}</a>
+-        <a href="{% url "event.search" %}" class="btn btn-primary">{% trans "List/Search" %}</a>
+-        <a href="{% url "event.ics" %}" class="btn btn-primary">{% trans "Download" %}</a>
+-      </div>
++</div> <!-- END month-view -->
+ 
+-      <br/>
+-      <div class="well">
+-        <div class="month-side-bar">
+-          <div class="header">
+-            <h2>{% trans "Filter by Type" %}</h2>
+-            <hr />
+-          </div>
+-          <div class="types">
+-            <div class="type all-types">
+-              <a class="btn btn-default" href="{% url "event.month" year month %}">
++<div class="text-center">
++            <h4>{% trans "Filter by Type" %}</h4>
++              <a class="btn btn-sm btn-outline-secondary my-1" href="{% url "event.month" year month %}">
+                 {% trans "All Events" %}
+               </a>
+-            </div>
+ 
+             {% with type as curr_type %}
+             {% for type in types %}
+ 
+             {% if curr_type == type.slug %}
+-            <div class="type">
+-              <a class="btn btn-default" style="color:{{ type.fg_color }}; background-color:{{ type.bg_color }}; border-color:{{ type.border_color }};"
++              <a class="btn btn-sm btn-primary my-1 active" style="color:{{ type.fg_color }}; background-color:{{ type.bg_color }}; border-color:{{ type.bg_color }};"
+               href="{% url "event.month" year month type.slug %}?latest">{{ type }}</a>
+-            </div>
+             {% else %}
+-            <div class="type">
+-              <a class="btn btn-default" style="color:{{ type.fg_color }}; background-color:{{ type.bg_color }}; border-color:{{ type.bg_color }};"
++              <a class="btn btn-sm btn-primary my-1" style="color:{{ type.fg_color }}; background-color:{{ type.bg_color }}; border-color:{{ type.bg_color }};"
+               href="{% url "event.month" year month type.slug %}?latest">{{ type }}</a>
+-            </div>
+             {% endif %}
+ 
+             {% endfor %}
+             {% endwith %}
+-
+-          </div> <!-- END types -->
+-          <div style="clear:both;"></div>
+-        </div> <!-- END month-side-bar -->
+-      </div> <!-- END well -->
+-
+-    </div> <!-- END col -->
+-  </div> <!-- END row -->
+-</div> <!-- END month-view -->
+-
+-<br/><br/>
++</div>
+ 
+ {% endblock %}
+ 
+diff --git a/tendenci/apps/events/templates/events/search.html b/tendenci/apps/events/templates/events/search.html
+index e876e6a48..11753d43d 100644
+--- a/tendenci/apps/events/templates/events/search.html
++++ b/tendenci/apps/events/templates/events/search.html
+@@ -22,11 +22,11 @@
+     <h1>{{ SITE_GLOBAL_SITEPRIMARYKEYWORDS }} {% firstof MODULE_EVENTS_LABEL_PLURAL trans 'Events' %}</h1>
+ 
+     <div class="btn-group btn-group-sm mb-1" role="group" aria-label="Events Views">
+-      <a href="{% url "event.month" %}" class="btn btn-primary">{% trans "Month View" %}</a>
+-      <a href="{% url "event.week" %}" class="btn btn-primary">{% trans "Week View" %}</a>
+-      <a href="{% url "event.day" %}" class="btn btn-primary">{% trans "Day View" %}</a>
++      <a href="{% url "event.month" %}" class="btn btn-outline-secondary">{% trans "Month View" %}</a>
++      <a href="{% url "event.week" %}" class="btn btn-outline-secondary">{% trans "Week View" %}</a>
++      <a href="{% url "event.day" %}" class="btn btn-outline-secondary">{% trans "Day View" %}</a>
+       <button class="btn btn-secondary" disabled="true">{% trans "List/Search" %}</button>
+-      <a href="{% url "event.ics" %}" class="btn btn-primary">{% trans "Download" %}</a>
++      <a href="{% url "event.ics" %}" class="btn btn-outline-secondary">{% trans "Download" %}</a>
+     </div>
+ 
+     <div class="event-tabs">
+diff --git a/tendenci/apps/events/templates/events/week-view.html b/tendenci/apps/events/templates/events/week-view.html
+index 01fe14bb8..a14cd5418 100644
+--- a/tendenci/apps/events/templates/events/week-view.html
++++ b/tendenci/apps/events/templates/events/week-view.html
+@@ -18,18 +18,26 @@
+ 
+ {% block content %}
+ 
+-<div class="month-view week-view">
+-  <div class="row">
+-    <div class="col-md-9 col-xs-12">
+-
+-      <div class="page-header">
+-        <ul class="list-inline text-center">
+-          <li><h1>{% trans "Week of " %}{{ cur_date|date:"n/j/Y" }}</h1></li>
+-          <li class="pull-left"><h1><a href="{{ prev_week_url }}"> <i class="fa fa-angle-left"></i></a></h1></li>
+-          <li class="pull-right"><h1><a href="{{ next_week_url }}"><i class="fa fa-angle-right"></i></a></h1></li>
+-        </ul>
++<div class="page-header">
++  <h1>{% firstof MODULE_EVENTS_LABEL_PLURAL trans 'Events' %}</h1>
++</div>
++
++<div class="text-center">
++      <div class="btn-group btn-group-sm mb-1" role="group" aria-label="Events Views">
++        <a href="{% url "event.month" %}" class="btn btn-outline-secondary">{% trans "Month View" %}</a>
++        <button class="btn btn-secondary" disabled="true">{% trans "Week View" %}</button>
++        <a href="{% url "event.day" %}" class="btn btn-outline-secondary">{% trans "Day View" %}</a>
++        <a href="{% url "event.search" %}" class="btn btn-outline-secondary">{% trans "List/Search" %}</a>
++        <a href="{% url "event.ics" %}" class="btn btn-outline-secondary">{% trans "Download" %}</a>
+       </div>
++        <ul class="list-inline">
++          <li><h2>{% trans "Week of " %}{{ cur_date|date:"n/j/Y" }}</h2></li>
++          <li class="pull-left"><h2><a href="{{ prev_week_url }}"> <i class="fa fa-chevron-left"></i></a></h2></li>
++          <li class="pull-right"><h2><a href="{{ next_week_url }}"><i class="fa fa-chevron-right"></i></a></h2></li>
++        </ul>
++</div>
+ 
++<div class="month-view week-view">
+       <div style="clear:both;"></div>
+       <div class="calendar-wrap">
+ 
+@@ -55,7 +63,7 @@
+               {% if events %}
+ 
+               {% for event in events %}
+-              <div class="event-item" title="{{ event.type }}: {{ event }}"
++              <div class="event-item" title="{{ event }}"
+               style="color:{{ event.type.fg_color }}; background-color:{{ event.type.bg_color }}" itemscope itemtype="http://schema.org/Event">
+                 {% if event.priority %}
+                 <div class="event-priority"></div>
+@@ -66,11 +74,11 @@
+                 <a href="{{ event.get_absolute_url }}" class="time-stamp">
+                   {% if not event.all_day %}{{ event.start_dt|date:"f A" }} - {{ event.end_dt|date:"f A" }}<br/>{% endif %}
+                 </a>
+-                <span style="display:none" itemprop="startDate" datetime="{{ event.start_dt|date:'c' }}">{{ event.start_dt|date:"l, M j, Y P" }}</span>
++                <span style="display:none" itemprop="startDate" datetime="{{ event.start_dt|date:'c' }}">{{ event.start_dt|date:"D., N j, Y f A" }}</span><br/>
+                 <a href="{{ event.get_absolute_url }}" class="event-title" itemprop="url">
+-                  <span itemprop="name">{{ event.title }}</span>
++                  <span itemprop="name"><strong>{{ event.title }}</strong></span>
+                 </a>
+-                <br><a href="{{ event.get_absolute_url }}" itemprop="description">{{ event.description|striptags|safe|truncatewords:5 }}</a>
++                <em><a href="{{ event.get_absolute_url }}" itemprop="description">{{ event.description|striptags|safe|truncatewords:20 }}</a></em>
+                 <a class='click-mask' href="{{ event.get_absolute_url }}"></a>
+               </div>
+               {% endfor %}
+@@ -86,60 +94,28 @@
+ 
+       </div> <!-- END calendar-wrap -->
+ 
+-    </div> <!-- END col -->
+-    {# TODO: If there are no types, don't show sidebar #}
+-    <div class="col-md-3 col-xs-12">
+-
+-      <div class="event-buttons btn-group-vertical" role="group" aria-label="Events Views">
+-        <a href="{% url "event.month" %}" class="btn btn-primary">{% trans "Month View" %}</a>
+-        <button class="btn btn-secondary" disabled="true">{% trans "Week View" %}</button>
+-        <a href="{% url "event.day" %}" class="btn btn-primary">{% trans "Day View" %}</a>
+-        <a href="{% url "event.search" %}" class="btn btn-primary">{% trans "List/Search" %}</a>
+-        <a href="{% url "event.ics" %}" class="btn btn-primary">{% trans "Download" %}</a>
+-      </div>
++</div> <!-- END month-view -->
+ 
+-      <br/>
+-      <div class="well">
+-        <div class="month-side-bar">
+-          <div class="header">
+-            <h2>{% trans "Filter by Type" %}</h2>
+-            <hr />
+-          </div>
+-          <div class="types">
+-            <div class="type all-types">
+-              <a class="btn btn-default" href="{% url "event.week" year month day %}">
++<div class="text-center">
++            <h4>{% trans "Filter by Type" %}</h4>
++              <a class="btn btn-sm btn-outline-secondary my-1" href="{% url "event.week" year month day %}">
+                 {% trans "All Events" %}
+               </a>
+-            </div>
+ 
+             {% with type as curr_type %}
+             {% for type in types %}
+ 
+             {% if curr_type == type.slug %}
+-            <div class="type">
+-              <a class="btn btn-default" style="color:{{ type.fg_color }}; background-color:{{ type.bg_color }}; border-color:{{ type.border_color }};"
++              <a class="btn btn-sm btn-primary my-1 active" style="color:{{ type.fg_color }}; background-color:{{ type.bg_color }}; border-color:{{ type.bg_color }};"
+               href="{% url "event.week" year month day type.slug %}?latest">{{ type }}</a>
+-            </div>
+             {% else %}
+-            <div class="type">
+-              <a class="btn btn-default" style="color:{{ type.fg_color }}; background-color:{{ type.bg_color }}; border-color:{{ type.bg_color }};"
++              <a class="btn btn-sm btn-primary my-1" style="color:{{ type.fg_color }}; background-color:{{ type.bg_color }}; border-color:{{ type.bg_color }};"
+               href="{% url "event.week" year month day type.slug %}?latest">{{ type }}</a>
+-            </div>
+             {% endif %}
+ 
+             {% endfor %}
+             {% endwith %}
+-
+-          </div> <!-- END types -->
+-          <div style="clear:both;"></div>
+-        </div> <!-- END month-side-bar -->
+-      </div> <!-- END well -->
+-
+-    </div> <!-- END col -->
+-  </div> <!-- END row -->
+-</div> <!-- END month-view week-view -->
+-
+-<br/><br/>
++</div>
+ 
+ {% endblock %}
+ 

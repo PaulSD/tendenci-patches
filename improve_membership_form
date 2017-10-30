@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/memberships/templates/memberships/applications/add.html b/tendenci/apps/memberships/templates/memberships/applications/add.html
-index 9b645cdab..ffe6b9030 100644
+index 39dbb0cb7..ad3993cb7 100644
 --- a/tendenci/apps/memberships/templates/memberships/applications/add.html
 +++ b/tendenci/apps/memberships/templates/memberships/applications/add.html
 @@ -98,7 +98,7 @@

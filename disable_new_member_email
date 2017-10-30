@@ -1,8 +1,8 @@
 diff --git a/tendenci/apps/memberships/forms.py b/tendenci/apps/memberships/forms.py
-index a14d411..97955b1 100644
+index 827acfda2..a8ec54546 100644
 --- a/tendenci/apps/memberships/forms.py
 +++ b/tendenci/apps/memberships/forms.py
-@@ -1942,8 +1942,8 @@ class MembershipDefaultForm(TendenciBaseForm):
+@@ -1970,8 +1970,8 @@ class MembershipDefaultForm(TendenciBaseForm):
              # --------------------------------------------------
  
              # send welcome email; if required
@@ -14,10 +14,10 @@ index a14d411..97955b1 100644
          # [un]subscribe to group
          membership.group_refresh()
 diff --git a/tendenci/apps/memberships/models.py b/tendenci/apps/memberships/models.py
-index cbf01fb..1dc60d9 100644
+index 28d23029e..61cfe6275 100644
 --- a/tendenci/apps/memberships/models.py
 +++ b/tendenci/apps/memberships/models.py
-@@ -900,7 +900,7 @@ class MembershipDefault(TendenciBaseModel):
+@@ -902,7 +902,7 @@ class MembershipDefault(TendenciBaseModel):
              from tendenci.apps.notifications.utils import send_welcome_email
              self.user.is_active = True
              self.user.save()
@@ -26,7 +26,7 @@ index cbf01fb..1dc60d9 100644
  
          return self
  
-@@ -1852,8 +1852,8 @@ class MembershipDefault(TendenciBaseModel):
+@@ -1866,8 +1866,8 @@ class MembershipDefault(TendenciBaseModel):
          if can_approve:
  
              self.user, created = self.get_or_create_user()

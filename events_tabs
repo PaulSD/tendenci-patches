@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/events/templates/events/view.html b/tendenci/apps/events/templates/events/view.html
-index f1fa2aee5..772e9c475 100644
+index dfc16ccdc..4dacfdec4 100644
 --- a/tendenci/apps/events/templates/events/view.html
 +++ b/tendenci/apps/events/templates/events/view.html
 @@ -43,17 +43,6 @@

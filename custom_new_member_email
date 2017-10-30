@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/memberships/models.py b/tendenci/apps/memberships/models.py
-index 07a908f22..b48bbcef2 100644
+index 61cfe6275..3ad623de0 100644
 --- a/tendenci/apps/memberships/models.py
 +++ b/tendenci/apps/memberships/models.py
 @@ -2,6 +2,7 @@ import os
@@ -19,7 +19,7 @@ index 07a908f22..b48bbcef2 100644
  
  class MembershipType(OrderingBaseModel, TendenciBaseModel):
      PRICE_FORMAT = u'%s - %s'
-@@ -1811,8 +1814,11 @@ class MembershipDefault(TendenciBaseModel):
+@@ -1813,8 +1816,11 @@ class MembershipDefault(TendenciBaseModel):
  
              for name, value in items.iteritems():
                  if hasattr(value, 'all'):
@@ -33,7 +33,7 @@ index 07a908f22..b48bbcef2 100644
  
          return items
  
-@@ -2046,10 +2052,12 @@ class Notice(models.Model):
+@@ -2048,10 +2054,12 @@ class Notice(models.Model):
      )
  
      STATUS_DETAIL_ACTIVE = 'active'
@@ -46,7 +46,7 @@ index 07a908f22..b48bbcef2 100644
          (STATUS_DETAIL_HOLD, 'Admin Hold')
      )
  
-@@ -2158,6 +2166,13 @@ class Notice(models.Model):
+@@ -2161,6 +2169,13 @@ class Notice(models.Model):
              'corporate_membership_notice': corporate_msg,
          })
  
@@ -60,7 +60,7 @@ index 07a908f22..b48bbcef2 100644
          return context
  
      def get_subject(self, membership=None):
-@@ -2288,7 +2303,8 @@ class Notice(models.Model):
+@@ -2291,7 +2306,8 @@ class Notice(models.Model):
          # send email to admins
          membership_recipients = get_notice_recipients('module', 'memberships', 'membershiprecipients')
          admin_recipients = get_notice_recipients('site', 'global', 'allnoticerecipients')
@@ -70,7 +70,7 @@ index 07a908f22..b48bbcef2 100644
  
          if recipients:
              notification.send_emails(
-@@ -2299,6 +2315,25 @@ class Notice(models.Model):
+@@ -2302,6 +2318,25 @@ class Notice(models.Model):
                  'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count(),
              })
  

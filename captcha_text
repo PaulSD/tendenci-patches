@@ -35,10 +35,10 @@ index aa3861dbf..91e88b6b6 100644
              self.fields[k].widget.attrs['class'] = 'form-control'
  
 diff --git a/tendenci/apps/events/forms.py b/tendenci/apps/events/forms.py
-index 846c16726..ec14d2806 100644
+index 7d32b7f45..af89991c0 100644
 --- a/tendenci/apps/events/forms.py
 +++ b/tendenci/apps/events/forms.py
-@@ -1474,7 +1474,7 @@ class Reg8nForm(forms.Form):
+@@ -1507,7 +1507,7 @@ class Reg8nForm(forms.Form):
      username = forms.CharField(max_length=50, required=False)
      phone = forms.CharField(max_length=20, required=False)
      email = EmailVerificationField(label=_("Email"))
@@ -47,7 +47,7 @@ index 846c16726..ec14d2806 100644
  
      def __init__(self, event_id=None, *args, **kwargs):
          user = kwargs.pop('user', None)
-@@ -1558,7 +1558,7 @@ class RegistrationForm(forms.Form):
+@@ -1591,7 +1591,7 @@ class RegistrationForm(forms.Form):
      Registration form - not include the registrant.
      """
      discount_code = forms.CharField(label=_('Discount Code'), required=False)
@@ -96,10 +96,10 @@ index 9d1c48ce1..77eba7aea 100644
                  </div>
              {% endif %}
 diff --git a/tendenci/apps/forms_builder/forms/forms.py b/tendenci/apps/forms_builder/forms/forms.py
-index ed0dddf0a..ac9b7ec52 100644
+index e202696a6..213d88367 100644
 --- a/tendenci/apps/forms_builder/forms/forms.py
 +++ b/tendenci/apps/forms_builder/forms/forms.py
-@@ -179,7 +179,7 @@ class FormForForm(FormControlWidgetMixin, forms.ModelForm):
+@@ -184,7 +184,7 @@ class FormForForm(FormControlWidgetMixin, forms.ModelForm):
              add_pricing_fields(self, self.form)
  
          if not self.user.is_authenticated() and get_setting('site', 'global', 'captcha'): # add captcha if not logged in

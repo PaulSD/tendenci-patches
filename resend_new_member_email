@@ -1,6 +1,6 @@
 Add a 'Resend welcome email to selected' button to /admin/memberships/membershipdefault/
 diff --git a/tendenci/apps/memberships/admin.py b/tendenci/apps/memberships/admin.py
-index 0f5bb13..d2a951f 100644
+index f9af4d13f..238dabd00 100644
 --- a/tendenci/apps/memberships/admin.py
 +++ b/tendenci/apps/memberships/admin.py
 @@ -28,6 +28,8 @@ from tendenci.apps.memberships.middleware import ExceededMaxTypes

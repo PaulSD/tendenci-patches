@@ -1,5 +1,98 @@
+diff --git a/tendenci/apps/events/templates/events/meta.html b/tendenci/apps/events/templates/events/meta.html
+index c436c73ce..e40c93c79 100644
+--- a/tendenci/apps/events/templates/events/meta.html
++++ b/tendenci/apps/events/templates/events/meta.html
+@@ -14,7 +14,7 @@
+ <ul class="list-unstyled t-meta-data">
+     {% if user.is_authenticated %}
+ 
+-        <li class="pull-right">
++        <li class="float-right">
+             <a class="t-meta-print-link" href="{% url "event.print_view" event.pk %}"><span class="glyphicon glyphicon-print"></span> {% trans "Print" %}</a>
+             <br/>
+             <a class="t-meta-print-link" href="{% url "event.ics_single" event.pk %}">{% trans "Calendar ICS" %}</a>
+@@ -50,49 +50,35 @@
+     <div style="clear:both;"></div>
+ </ul>
+ {% if can_edit %}
+-<nav class="navbar-default t-meta-editor-bar">
+-    <div class="container-fluid">
+-        <div class="collapse navbar-collapse">
+-            <ul class="nav navbar-nav t-meta-perm-status">
+-                <li>{{ event.obj_perms }}</li>
+-                <li>{{ event.obj_status }}</li>
+-            </ul>
+-
+-            <ul class="nav navbar-nav navbar-right t-meta-options-links">
+-                <li><a class="t-meta-eventlog-link" href="{% url "event_log.search" %}?object_id={{ event.pk }}&source={{ event.opt_app_label }}">{% trans "Eventlogs" %}</a></li>
+-                <li><a class="t-meta-edit-link" href="{% url "event.edit" event.pk %}">{% trans "Edit" %}</a></li>
+-                <li class="dropup">
+-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% spaceless %}
+-                        {% trans "Options" %}
+-                    {% endspaceless %}</a>
+-
+-                    <ul class="dropdown-menu" role="menu">
+-                    {% if can_delete %}
+-                        <li>
+-                            <a class="t-meta-delete-link" href="{% url "event.delete" event.pk %}">{% trans "Delete" %}</a>
+-                        </li>
+-                    {% endif %}
+-                    {% if can_delete and event.is_recurring_event %}
+-                        <li>
+-                            <a class="t-meta-delete-link" href="{% url "event.delete_recurring" event.pk %}">{% trans "Delete Recurring Events" %}</a>
+-                        </li>
+-                    {% endif %}
+-                    {% if request.user.is_superuser and event.status == 0 %}
+-                        <li><a href="{% url "event.approve" event.pk %}">{% trans "Approve" %}</a></li>
+-                    {% endif %}
+-                    {% if can_add %}
+-                        <li>
+-                            <a class="t-meta-option-link copy" href="{% url "event.copy" event.pk %}">{% trans "Copy" %}</a>
+-                        </li>
+-                    {% endif %}
+-                        <li><a href="{% url "event.ics_single" event.pk %}">{% trans "Export" %}</a></li>
+-                        <li><a href="{% url "event.edit.meta" event.pk %}">{% trans "Edit Meta" %}</a></li>
+-                        <li><a href="{% url "event.registrant.search" event.pk %}">{% trans "Registrants" %}</a></li>
+-                        <li><a href="{% url "event.registrant.roster" event.pk %}">{% trans "Registrant Roster" %}</a></li>
+-                    </ul>
+-                </li>
+-            </ul>
+-        </div>
+-    </div>
++<nav class="navbar t-meta-editor-bar" style="margin-bottom: 0px;">
++    <!--<ul class="list-inline list-unstyled t-meta-perm-status">
++    </ul>-->
++    <ul class="nav t-meta-options-links">
++        <li class="nav-item">{{ event.obj_perms }}</li>
++        <li class="nav-item">{{ event.obj_status }}</li>
++        <li class="nav-item"><a class="nav-link t-meta-eventlog-link" href="{% url "event_log.search" %}?object_id={{ event.pk }}&source={{ event.opt_app_label }}">{% trans "Eventlogs" %}</a></li>
++        <li class="nav-item"><a class="nav-link t-meta-edit-link" href="{% url "event.edit" event.pk %}">{% trans "Edit" %}</a></li>
++        <li class="nav-item dropup">
++            <a href="#" class="nav-link dropdown-toggle" data-toggle4="dropdown" role="button" aria-expanded="false">{% trans "Options" %}</a>
++            <div class="dropdown-menu" role="menu">
++            {% if can_delete %}
++                <a class="dropdown-item t-meta-delete-link" href="{% url "event.delete" event.pk %}">{% trans "Delete" %}</a>
++            {% endif %}
++            {% if can_delete and event.is_recurring_event %}
++                <a class="dropdown-item t-meta-delete-link" href="{% url "event.delete_recurring" event.pk %}">{% trans "Delete Recurring Events" %}</a>
++            {% endif %}
++            {% if request.user.is_superuser and event.status == 0 %}
++                <a class="dropdown-item" href="{% url "event.approve" event.pk %}">{% trans "Approve" %}</a>
++            {% endif %}
++            {% if can_add %}
++                <a class="dropdown-item t-meta-option-link copy" href="{% url "event.copy" event.pk %}">{% trans "Copy" %}</a>
++            {% endif %}
++                <a class="dropdown-item" href="{% url "event.ics_single" event.pk %}">{% trans "Export" %}</a>
++                <a class="dropdown-item" href="{% url "event.edit.meta" event.pk %}">{% trans "Edit Meta" %}</a>
++                <a class="dropdown-item" href="{% url "event.registrant.search" event.pk %}">{% trans "Registrants" %}</a>
++                <a class="dropdown-item" href="{% url "event.registrant.roster" event.pk %}">{% trans "Registrant Roster" %}</a>
++            </div>
++        </li>
++    </ul>
+ </nav>
+ {% endif %}
 diff --git a/tendenci/apps/navs/templates/navs/load_nav.html b/tendenci/apps/navs/templates/navs/load_nav.html
-index c522a3a..32af8c7 100644
+index c522a3a17..32af8c7a8 100644
 --- a/tendenci/apps/navs/templates/navs/load_nav.html
 +++ b/tendenci/apps/navs/templates/navs/load_nav.html
 @@ -9,7 +9,7 @@
@@ -12,7 +105,7 @@ index c522a3a..32af8c7 100644
      {% for item in items %}
          {% nav_item item is_site_map=is_site_map %}
 diff --git a/tendenci/apps/navs/templates/navs/navigation_item.html b/tendenci/apps/navs/templates/navs/navigation_item.html
-index 89a9e77..850afa4 100644
+index 89a9e7708..9d9663da6 100644
 --- a/tendenci/apps/navs/templates/navs/navigation_item.html
 +++ b/tendenci/apps/navs/templates/navs/navigation_item.html
 @@ -16,8 +16,8 @@
@@ -22,7 +115,439 @@ index 89a9e77..850afa4 100644
 -<li {% if item.children %}class="dropdown"{% endif %}>{% spaceless %}
 -    <a class="{% if item.css %}{{ item.css }}{% endif %}{% if item.children %} dropdown-toggle{% endif %}"{% if item.new_window %} target="_blank"{% endif %} href="{{ item.get_url }}"{% if item.children %} data-toggle="dropdown" role="button" aria-expanded="false"{% endif %}>
 +<li {% if item.children %}class="nav-item dropdown"{% else %}class="nav-item"{% endif %}>{% spaceless %}
-+    <a class="nav-link{% if item.css %} {{ item.css }}{% endif %}{% if item.children %} dropdown-toggle{% endif %}"{% if item.new_window %} target="_blank"{% endif %} href="{{ item.get_url }}"{% if item.children %} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"{% endif %}>
++    <a class="nav-link{% if item.css %} {{ item.css }}{% endif %}{% if item.children %} dropdown-toggle{% endif %}"{% if item.new_window %} target="_blank"{% endif %} href="{{ item.get_url }}"{% if item.children %} data-toggle4="dropdown" role="button" aria-haspopup="true" aria-expanded="false"{% endif %}>
          {% blocktrans with l=item.label|removetags:"a"|safe %}{{ l }}{% endblocktrans %}
      </a>{% endspaceless %}
  
+diff --git a/tendenci/templates/admin/base.adh.html b/tendenci/templates/admin/base.adh.html
+new file mode 100644
+index 000000000..9c3b54788
+--- /dev/null
++++ b/tendenci/templates/admin/base.adh.html
+@@ -0,0 +1,174 @@
++{% load firstof from future %}
++{% load admin_static bootstrapped_goodies_tags %}
++
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
++<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
++<head>
++    <title>{% block title %}{% endblock %}</title>
++    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
++
++    {% block extrastyle %}{% endblock %}
++
++    <!-- Le styles, placed after extrastyle to correctly override default styling -->
++    <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet"/>
++    <style type="text/css">
++      body {
++        padding-top: 60px;
++        padding-bottom: 40px;
++      }
++    </style>
++    <link href="{% static "bootstrap/css/bootstrap-theme.min.css" %}" rel="stylesheet"/>
++    <link rel="stylesheet" type="text/css" href="{% static "admin/css/overrides.css" %}" />
++
++    <!-- <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" /> -->
++    <script type="text/javascript">
++    //<![CDATA[
++        window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";
++        window.__admin_utc_offset__ = "{% filter escapejs %}{% now "Z" %}{% endfilter %}";
++    //]]>
++    </script>
++    <script src="{% static "admin/js/jquery-1.9.1.min.js" %}"></script>
++    <script src="{% static "admin/js/jquery-migrate-1.2.1.min.js" %}"></script>
++    <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
++
++    {% block extrahead %}{% endblock %}
++
++    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
++    <script type="text/javascript">
++    //<![CDATA[
++            (function($) {
++                $(document).ready(function() {
++                    $('input[type="submit"]').addClass('btn');
++                   // $('[title]').tooltip();
++                });
++            }(jQuery));
++    //]]>
++    </script>
++</head>
++{% load i18n %}
++
++<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
++
++<!-- Container -->
++<div class="container">
++    {% if not is_popup %}
++    <!-- Header -->
++    <nav class="navbar navbar-expand-xl navbar-dark bg-dark navbar-fixed-top">
++        <a class="navbar-brand" href="/dashboard/"><img src="/static/tendenci_white_small_100x51.gif" height="26"></a>
++        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#brand-navbar-collapse">
++            <span class="navbar-toggler-icon"></span>
++        </button>
++        {% block branding %}{% endblock %}
++        <div id="brand-navbar-collapse" class="navbar-collapse collapse navbar-{% if LANGUAGE_BIDI %}left{% else %}right{% endif %}">i
++            <ul class="navbar-nav">
++            {% if user.is_active and user.is_staff %}
++                <li class="nav-item dropdown">
++                    <a href="#" class="nav-link dropdown-toggle" data-toggle4="dropdown">{% trans 'Welcome,' %} <strong>{% filter force_escape %}{% firstof user.get_short_name user.get_username user.first_name user.username %}{% endfilter %}</strong></a>
++                    <ul class="dropdown-menu">
++                    {% if user.has_usable_password %}
++                        <li class="dropdown-item"><a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a></li>
++                    {% endif %}
++                         <li class="dropdown-item"><a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a></li>
++                    </ul>
++                </li>
++                {% block languages %}
++                <li class="divider-vertical"></li>
++                {% language_selector %}
++                {% endblock languages %}
++                {% block logs %}
++                <li class="nav-item dropdown" id="recent-actions-module">
++                    <a href="#" class="nav-link dropdown-toggle" data-toggle4="dropdown">{% trans 'Recent Actions' %}</a>
++                    {% load log %}
++                    {% get_admin_log 10 as admin_log for_user user %}
++                    <ul class="dropdown-menu">
++                    {% for entry in admin_log %}
++                        <li class="dropdown-item {% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
++                            <a href="{% if entry.is_deletion or not entry.get_admin_url %}#{% else %}{{ entry.get_admin_url }}{% endif %}">
++                                <i class="icon-{% if entry.is_addition %}plus{% endif %}{% if entry.is_change %}edit{% endif %}{% if entry.is_deletion %}remove{% endif %}"></i>
++                            {{ entry.object_repr }}
++                            {% if entry.content_type %}
++                                <span class="mini quiet">({% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %})</span>
++                            {% else %}
++                                <span class="mini quiet">({% trans 'Unknown content' %})</span>
++                            {% endif %}
++                            </a>
++                        </li>
++                    {% empty %}
++                        <li class="disabled"><a href="#">{% trans 'None available' %}</a></li>
++                    {% endfor %}
++                    </ul>
++                </li>
++                {% endblock %}
++                {% block userlinks %}
++                {% url 'django-admindocs-docroot' as docsroot %}
++                {% if docsroot %}
++                <li class="divider-vertical"></li>
++                <li><a href="{{ docsroot }}">{% trans 'Documentation' %}</a></li>
++                {% endif %}
++                {% endblock %}
++            {% endif %}
++            {% block nav-global %}{% endblock %}
++            </ul>
++        </div><!-- end nav-collapse -->
++    </nav>
++    <!-- END Header -->
++</div>
++    <div class="row">
++        <div class="col-sm-12">
++            {% block breadcrumbs %}
++            {% endblock %}
++        </div>
++    </div>
++    {% endif %}
++
++    <!-- Content -->
++    <div id="content" class="{% block coltype %}colM{% endblock %}">
++        {% block navbar %}
++        <div class="navbar navbar-dark bg-dark">
++            <div class="navbar-inner">
++                {% block pretitle %}{% endblock %}
++                    <div class="navbar-brand">
++                        {% block content-navbar-collapse %}
++                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#content-navbar-collapse" aria-expanded="false" aria-controls="navbar">
++                            <span class="sr-only">Toggle navigation</span>
++                            <span class="icon-bar"></span>
++                            <span class="icon-bar"></span>
++                            <span class="icon-bar"></span>
++                        </button>
++                        {% endblock %}
++                    {% block content_title %}
++                    {% if title %}
++                        <a class="navbar-brand">{% render_with_template_if_exist title|lower|add:"/admin_app_name.html" title %}</a>
++                    {% endif %}
++                    {% endblock %}
++                    </div>
++                {% block object-tools %}{% endblock %}
++            </div>
++        </div>
++        {% endblock navbar %}
++
++        {% block messages %}
++        {% if messages %}
++        <div class="row">
++            <div class="col-sm-12">
++                {% for message in messages %}
++                <div class="alert {{ message.tags|default:"alert-info" }}">
++                    {{ message }}
++                </div>
++                {% endfor %}
++            </div>
++        </div>
++        {% endif %}
++        {% endblock messages %}
++
++        {% block content %}{{ content }}{% endblock %}
++        {% block sidebar %}{% endblock %}
++    </div>
++    <!-- END Content -->
++
++    {% block footer %}<footer id="footer"></footer>{% endblock %}
++</div>
++<!-- END Container -->
++
++</body>
++</html>
+diff --git a/tendenci/templates/admin/base.html b/tendenci/templates/admin/base.html
+index e92dfa23c..f1bd32572 100644
+--- a/tendenci/templates/admin/base.html
++++ b/tendenci/templates/admin/base.html
+@@ -57,7 +57,7 @@
+         <div class="navbar-inner">
+             <div class="container">
+                 <div class="navbar-header">
+-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-navbar-collapse">
++                    <button type="button" class="navbar-toggle" data-toggle4="collapse" data-target="#header-navbar-collapse">
+                         <span class="icon-bar"></span>
+                         <span class="icon-bar"></span>
+                         <span class="icon-bar"></span>
+@@ -68,7 +68,7 @@
+                     <ul class="nav navbar-nav">
+                         {% if user.is_active and user.is_staff %}
+                         <li class="dropdown">
+-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Welcome,' %} <strong>{% filter force_escape %}{% firstof user.get_short_name user.get_username user.first_name user.username %}{% endfilter %}</strong></a>
++                            <a href="#" class="dropdown-toggle" data-toggle4="dropdown">{% trans 'Welcome,' %} <strong>{% filter force_escape %}{% firstof user.get_short_name user.get_username user.first_name user.username %}{% endfilter %}</strong></a>
+                             <ul class="dropdown-menu">
+                                 {% if user.has_usable_password %}
+                                 <li><a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a></li>
+@@ -82,7 +82,7 @@
+                         {% endblock languages %}
+                         {% block logs %}
+                         <li class="dropdown" id="recent-actions-module">
+-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Recent Actions' %}</a>
++                            <a href="#" class="dropdown-toggle" data-toggle4="dropdown">{% trans 'Recent Actions' %}</a>
+                             {% load log %}
+                             {% get_admin_log 10 as admin_log for_user user %}
+                             <ul class="dropdown-menu">
+@@ -135,7 +135,7 @@
+                 {% block pretitle %}{% endblock %}
+                     <div class="navbar-header">
+                         {% block content-navbar-collapse %}
+-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#content-navbar-collapse" aria-expanded="false" aria-controls="navbar">
++                        <button type="button" class="navbar-toggle collapsed" data-toggle4="collapse" data-target="#content-navbar-collapse" aria-expanded="false" aria-controls="navbar">
+                             <span class="sr-only">Toggle navigation</span>
+                             <span class="icon-bar"></span>
+                             <span class="icon-bar"></span>
+diff --git a/tendenci/templates/admin/index.html b/tendenci/templates/admin/index.html
+index a84555244..15aa606f6 100644
+--- a/tendenci/templates/admin/index.html
++++ b/tendenci/templates/admin/index.html
+@@ -20,7 +20,7 @@
+ {% block object-tools %}
+ <ul class="nav navbar-nav">
+     <li class="dropdown">
+-        <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Applications" %}</a>
++        <a role="button" href="#" class="dropdown-toggle" data-toggle4="dropdown">{% trans "Applications" %}</a>
+         <ul class="dropdown-menu" role="menu">
+             {% for app in app_list %}
+                 {% if app.name|check_enabled %}
+diff --git a/tendenci/templates/base.html b/tendenci/templates/base.html
+index 4163a5406..da4b70f58 100644
+--- a/tendenci/templates/base.html
++++ b/tendenci/templates/base.html
+@@ -107,7 +107,7 @@
+                     jQuery('#t-megamenu-lang-input').attr('value', lang);
+                     jQuery('#t-megamenu-lang-form').submit();
+                 });
+-                jQuery('body').css('margin-top', jQuery('#t-admin-megamenu').outerHeight(true) + 'px' );
++                /* jQuery('body').css('margin-top', jQuery('#t-admin-megamenu').outerHeight(true) + 'px' ); */
+             });
+         </script>
+ 
+diff --git a/tendenci/templates/header.html b/tendenci/templates/header.html
+index a80eb6659..93f206650 100644
+--- a/tendenci/templates/header.html
++++ b/tendenci/templates/header.html
+@@ -4,15 +4,15 @@
+ {% load theme_tags %}
+ 
+ 
+-<nav id="t-navbar" class="navbar" role="navigation">
++<nav id="t-navbar" class="navbar navbar-dark bg-dark" role="navigation">
+     <div class="container-fluid">
+-        <div class="navbar-header">
+-            <div id="t-main-navbar-brand" class="navbar-brand">
++        <div class="navbar-brand">
++            <div id="t-main-navbar-brand">
+                 <h3><a href="{% url 'home' %}">{{ SITE_GLOBAL_SITEDISPLAYNAME }}</a>&nbsp;<small>{% trans "Website tagline" %}</small></h3>
+             </div>
+         </div>
+ 
+-        <div id="t-main-navbar-collapse" class="mainnav navbar-right">
++        <div id="t-main-navbar-collapse" class="mainnav ml-auto">
+             <div class="clearfix">
+                 {% nav 1 %}
+             </div>
+diff --git a/tendenci/templates/top_menu/_apps_dropdown.html b/tendenci/templates/top_menu/_apps_dropdown.html
+index f6669ce64..24abd30ac 100644
+--- a/tendenci/templates/top_menu/_apps_dropdown.html
++++ b/tendenci/templates/top_menu/_apps_dropdown.html
+@@ -2,8 +2,8 @@
+ {% load staticfiles %}
+ 
+ 
+-<li class="dropdown">
+-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
++<li class="nav-item dropdown">
++    <a href="#" class="nav-link dropdown-toggle" data-toggle4="dropdown" role="button" aria-expanded="false">
+         <img class="nav-icon" src="{% static 'famfamfam/icons/application_view_tile.png' %}"/><span class="nav-label">{% trans "Apps" %}</span>
+     </a>
+ 
+diff --git a/tendenci/templates/top_menu/_community_dropdown.html b/tendenci/templates/top_menu/_community_dropdown.html
+index 2dd9e6c4e..a9bb97d4e 100644
+--- a/tendenci/templates/top_menu/_community_dropdown.html
++++ b/tendenci/templates/top_menu/_community_dropdown.html
+@@ -5,7 +5,7 @@
+ 
+ {% if USER_IS_SUPERUSER %}
+ <li class="dropdown">
+-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
++    <a href="#" class="dropdown-toggle" data-toggle4="dropdown" role="button" aria-expanded="false">
+         <img class="nav-icon" src="{% static 'famfamfam/icons/application.png' %}"/><span class="nav-label">{% trans "Community" %}</span>
+     </a>
+ 
+diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
+index f0d4d5ff6..46e659b24 100644
+--- a/tendenci/templates/top_menu/_profile_dropdown.html
++++ b/tendenci/templates/top_menu/_profile_dropdown.html
+@@ -4,8 +4,8 @@
+ {% load megamenu_tags %}
+ 
+ 
+-<li class="dropdown">
+-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
++<li class="nav-item dropdown">
++    <a href="#" class="nav-link dropdown-toggle" data-toggle4="dropdown" role="button" aria-expanded="false">
+         {% spaceless %}
+             {% if USER_IS_SUPERUSER %}
+                 <img class="nav-icon" src="{% static 'famfamfam/icons/user_orange.png' %}">
+diff --git a/tendenci/templates/top_menu/_support_dropdown.html b/tendenci/templates/top_menu/_support_dropdown.html
+index d7a8a1444..6a59a3588 100644
+--- a/tendenci/templates/top_menu/_support_dropdown.html
++++ b/tendenci/templates/top_menu/_support_dropdown.html
+@@ -2,8 +2,8 @@
+ {% load staticfiles %}
+ 
+ 
+-<li class="dropdown">
+-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
++<li class="nav-item dropdown">
++    <a href="#" class="nav-link dropdown-toggle" data-toggle4="dropdown" role="button" aria-expanded="false">
+         {% spaceless %}
+             <img width="16" height="16" class="nav-icon" src="{% static 'images/icons/tendenci_white.png' %}"/>
+             <span class="nav-label">{% trans "Support" %}</span>
+diff --git a/tendenci/templates/top_menu/admin_top-new.html b/tendenci/templates/top_menu/admin_top-new.html
+index e3c07c9e6..068781915 100644
+--- a/tendenci/templates/top_menu/admin_top-new.html
++++ b/tendenci/templates/top_menu/admin_top-new.html
+@@ -3,23 +3,20 @@
+ {% load page_tags %}
+ 
+ 
+-<div id="t-admin-megamenu" class="navbar-inverse navbar-fixed-top yamm t-megamenu" role="navigation">
++<div id="t-admin-megamenu" class="navbar navbar-expand-xl navbar-dark bg-dark navbar-fixed-top yamm t-megamenu" role="navigation">
+     <div class="container-fluid">
+-        <div class="navbar-header">
+-            <button id="t-admin-megamenu-toggle" class="navbar-toggle collapsed t-megamenu-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+-                <span class="icon-bar"></span>
+-                <span class="icon-bar"></span>
+-                <span class="icon-bar"></span>
++        <div class="navbar-brand">
++            <button id="t-admin-megamenu-toggle" class="navbar-toggler t-megamenu-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
++                <span class="navbar-toggler-icon"></span>
+             </button>
+-
+-            <a href="{% url 'dashboard' %}" class="navbar-brand">{% spaceless %}
++            <a href="{% url 'dashboard' %}">{% spaceless %}
+                 <img src="{% static 'images/tendenci_white_small_100x51.gif' %}" class="nav-logo" height="24">
+            {% endspaceless %}</a>
+         </div>
+ 
+         <div id="navbar-collapse" class="navbar-collapse collapse">
+             {# <div class="clearfix visible-sm-block"></div> #}
+-            <ul class="nav navbar-nav inner-top-nav">
++            <ul class="navbar-nav inner-top-nav">
+                 {% include 'top_menu/_profile_dropdown.html' %}
+ 
+                 {% include 'top_menu/_community_dropdown.html' %}
+@@ -30,8 +27,8 @@
+                 {% include 'top_menu/_support_dropdown.html' %}
+                 {% endif %}
+ 
+-                <li class="dropdown">
+-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% spaceless %}
++                <li class="nav-item dropdown">
++                    <a href="#" class="nav-link dropdown-toggle" data-toggle4="dropdown" role="button" aria-expanded="false">{% spaceless %}
+                         <img class="nav-icon" src="{% block nav_icon_url %}{% static 'famfamfam/icons/page_white_stack.png' %}{% endblock %}">
+                         <span class="nav-label">{% block nav_label %}{% trans "Pages" %}{% endblock %}</span>
+                     {% endspaceless %}</a>
+@@ -49,7 +46,7 @@
+                 </li>
+             </ul>
+ 
+-            <ul class="nav navbar-nav navbar-right inner-top-nav">
++            <ul class="navbar-nav ml-auto inner-top-nav">
+                 {% if USE_I18N %}
+                     {% include 'top_menu/change_lang-new.html' %}
+                 {% else %}
+@@ -62,8 +59,8 @@
+                     </li>
+                 {% endif %}
+ 
+-                <li>
+-                    <a href="{% url 'auth_logout' %}" id="t-megamenu-logout"><span class="glyph">&#88;</span><span class="nav-label">{% trans "Logout" %}</span></a>
++                <li class="my-auto">
++                    <a href="{% url 'auth_logout' %}" id="t-megamenu-logout"><i class="fa fa-sign-out" aria-hidden="true"></i><span class="nav-label">{% trans "Sign Out" %}</span></a>
+                 </li>
+             </ul>
+         </div>
+diff --git a/tendenci/templates/top_menu/change_lang-new.html b/tendenci/templates/top_menu/change_lang-new.html
+index d5873e219..7ce0ef22c 100644
+--- a/tendenci/templates/top_menu/change_lang-new.html
++++ b/tendenci/templates/top_menu/change_lang-new.html
+@@ -1,10 +1,10 @@
+ {% load i18n %}
+ 
+ 
+-<li class="dropdown">
++<li class="nav-item dropdown">
+     {% with request.user.profile.lang as user_lang %}
+-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+-            <i class="fa fa-globe"></i>{% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span>
++        <a href="#" class="nav-link dropdown-toggle" data-toggle4="dropdown" role="button" aria-expanded="false">
++            <i class="fa fa-globe" aria-hidden="true"></i>{% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span>
+         </a>
+ 
+         <ul id="t-megamenu-lang-dd" class="dropdown-menu lang-dropdown" role="menu">
+diff --git a/tendenci/templates/top_menu/change_lang.html b/tendenci/templates/top_menu/change_lang.html
+index 7a2181ebf..02ef12c20 100644
+--- a/tendenci/templates/top_menu/change_lang.html
++++ b/tendenci/templates/top_menu/change_lang.html
+@@ -1,12 +1,12 @@
+ {% load i18n %}
+ 
+-<div class="dropdown">
++<div class="nav-item dropdown">
+ {% with request.user.profile.lang as user_lang %}
+-  <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">
+-      <i class="fa fa-globe"></i>
++  <a class="nav-link dropdown-toggle" data-toggle4="dropdown" role="button" href="#">
++      <i class="fa fa-globe" aria-hidden="true"></i>
+           <span class="hide-sm">
+             {% get_language_info for user_lang as l %}{{ l.name_local }}
+-        </span>
++         </span>
+   </a>
+ 
+   <div class="sub">
