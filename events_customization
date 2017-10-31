@@ -12,12 +12,34 @@ index 87c38b71e..06f4c0eb5 100644
  
      border-top: none;
 diff --git a/tendenci/apps/events/templates/events/day-view.html b/tendenci/apps/events/templates/events/day-view.html
-index 5c1bb8455..1b7d1e303 100644
+index ba06c736f..92f3e3e4e 100644
 --- a/tendenci/apps/events/templates/events/day-view.html
 +++ b/tendenci/apps/events/templates/events/day-view.html
-@@ -22,11 +22,11 @@
-     <h2>{{ date|date:"l, F j Y" }}</h2>
+@@ -1,11 +1,11 @@
+-{% extends "events/base.html" %}
++{% extends "events/base-wide.html" %}
+ {% load event_tags %}
+ {% load tagging_tags %}
+ {% load base_tags %}
+ {% load category_tags %}
+ {% load i18n %}
  
+-{% block title %}{{ block.super }} {% endblock %}
++{% block title %}{{ cur_date|date:"N j, Y" }} {% trans 'Calendar' %}{% endblock %}
+ {% block meta_description %} {% endblock %}
+ {% block meta_keywords %} {% endblock %}
+ 
+@@ -18,45 +18,26 @@
+ 
+ {% block content %}
+ 
+-<div class="day-view">
+-    <h2>{{ date|date:"l, F j Y" }}</h2>
++<div class="page-header">
++    <h1>{% firstof MODULE_EVENTS_LABEL_PLURAL trans 'Events' %}</h1>
++</div>
+ 
++<div class="text-center">
      <div class="btn-group btn-group-sm mb-1" role="group" aria-label="Events Views">
 -      <a href="{% url "event.month" %}" class="btn btn-primary">{% trans "Month View" %}</a>
 -      <a href="{% url "event.week" %}" class="btn btn-primary">{% trans "Week View" %}</a>
@@ -29,10 +51,73 @@ index 5c1bb8455..1b7d1e303 100644
 +      <a href="{% url "event.search" %}" class="btn btn-outline-secondary">{% trans "List/Search" %}</a>
 +      <a href="{% url "event.ics" %}" class="btn btn-outline-secondary">{% trans "Download" %}</a>
      </div>
+-
+-<form class="search-form" action="{% url "event.today" %}" method="get">
+-
+-<div class="form-field clearfix">
+-    <div class="id_start_dt">
+-            <div class="label">
+-                <label for="today_date">{% trans 'Event List for' %} </label>
+-                <input style="width: 70px;" type="text" class="datepicker" name="today_date" value="{{ date|date:"Y-m-d" }}" />
+-                <input class="btn" type="submit" value="Jump to Date" />
+-            </div>
+-     </div>
++    <ul class="list-inline">
++      <li><h2>{{ date|date:"D., N j, Y" }}</h2></li>
++      <li class="float-left"><h2><a href="{{ yesterday_url }}"> <i class="fa fa-chevron-left"></i></a></h2></li>
++      <li class="float-right"><h2><a href="{{ tomorrow_url }}"><i class="fa fa-chevron-right"></i></a></h2></li>
++    </ul>
+ </div>
+-</form>
+-
+-<form class="search-form" action="" method="get">
+-    {{ form.search_category }}
+-    {{ form.q }}
+-    <input class="btn" type="submit" value="{% trans 'Search' %}" />
+-</form>
  
- <form class="search-form" action="{% url "event.today" %}" method="get">
+-    <div class="days-nav">
+-        <div class="yesterday-link">
+-            <a href="{{ yesterday_url }}">&laquo; {{ yesterday|date:"SHORT_DATE_FORMAT" }}</a>
+-        </div>
+-        <div class="tomorrow-link">
+-            <a href="{{ tomorrow_url }}">{{ tomorrow|date:"SHORT_DATE_FORMAT" }} &raquo;</a>
+-        </div>
+-        <div style="clear: both;"></div>
+-    </div>
++<div class="day-view">
+ 
+     {% event_list date type 'single_day' as events %}
+     {% for event in events %}
+@@ -135,23 +116,13 @@
+             </form>
+         </div>
+     {% empty %}
+-        <div class="no-events">{% trans "No events here, yet. " %}
++        <div class="no-events">{% trans "No events scheduled on this day." %}
++        {% comment %}
+             <a href="{% url "event.add" date.year date.month date.day %}">
+             {% trans "I would like to add one." %}</a></div>
++        {% endcomment %}
+     {% endfor %}
+ 
+-    {% if events %}
+-    <div class="days-nav">
+-        <div class="yesterday-link">
+-            <a href="{{ yesterday_url }}">&laquo; {{ yesterday|date:"SHORT_DATE_FORMAT" }}</a>
+-        </div>
+-        <div class="tomorrow-link">
+-            <a href="{{ tomorrow_url }}">{{ tomorrow|date:"SHORT_DATE_FORMAT" }} &raquo;</a>
+-        </div>
+-        <div style="clear: both;"></div>
+-    </div>
+-    {% endif %}
+-
+ </div>
+ 
+ {% endblock %}
 diff --git a/tendenci/apps/events/templates/events/month-view.html b/tendenci/apps/events/templates/events/month-view.html
-index 3e886ddf0..743c5baf5 100644
+index deaf996fa..1ece0358c 100644
 --- a/tendenci/apps/events/templates/events/month-view.html
 +++ b/tendenci/apps/events/templates/events/month-view.html
 @@ -19,18 +19,26 @@
@@ -165,12 +250,20 @@ index 3e886ddf0..743c5baf5 100644
  {% endblock %}
  
 diff --git a/tendenci/apps/events/templates/events/search.html b/tendenci/apps/events/templates/events/search.html
-index e876e6a48..11753d43d 100644
+index 723efa3ec..390e8779c 100644
 --- a/tendenci/apps/events/templates/events/search.html
 +++ b/tendenci/apps/events/templates/events/search.html
-@@ -22,11 +22,11 @@
-     <h1>{{ SITE_GLOBAL_SITEPRIMARYKEYWORDS }} {% firstof MODULE_EVENTS_LABEL_PLURAL trans 'Events' %}</h1>
+@@ -18,17 +18,21 @@
  
+ {% block content %}
+ 
+-<div class="t search-view">
+-    <h1>{{ SITE_GLOBAL_SITEPRIMARYKEYWORDS }} {% firstof MODULE_EVENTS_LABEL_PLURAL trans 'Events' %}</h1>
++<div class="page-header">
++    <h1>{% firstof MODULE_EVENTS_LABEL_PLURAL trans 'Events' %}</h1>
++</div>
+ 
++<div class="text-center">
      <div class="btn-group btn-group-sm mb-1" role="group" aria-label="Events Views">
 -      <a href="{% url "event.month" %}" class="btn btn-primary">{% trans "Month View" %}</a>
 -      <a href="{% url "event.week" %}" class="btn btn-primary">{% trans "Week View" %}</a>
@@ -182,12 +275,25 @@ index e876e6a48..11753d43d 100644
 -      <a href="{% url "event.ics" %}" class="btn btn-primary">{% trans "Download" %}</a>
 +      <a href="{% url "event.ics" %}" class="btn btn-outline-secondary">{% trans "Download" %}</a>
      </div>
++</div>
  
++<div class="t search-view">
      <div class="event-tabs">
+         <ul class="nav nav-tabs">
+             <li role="presentation" class="dropdown {% if not past %}active{% endif %}">
 diff --git a/tendenci/apps/events/templates/events/week-view.html b/tendenci/apps/events/templates/events/week-view.html
-index 01fe14bb8..a14cd5418 100644
+index 13721de5a..362edfe53 100644
 --- a/tendenci/apps/events/templates/events/week-view.html
 +++ b/tendenci/apps/events/templates/events/week-view.html
+@@ -5,7 +5,7 @@
+ {% load category_tags %}
+ {% load i18n %}
+ 
+-{% block title %}{{ cur_date|date:"F j, Y" }} - {% trans 'Week Calendar' %} {% endblock %}
++{% block title %}{{ cur_date|date:"N j, Y" }} {% trans 'Week Calendar' %} {% endblock %}
+ {% block meta_description %} {% endblock %}
+ {% block meta_keywords %} {% endblock %}
+ 
 @@ -18,18 +18,26 @@
  
  {% block content %}
@@ -215,9 +321,9 @@ index 01fe14bb8..a14cd5418 100644
 +        <a href="{% url "event.ics" %}" class="btn btn-outline-secondary">{% trans "Download" %}</a>
        </div>
 +        <ul class="list-inline">
-+          <li><h2>{% trans "Week of " %}{{ cur_date|date:"n/j/Y" }}</h2></li>
-+          <li class="pull-left"><h2><a href="{{ prev_week_url }}"> <i class="fa fa-chevron-left"></i></a></h2></li>
-+          <li class="pull-right"><h2><a href="{{ next_week_url }}"><i class="fa fa-chevron-right"></i></a></h2></li>
++          <li><h2>{% trans "Week of " %}{{ cur_date|date:"N j, Y" }}</h2></li>
++          <li class="float-left"><h2><a href="{{ prev_week_url }}"> <i class="fa fa-chevron-left"></i></a></h2></li>
++          <li class="float-right"><h2><a href="{{ next_week_url }}"><i class="fa fa-chevron-right"></i></a></h2></li>
 +        </ul>
 +</div>
  
