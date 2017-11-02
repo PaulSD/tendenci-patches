@@ -6,6 +6,7 @@ tinymce_toggle
 disable_skills
 captcha_text
 improve_membership_form
+log_membership_form_errors
 user_pass_required
 improve_logout_page
 improve_profile_page

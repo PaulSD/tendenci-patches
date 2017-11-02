@@ -172,11 +172,11 @@ index deaf996fa..1ece0358c 100644
                  </a>
 -                <span style="display:none" itemprop="startDate" datetime="{{ event.start_dt|date:'c' }}">{{ event.start_dt|date:"l, M j, Y P" }}</span>
 -                <a href="{{ event.get_absolute_url }}" class="event-title" itemprop="url">
--                  <span itemprop="name">{% if event.title|length > 15 %}{{ event.title|slice:":15" }} ...{% else %}{{ event.title }}{% endif %}</span>
+-                  <span itemprop="name">{{ event.title|truncatechars:15 }}</span>
 -                </a>
 +                <span style="display:none" itemprop="startDate" datetime="{{ event.start_dt|date:'c' }}">{{ event.start_dt|date:"D., N j, Y f A" }}</span>
 +                <strong><a href="{{ event.get_absolute_url }}" class="event-title" itemprop="url">
-+                  <span itemprop="name">{% if event.title|length > 20 %}{{ event.title|slice:":20" }} ...{% else %}{{ event.title }}{% endif %}</span>
++                  <span itemprop="name">{{ event.title|truncatechars:20 }}</span>
 +                </a></strong>
                  <a class='click-mask' href="{{ event.get_absolute_url }}"></a>
                </div>
