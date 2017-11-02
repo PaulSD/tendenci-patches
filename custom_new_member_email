@@ -1,5 +1,49 @@
+diff --git a/tendenci/apps/memberships/management/commands/send_membership_notices.py b/tendenci/apps/memberships/management/commands/send_membership_notices.py
+index 8f8eefe65..d03f5c096 100644
+--- a/tendenci/apps/memberships/management/commands/send_membership_notices.py
++++ b/tendenci/apps/memberships/management/commands/send_membership_notices.py
+@@ -243,9 +243,23 @@ class Command(BaseCommand):
+                 payment_method_name = membership.payment_method.human_name
+             else:
+                 payment_method_name = ''
+-
++            # Copied from memberships/models.py
++            # Should probably just call Notice.get_default_context(membership)
++            inv = membership.get_invoice()
++            if inv:
++                invoice_link = inv.get_absolute_url()
++            else:
++                invoice_link = ''
+             context.update({
++                'first_name': membership.user.first_name,
++                'last_name': membership.user.last_name,
++                'email': membership.user.email,
++                'username': membership.user.username,
+                 'member_number': membership.member_number,
++                'membership_type': membership.membership_type.name,
++                'membership_price': membership.get_price(),
++                'donation_amount': inv.get_donation_amount(),
++                'total_amount': inv.total,
+                 'payment_method': payment_method_name,
+                 'referer_url': '%s%s?next=%s' % (site_url, reverse('auth_login'), membership.referer_url),
+                 'membership_link': '%s%s' % (site_url, membership.get_absolute_url()),
+@@ -256,6 +270,14 @@ class Command(BaseCommand):
+                 'renewlink': '%s%s' % (site_url, membership.get_absolute_url())
+             })
+ 
++            context.update({ 'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count() })
++            if membership.join_dt:
++                context.update({ 'join_dt': time.strftime("%B %d, %Y %I:%M %p", membership.join_dt.timetuple()) })
++            if membership.renew_dt:
++                context.update({ 'renew_dt': time.strftime("%B %d, %Y %I:%M %p", membership.renew_dt.timetuple()) })
++            if membership.expire_dt:
++                context.update({ 'expire_dt': time.strftime("%B %d, %Y %I:%M %p", membership.expire_dt.timetuple()) })
++
+             body = fieldify(body)
+ 
+             body = body + ' <br /><br />{% include "email_footer.html" %}'
 diff --git a/tendenci/apps/memberships/models.py b/tendenci/apps/memberships/models.py
-index 9986519e3..5a4d24407 100644
+index 127bbb261..d0a6d1b08 100644
 --- a/tendenci/apps/memberships/models.py
 +++ b/tendenci/apps/memberships/models.py
 @@ -2,6 +2,7 @@ import os
@@ -33,7 +77,7 @@ index 9986519e3..5a4d24407 100644
  
          return items
  
-@@ -2048,10 +2054,12 @@ class Notice(models.Model):
+@@ -2052,10 +2058,12 @@ class Notice(models.Model):
      )
  
      STATUS_DETAIL_ACTIVE = 'active'
@@ -46,7 +90,7 @@ index 9986519e3..5a4d24407 100644
          (STATUS_DETAIL_HOLD, 'Admin Hold')
      )
  
-@@ -2161,6 +2169,14 @@ class Notice(models.Model):
+@@ -2165,6 +2173,14 @@ class Notice(models.Model):
              'corporate_membership_notice': corporate_msg,
          })
  
@@ -61,7 +105,7 @@ index 9986519e3..5a4d24407 100644
          return context
  
      def get_subject(self, membership=None):
-@@ -2291,7 +2307,8 @@ class Notice(models.Model):
+@@ -2295,7 +2311,8 @@ class Notice(models.Model):
          # send email to admins
          membership_recipients = get_notice_recipients('module', 'memberships', 'membershiprecipients')
          admin_recipients = get_notice_recipients('site', 'global', 'allnoticerecipients')
@@ -71,7 +115,7 @@ index 9986519e3..5a4d24407 100644
  
          if recipients:
              notification.send_emails(
-@@ -2302,6 +2319,25 @@ class Notice(models.Model):
+@@ -2306,6 +2323,25 @@ class Notice(models.Model):
                  'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count(),
              })
  
