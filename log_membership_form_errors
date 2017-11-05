@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/memberships/views.py b/tendenci/apps/memberships/views.py
-index aa7ab6253..371ef676a 100644
+index aa7ab6253..0ee70b175 100644
 --- a/tendenci/apps/memberships/views.py
 +++ b/tendenci/apps/memberships/views.py
 @@ -1,3 +1,5 @@
@@ -13,7 +13,7 @@ index aa7ab6253..371ef676a 100644
              ))
  
 +    if request.method == 'POST':
-+        _log.info('%s %s %s %s %s'%(user_form.errors, profile_form.errors, demographics_form.errors, membership_form.errors, captcha_form.errors))
++        _log.info('%s %s %s %s %s'%(user_form.errors.as_data(), profile_form.errors.as_data(), demographics_form.errors.as_data(), membership_form.errors.as_data(), captcha_form.errors.as_data()))
      context = {
          'app': app,
          'app_fields': app_fields,
@@ -22,7 +22,7 @@ index aa7ab6253..371ef676a 100644
              return redirect(reverse('membership.details', kwargs={'id': membership.id}))
  
 +    if request.method == 'POST':
-+        _log.info('%s %s %s %s'%(user_form.errors, profile_form.errors, demographics_form.errors, membership_form2.errors))
++        _log.info('%s %s %s %s'%(user_form.errors.as_data(), profile_form.errors.as_data(), demographics_form.errors.as_data(), membership_form2.errors.as_data()))
      context = {
          'app': app,
          'app_fields': app_fields,
