@@ -1,9 +1,7 @@
-paypal_logs
-events_tabs
-events_customization
-unique_autox_car_num
-tinymce_toggle
-disable_skills
+opinion.events_customization
+local.unique_autox_car_num
+temp.tinymce_toggle
+upstream.disable_skills
 captcha_text
 improve_membership_form
 log_membership_form_errors
@@ -21,3 +19,8 @@ profile_temp
 bs3
 migrations
 bs4beta
+app_labels
+app_labels.test
+custom_field_types
+pages_tags
+pages_tags.test

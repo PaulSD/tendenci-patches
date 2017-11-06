@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/profiles/templates/profiles/edit.html b/tendenci/apps/profiles/templates/profiles/edit.html
-index 9450a2328..9c00a3b2c 100644
+index 9450a2328..8ab3c814b 100644
 --- a/tendenci/apps/profiles/templates/profiles/edit.html
 +++ b/tendenci/apps/profiles/templates/profiles/edit.html
 @@ -30,6 +30,7 @@
@@ -26,7 +26,18 @@ index 9450a2328..9c00a3b2c 100644
                             <tr >
                               <td nowrap class="profile-label"><label for="id_interactive">{% trans 'Interactive'%}</label> </td>
                               <td>
-@@ -471,6 +474,7 @@
+@@ -396,8 +399,10 @@
+                              </td>
+                            </tr>
+                {% endif %}
++{% endcomment %}
+                       </table></td>
+                       </tr>
++{% comment %}
+ 
+                       <tr>
+                         <td colspan="6" >&nbsp;</td>
+@@ -471,6 +476,7 @@
                        <tr>
                          <td colspan="6" >&nbsp;</td>
                        </tr>

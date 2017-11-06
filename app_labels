@@ -1,0 +1,639 @@
+commit 12d2ac3fd6a4340acb5a4009a2093a0c6452bab7
+Author: Paul Donohue <git@PaulSD.com>
+Date:   Sat Dec 10 12:49:51 2016 -0500
+
+    Work in progress
+    Applies on top of 6c975d2a15a5d9a871748cf659e38d5b6ad43143
+
+diff --git a/tendenci/apps/accountings/templates/accountings/base.html b/tendenci/apps/accountings/templates/accountings/base.html
+index b06016b9a..c61392e82 100644
+--- a/tendenci/apps/accountings/templates/accountings/base.html
++++ b/tendenci/apps/accountings/templates/accountings/base.html
+@@ -1,5 +1,6 @@
+ {% extends "site_base.html" %}
++{% load i18n %}
+ 
+-{% block title %}{{ MODULE_ACCOUNTINGS_LABEL }} - {% endblock %}
++{% block title %}{% trans "Accountings" %}{% endblock %}
+ 
+-{% block messages %}{{ block.super }}{% endblock %}
+\ No newline at end of file
++{% block messages %}{{ block.super }}{% endblock %}
+diff --git a/tendenci/apps/articles/templates/articles/add.html b/tendenci/apps/articles/templates/articles/add.html
+index a04f7a96c..1d3b18a9b 100644
+--- a/tendenci/apps/articles/templates/articles/add.html
++++ b/tendenci/apps/articles/templates/articles/add.html
+@@ -6,7 +6,7 @@
+ {% load styled_forms %}
+ 
+ 
+-{% block title %}{% firstof MODULE_ARTICLES_LABEL trans "Article" %} {% trans "Add" %}{% endblock %}
++{% block title %}{% trans MODULE_ARTICLES_LABEL %} {% trans "Add" %}{% endblock %}
+ 
+ {% block extra_head %}
+     {{ block.super }}
+@@ -16,7 +16,7 @@
+ {% endblock %}
+ 
+ {% block content %}
+-    <h1>{% firstof MODULE_ARTICLES_LABEL trans "Article" %} {% trans "Add" %}</h1>
++    <h1>{% trans MODULE_ARTICLES_LABEL %} {% trans "Add" %}</h1>
+ 
+     <form id="t-articles-article-form" class="form-horizontal" action="{% url 'article.add' %}" method="post">{% csrf_token %}
+         {{ form|styled_form }}
+@@ -38,13 +38,7 @@
+         <div class="form-group">
+             <div class="col-sm-offset-3 col-sm-9">
+                 <button type="submit" class="btn btn-primary text-capitalize">
+-                    {% if MODULE_ARTICLES_LABEL %}
+-                        {% blocktrans with module_articles_label=MODULE_ARTICLES_LABEL %}
+-                            Add {{ module_articles_label }}
+-                        {% endblocktrans %}
+-                    {% else %}
+-                        {% trans "Add Article" %}
+-                    {% endif %}
++                    {% trans "Add" %} {% trans MODULE_ARTICLES_LABEL %}
+                 </button>
+             </div>
+         </div>
+diff --git a/tendenci/apps/articles/templates/articles/base.html b/tendenci/apps/articles/templates/articles/base.html
+index 6e67bcb1f..bfde60f32 100644
+--- a/tendenci/apps/articles/templates/articles/base.html
++++ b/tendenci/apps/articles/templates/articles/base.html
+@@ -4,36 +4,21 @@
+ 
+ 
+ {% block title %}
+-    {% if SITE_GLOBAL_SITEPRIMARYKEYWORDS %}{% blocktrans %}{{ SITE_GLOBAL_SITEPRIMARYKEYWORDS }}{% endblocktrans %}: {% endif %}
+-    {% if MODULE_ARTICLES_LABEL_PLURAL %}
+-        {% blocktrans %}
+-            {{ MODULE_ARTICLES_LABEL_PLURAL }} for {{ SITE_GLOBAL_SITEDISPLAYNAME }} in {{ SITE_GLOBAL_SITEGEOGRAPHICLOCATION }}
+-        {% endblocktrans %}
+-    {% else %}
+-        {% blocktrans %}
+-            Articles for {{ SITE_GLOBAL_SITEDISPLAYNAME }} in {{ SITE_GLOBAL_SITEGEOGRAPHICLOCATION }}
+-        {% endblocktrans %}
+-    {% endif %}
++    {% if SITE_GLOBAL_SITEPRIMARYKEYWORDS %}{% trans SITE_GLOBAL_SITEPRIMARYKEYWORDS %}: {% endif %}
++    {% trans MODULE_ARTICLES_LABEL_PLURAL %} {% trans "for" %} {% trans SITE_GLOBAL_SITEDISPLAYNAME %} {% trans "in" %} {% trans SITE_GLOBAL_SITEGEOGRAPHICLOCATION %}
+ {% endblock %}
+ 
+ {% block meta_description %}
+-    {% if SITE_GLOBAL_SITEPRIMARYKEYWORDS %}{% blocktrans %}{{ SITE_GLOBAL_SITEPRIMARYKEYWORDS }}{% endblocktrans %}: {% endif %}
+-    {% if MODULE_ARTICLES_LABEL_PLURAL %}
+-        {% blocktrans %}
+-            {{ MODULE_ARTICLES_LABEL_PLURAL }} and White Papers for {{ SITE_GLOBAL_SITEDISPLAYNAME }} in {{ SITE_GLOBAL_SITEGEOGRAPHICLOCATION }}
+-        {% endblocktrans %}
+-    {% else %}
+-        {% blocktrans %}
+-            Articles and White Papers for {{ SITE_GLOBAL_SITEDISPLAYNAME }} in {{ SITE_GLOBAL_SITEGEOGRAPHICLOCATION }}
+-        {% endblocktrans %}
+-    {% endif %}
++    {% if SITE_GLOBAL_SITEPRIMARYKEYWORDS %}{% trans SITE_GLOBAL_SITEPRIMARYKEYWORDS %}: {% endif %}
++    {% trans MODULE_ARTICLES_LABEL_PLURAL %} {% trans "and White Papers for" %} {% trans SITE_GLOBAL_SITEDISPLAYNAME %} {% trans "in" %} {% trans SITE_GLOBAL_SITEGEOGRAPHICLOCATION %}
+ {% endblock %}
+ 
+ {% block meta_keywords %}
+-    {% firstof MODULE_ARTICLES_LABEL_PLURAL trans "Articles" %},
+-    {% blocktrans %}
+-        {{ SITE_GLOBAL_SITEGEOGRAPHICLOCATION }}, {{ SITE_GLOBAL_SITEDISPLAYNAME }}, white papers, {{ SITE_GLOBAL_SITESECONDARYKEYWORDS }}
+-    {% endblocktrans %}
++    {% trans MODULE_ARTICLES_LABEL_PLURAL %},
++    {% trans SITE_GLOBAL_SITEGEOGRAPHICLOCATION %},
++    {% trans SITE_GLOBAL_SITEDISPLAYNAME %},
++    {% trans "white papers" %},
++    {% trans SITE_GLOBAL_SITESECONDARYKEYWORDS %}
+ {% endblock %}
+ 
+ {% block extra_head %}
+@@ -45,7 +30,7 @@
+ 
+ {% block top_bar %}
+     {% if request.user.is_authenticated %}
+-    	{% include "articles/top_nav.html" %}
++        {% include "articles/top_nav.html" %}
+         {% if request.user.impersonated_user and request.user.impersonated_user.is_superuser or request.user.is_superuser  %}
+             {% if request.session.theme %}
+                 {% include "themes/theme_top.html" %}
+diff --git a/tendenci/apps/articles/templates/articles/delete.html b/tendenci/apps/articles/templates/articles/delete.html
+index 714d054b2..1ccb1e949 100644
+--- a/tendenci/apps/articles/templates/articles/delete.html
++++ b/tendenci/apps/articles/templates/articles/delete.html
+@@ -2,7 +2,7 @@
+ {% load article_tags %}
+ {% load i18n %}
+ 
+-{% block title %}{% trans "Delete" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %} - {% blocktrans with title=article.get_title %}{{ title }}{% endblocktrans %}{% endblock %}
++{% block title %}{% trans "Delete" %} {% trans MODULE_ARTICLES_LABEL %} - {% trans article.get_title %}{% endblock %}
+ 
+ {% block extra_head %}
+ {{ block.super }}
+@@ -12,11 +12,11 @@
+ {% block content %}
+ <div class="t">
+     <div class="article-wrap">
+-        <h1>{% trans "Delete" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %}</h1>
+-        <h2>{% blocktrans with headline=article.headline %}{{ headline }}{% endblocktrans %}</h2>
+-        <div class="content">{% blocktrans with body=article.body|safe|truncatewords_html:"100" %}{{ body }}{% endblocktrans %}</div>
++        <h1>{% trans "Delete" %} {% trans MODULE_ARTICLES_LABEL %}</h1>
++        <h2>{% trans article.headline %}</h2>
++        <div class="content">{% trans article.body|safe|truncatewords_html:"100" %}</div>
+         <div class="delete-prompt">
+-            {% trans "Are you sure you want to permanently delete this" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %} ?
++            {% trans "Are you sure you want to permanently delete this" %} {% trans MODULE_ARTICLES_LABEL %} ?
+         </div>
+         <div class="delete-form">
+             <form name="article-delete" method="POST" action="{% url "article.delete" article.pk %}">{% csrf_token %}
+@@ -24,8 +24,8 @@
+                 <input type="submit" name="submit" value="{% trans 'Confirm Delete' %}">
+             </form>
+         </div>
+-        <div class="back-item"><a href="{{ article.get_absolute_url }}">&laquo; {% trans "Back to" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %} {% blocktrans with headline=article.headline %}{{ headline }}{% endblocktrans %}</a></div>
+-        <div class="back-search"><a href="{% url "article.search" %}">&laquo; {% trans "Back to all" %} {% firstof MODULE_ARTICLES_LABEL_PLURAL trans 'Articles' %} </a></div>
++        <div class="back-item"><a href="{{ article.get_absolute_url }}">&laquo; {% trans "Back to" %} {% trans MODULE_ARTICLES_LABEL %} {% trans article.headline %}</a></div>
++        <div class="back-search"><a href="{% url "article.search" %}">&laquo; {% trans "Back to all" %} {% trans MODULE_ARTICLES_LABEL_PLURAL %} </a></div>
+     </div>
+ </div>
+ {% endblock %}
+diff --git a/tendenci/apps/articles/templates/articles/edit-meta.html b/tendenci/apps/articles/templates/articles/edit-meta.html
+index fc58a293d..0c159d2c6 100644
+--- a/tendenci/apps/articles/templates/articles/edit-meta.html
++++ b/tendenci/apps/articles/templates/articles/edit-meta.html
+@@ -3,12 +3,12 @@
+ {% load styled_forms %}
+ {% load i18n %}
+ 
+-{% block title %}{% firstof MODULE_ARTICLES_LABEL trans 'Article' %} {% trans "Edit Meta Information" %}{% endblock %}
++{% block title %}{% trans MODULE_ARTICLES_LABEL %} {% trans "Edit Meta Information" %}{% endblock %}
+ 
+ {% block content %}
+ <div class="t">
+-    <h1>{% firstof MODULE_ARTICLES_LABEL trans 'Article' %} {% blocktrans with article.headline as article_headline %}Meta Information for<br />
+-    {{ article_headline }}{% endblocktrans %}</h1>
++    <h1>{% trans MODULE_ARTICLES_LABEL %} {% trans "Meta Information for" %}<br />
++    {% trans article.headline %}</h1>
+ 
+     <div class="article-wrap">
+         <form action="{% url "article.edit.meta" article.pk %}" method="post">{% csrf_token %}
+diff --git a/tendenci/apps/articles/templates/articles/edit.html b/tendenci/apps/articles/templates/articles/edit.html
+index d55c013ea..53b7e86ae 100644
+--- a/tendenci/apps/articles/templates/articles/edit.html
++++ b/tendenci/apps/articles/templates/articles/edit.html
+@@ -5,7 +5,7 @@
+ {% load styled_forms %}
+ {% load i18n %}
+ 
+-{% block title %}{% firstof MODULE_ARTICLES_LABEL trans trans 'Article' %} {% trans "Edit" %}{% endblock %}
++{% block title %}{% trans MODULE_ARTICLES_LABEL %} {% trans "Edit" %}{% endblock %}
+ 
+ {% block extra_head %}
+ {{ block.super }}
+@@ -16,7 +16,7 @@
+ 
+ {% block content %}
+ <div class="t">
+-    <h1>{% firstof MODULE_ARTICLES_LABEL trans 'Article' %} {% trans "Edit" %}</h1>
++    <h1>{% trans MODULE_ARTICLES_LABEL %} {% trans "Edit" %}</h1>
+ 
+     <div class="article-wrap">
+         <form action="{% url "article.edit" article.pk %}" method="post">{% csrf_token %}
+diff --git a/tendenci/apps/articles/templates/articles/index.html b/tendenci/apps/articles/templates/articles/index.html
+index df262e0c0..8d8da48e4 100644
+--- a/tendenci/apps/articles/templates/articles/index.html
++++ b/tendenci/apps/articles/templates/articles/index.html
+@@ -1,6 +1,6 @@
+ {% load i18n %}
+ 
+-<h1>{% firstof MODULE_ARTICLES_LABEL_PLURAL trans 'Articles' %} {% trans "Index Page" %}</h1>
++<h1>{% trans MODULE_ARTICLES_LABEL_PLURAL %} {% trans "Index Page" %}</h1>
+ 
+ <ul>
+     <li><a href="{% url "article.search" %}">{% trans "Search" %}</a></li>
+@@ -8,4 +8,4 @@
+     <li><a href="{% url "article.print_view" %}">{% trans "Print View" %}</a></li>
+     <li><a href="{% url "article.edit" %}">{% trans "Edit" %}</a></li>
+     <li><a href="{% url "article.delete" %}">{% trans "Delete" %}</a></li>
+-</ul>
+\ No newline at end of file
++</ul>
+diff --git a/tendenci/apps/articles/templates/articles/nav.html b/tendenci/apps/articles/templates/articles/nav.html
+index 545c73662..1f3303958 100644
+--- a/tendenci/apps/articles/templates/articles/nav.html
++++ b/tendenci/apps/articles/templates/articles/nav.html
+@@ -27,11 +27,11 @@
+     </li>
+     {% endif %}
+     <li class="dropdown active" data-dropdown="dropdown">
+-        <a href="#" class="dropdown-toggle">{% firstof MODULE_ARTICLES_LABEL_PLURAL trans 'Articles' %}</a>
++        <a href="#" class="dropdown-toggle">{% trans MODULE_ARTICLES_LABEL_PLURAL %}</a>
+         {% if nav_object %}
+         <div class="dropdown-menu">
+         <ul class="first">
+-            <li class="heading">{% trans "All" %} {% firstof MODULE_ARTICLES_LABEL_PLURAL trans 'Articles' %}</li>
++            <li class="heading">{% trans "All" %} {% trans MODULE_ARTICLES_LABEL_PLURAL %}</li>
+             <li class="divider"></li>
+         {% else %}
+             <div>
+@@ -40,30 +40,30 @@
+             {% if can_edit_setting %}
+                 <li><a href="{% url "settings.index" "module" "articles" %}">{% trans "Settings" %}</a></li>
+             {% endif %}
+-            <li><a href="{% url "articles" %}">{% trans "Latest" %} {% firstof MODULE_ARTICLES_LABEL_PLURAL trans 'Articles' %}</a></li>
++            <li><a href="{% url "articles" %}">{% trans "Latest" %} {% trans MODULE_ARTICLES_LABEL_PLURAL %}</a></li>
+             {% if can_add_article %}
+-                <li><a href="{% url "article.add" %}">{% trans "Add" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %}</a></li>
++                <li><a href="{% url "article.add" %}">{% trans "Add" %} {% trans MODULE_ARTICLES_LABEL %}</a></li>
+             {% endif %}
+             {% if request.user.is_superuser %}
+-                <li><a href="{% url "article.export" %}">{% trans "Export" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %}</a></li>
++                <li><a href="{% url "article.export" %}">{% trans "Export" %} {% trans MODULE_ARTICLES_LABEL %}</a></li>
+             {% endif %}
+         </ul>
+         {% if nav_object %}
+             {% if can_view_article or can_edit_article %}
+             <ul>
+-                <li class="heading">{% trans "This" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %}</li>
++                <li class="heading">{% trans "This" %} {% trans MODULE_ARTICLES_LABEL %}</li>
+                 <li class="divider"></li>
+                 {% if can_view_article %}
+-                    <li><a href="{{ nav_object.get_absolute_url }}">{% trans "View" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %}</a></li>
++                    <li><a href="{{ nav_object.get_absolute_url }}">{% trans "View" %} {% trans MODULE_ARTICLES_LABEL %}</a></li>
+                 {% endif %}
+                 {% if can_edit_article %}
+-                    <li><a href="{% url "article.edit" nav_object.pk %}">{% trans "Edit" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %}</a></li>
++                    <li><a href="{% url "article.edit" nav_object.pk %}">{% trans "Edit" %} {% trans MODULE_ARTICLES_LABEL %}</a></li>
+                     <li><a href="{% url "article.edit.meta" nav_object.pk %}">{% trans "Edit Meta" %}</a></li>
+                     <li><a href="{% url "category.update" nav_object.opt_app_label article.opt_module_name nav_object.pk %}">{% trans "Edit Categories" %}</a></li>
+                 {% endif %}
+                 {% if can_delete_article %}
+                     <li class="divider"></li>
+-                    <li><a class="delete" href="{% url "article.delete" nav_object.pk %}">{% trans "Delete" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %}</a></li>
++                    <li><a class="delete" href="{% url "article.delete" nav_object.pk %}">{% trans "Delete" %} {% trans MODULE_ARTICLES_LABEL %}</a></li>
+                 {% endif %}
+             </ul>
+             {% endif %}
+@@ -71,7 +71,7 @@
+         </div>
+     </li>
+     {% if MODULE_NEWS_ENABLED and MODULE_ARTICLES_SHOW_NEWS_TAB %}
+-    <li><a href="{% url "news" %}">{% firstof MODULE_NEWS_LABEL trans 'News' %}</a></li>
++    <li><a href="{% url "news" %}">{% trans MODULE_NEWS_LABEL %}</a></li>
+     {% endif %}
+ </ul>
+ {% endif %}
+diff --git a/tendenci/apps/articles/templates/articles/print-view.html b/tendenci/apps/articles/templates/articles/print-view.html
+index a5a00f45b..d77057a3b 100644
+--- a/tendenci/apps/articles/templates/articles/print-view.html
++++ b/tendenci/apps/articles/templates/articles/print-view.html
+@@ -20,7 +20,7 @@
+         <h1>{% trans "Print View" %}</h1>
+ 
+         <div class="guide">
+-            <div><a href="{{ article.get_absolute_url }}">&laquo; {% trans "Back to the" %} {% firstof MODULE_ARTICLES_LABEL trans 'Article' %}</a></div>
++            <div><a href="{{ article.get_absolute_url }}">&laquo; {% trans "Back to the" %} {% trans MODULE_ARTICLES_LABEL %}</a></div>
+         </div>
+     </div>
+ 
+diff --git a/tendenci/apps/articles/templates/articles/search.html b/tendenci/apps/articles/templates/articles/search.html
+index feb19f73e..ec56a201b 100644
+--- a/tendenci/apps/articles/templates/articles/search.html
++++ b/tendenci/apps/articles/templates/articles/search.html
+@@ -7,18 +7,12 @@
+ {% load search_tags %}
+ 
+ 
+-{% block title %}
+-    {% if MODULE_ARTICLES_LABEL_PLURAL %}
+-        {% blocktrans %}{{ MODULE_ARTICLES_LABEL_PLURAL }} List{% endblocktrans %}
+-    {% else %}
+-        {% trans "Articles List" %}
+-    {% endif %} - {{ block.super }}
+-{% endblock %}
++{% block title %}{% trans MODULE_ARTICLES_LABEL_PLURAL %} {% trans "List" %} - {{ block.super}}{% endblock %}
+ 
+ {% block extra_head %}
+     {{ block.super }}
+     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css">
+-    <link rel="alternate" type="application/rss+xml" title="{% trans 'Latest' %} {% firstof MODULE_ARTICLES_LABEL_PLURAL 'Articles' %}" href="{% url 'article.feed' %}" />
++    <link rel="alternate" type="application/rss+xml" title="{% trans 'Latest' %} {% trans MODULE_ARTICLES_LABEL_PLURAL %}" href="{% url 'article.feed' %}" />
+ {% endblock %}
+ 
+ {% block content_classes %}{{ block.super }} t-search-view{% endblock %}
+@@ -26,11 +20,7 @@
+ {% block content %}
+     <h1>
+         {% firstof trans SITE_GLOBAL_SITEPRIMARYKEYWORDS trans SITE_GLOBAL_SITEDISPLAYNAME %}
+-        {% if MODULE_ARTICLES_LABEL_PLURAL %}
+-            {% blocktrans %}{{ MODULE_ARTICLES_LABEL_PLURAL }} List{% endblocktrans %}
+-        {% else %}
+-            {% trans "Articles List" %}
+-        {% endif %}
++        {% trans MODULE_ARTICLES_LABEL_PLURAL %} {% trans "List" %}
+     </h1>
+ 
+     {% autopaginate articles 10 %}
+@@ -38,19 +28,13 @@
+ 
+     <h4 class="capitalize">
+         <em>
+-            {% if MODULE_ARTICLES_LABEL_PLURAL and MODULE_ARTICLES_LABEL %}
+-                {% blocktrans count obj_count=paginator.count %}
+-                    {{ obj_count }} {{ MODULE_ARTICLES_LABEL }} Found
+-                {% plural %}
+-                    {{ obj_count }} {{ MODULE_ARTICLES_LABEL_PLURAL }} Found
+-                {% endblocktrans %}
+-            {% else %}
+-                {% blocktrans count obj_count=paginator.count %}
+-                    {{ obj_count }} Article Found
+-                {% plural %}
+-                    {{ obj_count }} Articles Found
+-                {% endblocktrans %}
+-            {% endif %}
++            {% trans MODULE_ARTICLES_LABEL as MODULE_ARTICLES_LABEL_trans %}
++            {% trans MODULE_ARTICLES_LABEL_PLURAL as MODULE_ARTICLES_LABEL_PLURAL_trans %}
++            {% blocktrans count obj_count=paginator.count %}
++                {{ obj_count }} {{ MODULE_ARTICLES_LABEL_trans }} Found
++            {% plural %}
++                {{ obj_count }} {{ MODULE_ARTICLES_LABEL_PLURAL_trans }} Found
++            {% endblocktrans %}
+         </em>
+     </h4>
+ 
+@@ -59,15 +43,7 @@
+             {% search_result article %}
+         {% empty %}
+             {% if user.profile.is_superuser %}
+-                <p><a href="{% url 'article.add' %}">
+-                    {% if MODULE_ARTICLES_LABEL %}
+-                        {% blocktrans %}
+-                            Add a New {{ MODULE_ARTICLES_LABEL }}
+-                        {% endblocktrans %}
+-                    {% else %}
+-                        {% trans "Add a New Article" %}
+-                    {% endif %}
+-                </a></p>
++                <p><a href="{% url 'article.add' %}">{% trans "Add a New" %} {% trans MODULE_ARTICLES_LABEL %}</a></p>
+             {% endif %}
+         {% endfor %}
+     </section>
+diff --git a/tendenci/apps/articles/templates/articles/top_nav.html b/tendenci/apps/articles/templates/articles/top_nav.html
+index 0d5ce0017..69f6de10a 100644
+--- a/tendenci/apps/articles/templates/articles/top_nav.html
++++ b/tendenci/apps/articles/templates/articles/top_nav.html
+@@ -8,7 +8,7 @@
+     <li class="dropdown">
+         <button type="button" class="btn btn-primary" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {% spaceless %}
+             <img class="nav-icon" src="{% static 'famfamfam/icons/page_green.png' %}">
+-            <span class="nav-label">{% firstof MODULE_ARTICLES_LABEL_PLURAL trans "Articles" %}</span>
++            <span class="nav-label">{% trans MODULE_ARTICLES_LABEL_PLURAL %}</span>
+             <span class="caret"></span>
+         {% endspaceless %}</button>
+ 
+diff --git a/tendenci/apps/articles/templates/articles/top_nav_items.html b/tendenci/apps/articles/templates/articles/top_nav_items.html
+index 38f69bd5e..c41b7de3f 100644
+--- a/tendenci/apps/articles/templates/articles/top_nav_items.html
++++ b/tendenci/apps/articles/templates/articles/top_nav_items.html
+@@ -23,14 +23,14 @@
+                 <ul class="list-unstyled content-dropdown-col col-sm-12 col-xs-12">
+                     {% if app_object %}
+                         <li>
+-                            <span class="content-head text-content-head">{% trans "All" %} {% firstof MODULE_ARTICLES_LABEL_PLURAL trans "Articles" %}</span>
++                            <span class="content-head text-content-head">{% trans "All" %} {% trans MODULE_ARTICLES_LABEL_PLURAL %}</span>
+                         </li>
+                     {% endif %}
+ 
+                     {% if can_add_article %}
+                         <li class="content-item">
+                             <span class="app-name">
+-                                <a href="{% url 'article.add' %}">{% trans "Add" %} {% firstof MODULE_ARTICLES_LABEL trans "Article" %}</a>
++                                <a href="{% url 'article.add' %}">{% trans "Add" %} {% trans MODULE_ARTICLES_LABEL %}</a>
+                             </span>
+                         </li>
+                     {% endif %}
+@@ -38,14 +38,14 @@
+                     {% if request.user.is_superuser %}
+                         <li class="content-item">
+                             <span class="app-name">
+-                                <a href="{% url 'article.export' %}">{% trans "Export" %} {% firstof MODULE_ARTICLES_LABEL trans "Article" %}</a>
++                                <a href="{% url 'article.export' %}">{% trans "Export" %} {% trans MODULE_ARTICLES_LABEL %}</a>
+                             </span>
+                         </li>
+                     {% endif %}
+ 
+                     <li class="content-item">
+                         <span class="app-name">
+-                            <a href="{% url 'articles' %}">{% trans "Latest" %} {% firstof MODULE_ARTICLES_LABEL_PLURAL trans "Articles" %}</a>
++                            <a href="{% url 'articles' %}">{% trans "Latest" %} {% trans MODULE_ARTICLES_LABEL_PLURAL %}</a>
+                         </span>
+                     </li>
+ 
+@@ -58,17 +58,17 @@
+                     {% endif %}
+                 </ul>
+ 
+-                {% if app_object %}
++                {% if app_object and app_object.pk %}
+                     {% if can_view_article or can_edit_article %}
+                         <ul class="list-unstyled content-dropdown-col col-sm-12 col-xs-12">
+                             <li>
+-                                <span class="content-head text-content-head">{% trans "This" %} {% firstof MODULE_ARTICLES_LABEL trans "Article" %}</span>
++                                <span class="content-head text-content-head">{% trans "This" %} {% trans MODULE_ARTICLES_LABEL %}</span>
+                             </li>
+ 
+                             {% if can_view_article %}
+                                 <li class="content-item">
+                                     <span class="app-name">
+-                                        <a href="{{ app_object.get_absolute_url }}">{% trans "View" %} {% firstof MODULE_ARTICLES_LABEL trans "Article" %}</a>
++                                        <a href="{{ app_object.get_absolute_url }}">{% trans "View" %} {% trans MODULE_ARTICLES_LABEL %}</a>
+                                     </span>
+                                 </li>
+                             {% endif %}
+@@ -76,7 +76,7 @@
+                             {% if can_edit_article %}
+                                 <li class="content-item">
+                                     <span class="app-name">
+-                                        <a href="{% url 'article.edit' app_object.pk %}">{% trans "Edit" %} {% firstof MODULE_ARTICLES_LABEL trans "Article" %}</a>
++                                        <a href="{% url 'article.edit' app_object.pk %}">{% trans "Edit" %} {% trans MODULE_ARTICLES_LABEL %}</a>
+                                     </span>
+                                 </li>
+ 
+@@ -98,7 +98,7 @@
+ 
+                                 <li class="content-item">
+                                     <span class="app-name">
+-                                        <a class="delete" href="{% url 'article.delete' app_object.pk %}">{% trans "Delete" %} {% firstof MODULE_ARTICLES_LABEL trans "Article" %}</a>
++                                        <a class="delete" href="{% url 'article.delete' app_object.pk %}">{% trans "Delete" %} {% trans MODULE_ARTICLES_LABEL %}</a>
+                                     </span>
+                                 </li>
+                             {% endif %}
+diff --git a/tendenci/apps/articles/templates/notification/article_deleted/full.html b/tendenci/apps/articles/templates/notification/article_deleted/full.html
+index 2f68573ae..93bd2ca00 100644
+--- a/tendenci/apps/articles/templates/notification/article_deleted/full.html
++++ b/tendenci/apps/articles/templates/notification/article_deleted/full.html
+@@ -9,8 +9,10 @@
+ </head>
+ 
+ <body bgcolor="#ffffff" text="#000000">
+-<p>{% blocktrans with display_name=SITE_GLOBAL_SITEDISPLAYNAME %}A record has been deleted
+-  from the {{ display_name }} module{% endblocktrans %}{% firstof MODULE_ARTICLES_LABEL 'Articles' %}.  {% trans "The details are given below:" %}</p>
++{% trans SITE_GLOBAL_SITEDISPLAYNAME as SITE_GLOBAL_SITEDISPLAYNAME_trans %}
++{% trans MODULE_ARTICLES_LABEL as MODULE_ARTICLES_LABEL_trans %}
++<p>{% blocktrans %}A record has been deleted from the {{ MODULE_ARTICLES_LABEL_trans }} module
++  on the {{ SITE_GLOBAL_SITEDISPLAYNAME_trans }} site.{% endblocktrans %}  {% trans "The details are given below:" %}</p>
+ 
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+@@ -32,4 +34,4 @@
+ <P>{% trans "Time submitted:" %} {% now "D d M Y P" %}</P>
+ 
+ </body>
+-</html>
+\ No newline at end of file
++</html>
+diff --git a/tendenci/apps/boxes/settings.json b/tendenci/apps/boxes/settings.json
+index 0e0adcbe2..0f0499f2a 100644
+--- a/tendenci/apps/boxes/settings.json
++++ b/tendenci/apps/boxes/settings.json
+@@ -15,5 +15,39 @@
+         "scope_category": "boxes",
+         "store": true,
+         "updated_by": ""
++    },
++    {
++        "default_value": "Box",
++        "description": "The singular name of the plugin.",
++        "data_type": "string",
++        "update_dt": "2011-11-29 13:32:43",
++        "input_type": "text",
++        "client_editable": true,
++        "name": "label",
++        "value": "Box",
++        "label": "Label",
++        "input_value": " ",
++        "parent_id": 0,
++        "scope": "module",
++        "scope_category": "boxes",
++        "store": false,
++        "updated_by": ""
++    },
++    {
++        "default_value": "Boxes",
++        "description": "The plural name of the plugin.",
++        "data_type": "string",
++        "update_dt": "2011-11-29 13:32:43",
++        "input_type": "text",
++        "client_editable": true,
++        "name": "label_plural",
++        "value": "Boxes",
++        "label": "Label (Plural)",
++        "input_value": " ",
++        "parent_id": 0,
++        "scope": "module",
++        "scope_category": "boxes",
++        "store": false,
++        "updated_by": ""
+     }
+ ]
+diff --git a/tendenci/apps/boxes/templates/boxes/export.html b/tendenci/apps/boxes/templates/boxes/export.html
+index be0691f64..61a836f88 100644
+--- a/tendenci/apps/boxes/templates/boxes/export.html
++++ b/tendenci/apps/boxes/templates/boxes/export.html
+@@ -7,11 +7,7 @@
+ {% block content %}
+     <h1>
+         {% firstof trans SITE_GLOBAL_SITEPRIMARYKEYWORDS trans SITE_GLOBAL_SITEDISPLAYNAME %}
+-        {% if MODULE_BOXES_LABEL_PLURAL %}
+-            {% blocktrans with label_plural=MODULE_BOXES_LABEL_PLURAL %}{{ label_plural }} Export{% endblocktrans %}
+-        {% else %}
+-            {% trans "Boxes Export" %}
+-        {% endif %}
++        {% trans MODULE_BOXES_LABEL_PLURAL %} {% trans "Export" %}
+     </h1>
+ 
+     <form id="t-boxes-export-form" class="form-inline t-export-form" action="." method="POST" >{% csrf_token %}
+diff --git a/tendenci/apps/campaign_monitor/templates/campaign_monitor/base.html b/tendenci/apps/campaign_monitor/templates/campaign_monitor/base.html
+index a8802875a..3b35fb359 100644
+--- a/tendenci/apps/campaign_monitor/templates/campaign_monitor/base.html
++++ b/tendenci/apps/campaign_monitor/templates/campaign_monitor/base.html
+@@ -5,15 +5,7 @@
+ 
+ {% block title %}
+     {% if SITE_GLOBAL_SITEPRIMARYKEYWORDS %}{% blocktrans with keys=SITE_GLOBAL_SITEPRIMARYKEYWORDS %}{{ keys }}{% endblocktrans %}: {% endif %}
+-    {% if MODULE_CAMPAIGN_MONITOR_LABEL %}
+-        {% blocktrans with label=MODULE_CAMPAIGN_MONITOR_LABEL display_name=SITE_GLOBAL_SITEDISPLAYNAME location=SITE_GLOBAL_SITEGEOGRAPHICLOCATION %}
+-            {{ label }} for {{ display_name }} in {{ location }}
+-        {% endblocktrans %}
+-    {% else %}
+-        {% blocktrans with display_name=SITE_GLOBAL_SITEDISPLAYNAME location=SITE_GLOBAL_SITEGEOGRAPHICLOCATION %}
+-            Campaign Monitor for {{ display_name }} in {{ location }}
+-        {% endblocktrans %}
+-    {% endif %}
++    {% trans "Campaign Monitor" %} {% trans "for" %} {% trans SITE_GLOBAL_SITEDISPLAYNAME %} {% trans "in" %} {% trans SITE_GLOBAL_SITEGEOGRAPHICLOCATION %}
+ {% endblock %}
+ 
+ {% block extra_head %}
+diff --git a/tendenci/apps/photos/settings.json b/tendenci/apps/photos/settings.json
+index 6d0f1f9d6..d73c59b68 100644
+--- a/tendenci/apps/photos/settings.json
++++ b/tendenci/apps/photos/settings.json
+@@ -51,7 +51,7 @@
+         "updated_by": ""
+     },
+     {
+-		"name": "photoordering",
++        "name": "photoordering",
+         "value": "descending",
+         "label": "Photo Ordering",
+         "input_value": "ascending, descending",
+diff --git a/tendenci/apps/psd_labels.json b/tendenci/apps/psd_labels.json
+new file mode 100644
+index 000000000..b69ba9be4
+--- /dev/null
++++ b/tendenci/apps/psd_labels.json
+@@ -0,0 +1,34 @@
++    {
++        "default_value": "Box",
++        "description": "The singular name of the plugin.",
++        "data_type": "string",
++        "update_dt": "2011-11-29 13:32:43",
++        "input_type": "text",
++        "client_editable": true,
++        "name": "label",
++        "value": "Box",
++        "label": "Label",
++        "input_value": " ",
++        "parent_id": 0,
++        "scope": "module",
++        "scope_category": "boxes",
++        "store": false,
++        "updated_by": ""
++    },
++    {
++        "default_value": "Boxes",
++        "description": "The plural name of the plugin.",
++        "data_type": "string",
++        "update_dt": "2011-11-29 13:32:43",
++        "input_type": "text",
++        "client_editable": true,
++        "name": "label_plural",
++        "value": "Boxes",
++        "label": "Label (Plural)",
++        "input_value": " ",
++        "parent_id": 0,
++        "scope": "module",
++        "scope_category": "boxes",
++        "store": false,
++        "updated_by": ""
++    }
+diff --git a/tendenci/apps/psd_tmp b/tendenci/apps/psd_tmp
+new file mode 100644
+index 000000000..7f9f3390c
+--- /dev/null
++++ b/tendenci/apps/psd_tmp
+@@ -0,0 +1,6 @@
++grep -R MODULE_ * | perl -ne 'm/(MODULE_[^ ]+)/; print "$1\n";'|sort | uniq > sets
++cat sets | perl -ne 'chomp $_; $count++; print "$count {{$_}}\n";' > sets.html
++
++:%s/firstof \(MODULE_\S\+\) trans [^%]\+/trans \1 /gc
++
++http://cca.aprildh.com/pages/add/
