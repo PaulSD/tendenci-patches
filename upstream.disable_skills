@@ -6,6 +6,9 @@ form adds a record to the "social_services_skillset" table in the database, whic
 when the PullSite script is run in a cron job.
 
 To eliminate this unnecessary button and avoid these messages, we must remove the button in code.
+
+("Relief Assessments" == social_services)
+
 diff --git a/tendenci/apps/corporate_memberships/templates/corporate_memberships/roster_meta.html b/tendenci/apps/corporate_memberships/templates/corporate_memberships/roster_meta.html
 index 4c988cc36..1dd07a454 100644
 --- a/tendenci/apps/corporate_memberships/templates/corporate_memberships/roster_meta.html

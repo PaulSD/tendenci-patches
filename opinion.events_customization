@@ -89,16 +89,16 @@ index ba06c736f..92f3e3e4e 100644
  
      {% event_list date type 'single_day' as events %}
      {% for event in events %}
-@@ -135,23 +116,13 @@
+@@ -135,25 +116,13 @@
              </form>
          </div>
      {% empty %}
--        <div class="no-events">{% trans "No events here, yet. " %}
-+        <div class="no-events">{% trans "No events scheduled on this day." %}
-+        {% comment %}
-             <a href="{% url "event.add" date.year date.month date.day %}">
-             {% trans "I would like to add one." %}</a></div>
-+        {% endcomment %}
+-        <div class="no-events">{% trans "No events are currently scheduled on this day." %}
++        <div class="no-events">{% trans "No events are currently scheduled on this day." %}
+             {% comment %}
+             <br/><a href="{% url "event.add" date.year date.month date.day %}">{% trans "Add an event" %}</a>
+             {% endcomment %}
+         </div>
      {% endfor %}
  
 -    {% if events %}

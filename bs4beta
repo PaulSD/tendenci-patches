@@ -353,7 +353,7 @@ index a84555244..15aa606f6 100644
              {% for app in app_list %}
                  {% if app.name|check_enabled %}
 diff --git a/tendenci/templates/base.html b/tendenci/templates/base.html
-index 4163a5406..da4b70f58 100644
+index 0a8b9f195..2997b4a10 100644
 --- a/tendenci/templates/base.html
 +++ b/tendenci/templates/base.html
 @@ -107,7 +107,7 @@
@@ -390,7 +390,7 @@ index a80eb6659..93f206650 100644
                  {% nav 1 %}
              </div>
 diff --git a/tendenci/templates/top_menu/_apps_dropdown.html b/tendenci/templates/top_menu/_apps_dropdown.html
-index f6669ce64..24abd30ac 100644
+index 05fd7859b..afce9f52d 100644
 --- a/tendenci/templates/top_menu/_apps_dropdown.html
 +++ b/tendenci/templates/top_menu/_apps_dropdown.html
 @@ -2,8 +2,8 @@
@@ -405,7 +405,7 @@ index f6669ce64..24abd30ac 100644
      </a>
  
 diff --git a/tendenci/templates/top_menu/_community_dropdown.html b/tendenci/templates/top_menu/_community_dropdown.html
-index 2dd9e6c4e..bd7e36976 100644
+index 14fa75ee9..017645d36 100644
 --- a/tendenci/templates/top_menu/_community_dropdown.html
 +++ b/tendenci/templates/top_menu/_community_dropdown.html
 @@ -4,8 +4,8 @@
@@ -420,7 +420,7 @@ index 2dd9e6c4e..bd7e36976 100644
      </a>
  
 diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
-index f0d4d5ff6..46e659b24 100644
+index 006939505..f4e8edb7e 100644
 --- a/tendenci/templates/top_menu/_profile_dropdown.html
 +++ b/tendenci/templates/top_menu/_profile_dropdown.html
 @@ -4,8 +4,8 @@
@@ -435,7 +435,7 @@ index f0d4d5ff6..46e659b24 100644
              {% if USER_IS_SUPERUSER %}
                  <img class="nav-icon" src="{% static 'famfamfam/icons/user_orange.png' %}">
 diff --git a/tendenci/templates/top_menu/_support_dropdown.html b/tendenci/templates/top_menu/_support_dropdown.html
-index d7a8a1444..6a59a3588 100644
+index 8d2c13cce..a8af45413 100644
 --- a/tendenci/templates/top_menu/_support_dropdown.html
 +++ b/tendenci/templates/top_menu/_support_dropdown.html
 @@ -2,8 +2,8 @@
@@ -450,12 +450,12 @@ index d7a8a1444..6a59a3588 100644
              <img width="16" height="16" class="nav-icon" src="{% static 'images/icons/tendenci_white.png' %}"/>
              <span class="nav-label">{% trans "Support" %}</span>
 diff --git a/tendenci/templates/top_menu/admin_top-new.html b/tendenci/templates/top_menu/admin_top-new.html
-index e3c07c9e6..068781915 100644
+index 71adfacff..529ce699f 100644
 --- a/tendenci/templates/top_menu/admin_top-new.html
 +++ b/tendenci/templates/top_menu/admin_top-new.html
-@@ -3,23 +3,20 @@
+@@ -2,23 +2,20 @@
+ {% load staticfiles %}
  {% load page_tags %}
- 
  
 -<div id="t-admin-megamenu" class="navbar-inverse navbar-fixed-top yamm t-megamenu" role="navigation">
 +<div id="t-admin-megamenu" class="navbar navbar-expand-xl navbar-dark bg-dark navbar-fixed-top yamm t-megamenu" role="navigation">
@@ -483,10 +483,10 @@ index e3c07c9e6..068781915 100644
                  {% include 'top_menu/_profile_dropdown.html' %}
  
                  {% include 'top_menu/_community_dropdown.html' %}
-@@ -30,8 +27,8 @@
-                 {% include 'top_menu/_support_dropdown.html' %}
-                 {% endif %}
- 
+@@ -29,8 +26,8 @@
+                 {% include 'top_menu/_reports_dropdown.html' %}
+ 				{% endif %}
+ 				
 -                <li class="dropdown">
 -                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% spaceless %}
 +                <li class="nav-item dropdown">
@@ -494,41 +494,36 @@ index e3c07c9e6..068781915 100644
                          <img class="nav-icon" src="{% block nav_icon_url %}{% static 'famfamfam/icons/page_white_stack.png' %}{% endblock %}">
                          <span class="nav-label">{% block nav_label %}{% trans "Pages" %}{% endblock %}</span>
                      {% endspaceless %}</a>
-@@ -49,7 +46,7 @@
-                 </li>
+@@ -48,10 +45,13 @@
+               </li>
              </ul>
  
 -            <ul class="nav navbar-nav navbar-right inner-top-nav">
 +            <ul class="navbar-nav ml-auto inner-top-nav">
-                 {% if USE_I18N %}
-                     {% include 'top_menu/change_lang-new.html' %}
-                 {% else %}
-@@ -62,8 +59,8 @@
-                     </li>
+                 {% if USER_IS_SUPERUSER %}				
+                 {% include 'top_menu/_support_dropdown.html' %}
                  {% endif %}
- 
--                <li>
--                    <a href="{% url 'auth_logout' %}" id="t-megamenu-logout"><span class="glyph">&#88;</span><span class="nav-label">{% trans "Logout" %}</span></a>
-+                <li class="my-auto">
-+                    <a href="{% url 'auth_logout' %}" id="t-megamenu-logout"><i class="fa fa-sign-out" aria-hidden="true"></i><span class="nav-label">{% trans "Sign Out" %}</span></a>
-                 </li>
++                {% if USE_I18N %}
++                {% include 'top_menu/change_lang-new.html' %}
++                {% endif %}
              </ul>
          </div>
+     </div>
 diff --git a/tendenci/templates/top_menu/change_lang-new.html b/tendenci/templates/top_menu/change_lang-new.html
-index d5873e219..7ce0ef22c 100644
+index 908c81a63..68ea8caa9 100644
 --- a/tendenci/templates/top_menu/change_lang-new.html
 +++ b/tendenci/templates/top_menu/change_lang-new.html
-@@ -1,10 +1,10 @@
- {% load i18n %}
+@@ -3,10 +3,10 @@
  
- 
+ <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+       <ul class="nav navbar-nav">
 -<li class="dropdown">
 +<li class="nav-item dropdown">
      {% with request.user.profile.lang as user_lang %}
 -        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
--            <i class="fa fa-globe"></i>{% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span>
+-            <i class="fa fa-globe"></i>{% trans 'Language:' %} {% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span>
 +        <a href="#" class="nav-link dropdown-toggle" data-toggle4="dropdown" role="button" aria-expanded="false">
-+            <i class="fa fa-globe" aria-hidden="true"></i>{% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span>
++            <i class="fa fa-globe" aria-hidden="true"></i>{% trans 'Language:' %} {% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span>
          </a>
  
          <ul id="t-megamenu-lang-dd" class="dropdown-menu lang-dropdown" role="menu">

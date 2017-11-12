@@ -49,7 +49,7 @@ index 2b456711f..a84555244 100644
              {% for app in app_list %}
                  {% if app.name|check_enabled %}
 diff --git a/tendenci/templates/top_menu/_apps_dropdown.html b/tendenci/templates/top_menu/_apps_dropdown.html
-index ddad3c150..f6669ce64 100644
+index 4077ae479..05fd7859b 100644
 --- a/tendenci/templates/top_menu/_apps_dropdown.html
 +++ b/tendenci/templates/top_menu/_apps_dropdown.html
 @@ -5,8 +5,6 @@
@@ -62,7 +62,7 @@ index ddad3c150..f6669ce64 100644
  
      <ul id="t-admin-megamenu-apps-dd" class="dropdown-menu apps-dropdown" role="menu">
 diff --git a/tendenci/templates/top_menu/_community_dropdown.html b/tendenci/templates/top_menu/_community_dropdown.html
-index 6550b1cea..94f363820 100644
+index 1587cd0a6..62bcd2f5b 100644
 --- a/tendenci/templates/top_menu/_community_dropdown.html
 +++ b/tendenci/templates/top_menu/_community_dropdown.html
 @@ -5,7 +5,7 @@
@@ -73,9 +73,9 @@ index 6550b1cea..94f363820 100644
 +        <img class="nav-icon" src="{% static 'famfamfam/icons/application.png' %}"/><span class="nav-label">{% trans "Community" %}</span>
      </a>
  
-     {% get_community_dropdown_column_size as col_size %}
+     <ul id="t-admin-megamenu-community-dd" class="dropdown-menu community-dropdown" role="menu">
 diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
-index eddc0bc92..f0d4d5ff6 100644
+index 553293cf4..006939505 100644
 --- a/tendenci/templates/top_menu/_profile_dropdown.html
 +++ b/tendenci/templates/top_menu/_profile_dropdown.html
 @@ -16,7 +16,7 @@
@@ -88,7 +88,7 @@ index eddc0bc92..f0d4d5ff6 100644
      </a>
  
 diff --git a/tendenci/templates/top_menu/_support_dropdown.html b/tendenci/templates/top_menu/_support_dropdown.html
-index 204e18a9c..d7a8a1444 100644
+index e2e079bce..8d2c13cce 100644
 --- a/tendenci/templates/top_menu/_support_dropdown.html
 +++ b/tendenci/templates/top_menu/_support_dropdown.html
 @@ -7,7 +7,6 @@
@@ -100,10 +100,10 @@ index 204e18a9c..d7a8a1444 100644
      </a>
  
 diff --git a/tendenci/templates/top_menu/admin_top-new.html b/tendenci/templates/top_menu/admin_top-new.html
-index 485c42c68..e3c07c9e6 100644
+index a8ce7889e..71adfacff 100644
 --- a/tendenci/templates/top_menu/admin_top-new.html
 +++ b/tendenci/templates/top_menu/admin_top-new.html
-@@ -34,7 +34,6 @@
+@@ -33,7 +33,6 @@
                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% spaceless %}
                          <img class="nav-icon" src="{% block nav_icon_url %}{% static 'famfamfam/icons/page_white_stack.png' %}{% endblock %}">
                          <span class="nav-label">{% block nav_label %}{% trans "Pages" %}{% endblock %}</span>
@@ -112,15 +112,15 @@ index 485c42c68..e3c07c9e6 100644
  
                      {# Block containing the navigation for the current app #}
 diff --git a/tendenci/templates/top_menu/change_lang-new.html b/tendenci/templates/top_menu/change_lang-new.html
-index 34fa51a25..d5873e219 100644
+index 57e60a72d..908c81a63 100644
 --- a/tendenci/templates/top_menu/change_lang-new.html
 +++ b/tendenci/templates/top_menu/change_lang-new.html
-@@ -4,7 +4,7 @@
+@@ -6,7 +6,7 @@
  <li class="dropdown">
      {% with request.user.profile.lang as user_lang %}
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
--            <i class="fa fa-globe"></i>{% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span><span class="caret"></span>
-+            <i class="fa fa-globe"></i>{% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span>
+-            <i class="fa fa-globe"></i>{% trans 'Language:' %} {% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span><span class="caret"></span>
++            <i class="fa fa-globe"></i>{% trans 'Language:' %} {% get_language_info for user_lang as l %}<span class="nav-label">{{ l.name_local }}</span>
          </a>
  
          <ul id="t-megamenu-lang-dd" class="dropdown-menu lang-dropdown" role="menu">

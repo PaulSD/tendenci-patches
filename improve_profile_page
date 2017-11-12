@@ -66,20 +66,22 @@ index a2c114701..7ee3f4de8 100644
  
                              {% if user.profile.is_staff %}
 diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
-index 9469ae6f6..eddc0bc92 100644
+index 78288b9fc..553293cf4 100644
 --- a/tendenci/templates/top_menu/_profile_dropdown.html
 +++ b/tendenci/templates/top_menu/_profile_dropdown.html
-@@ -69,11 +69,13 @@
-                             {% endif %}
-                              {% endif %}
-                             
-+{% comment %}
-                             {% if MODULE_MEMBERSHIPS_ENABLED %}
-                             <li class="content-item">
-                                 <a href="{% url 'profile.index' %}"><img class="nav-icon" src="{% static 'famfamfam/icons/arrow_join.png' %}"/><span class="nav-label">{% trans 'My Membership' %}</span></a>
+@@ -54,6 +54,7 @@
+                                 </a>
                              </li>
-                             {% endif %}
-+{% endcomment %}
                              
-                             <li class="content-item">
-                                 <a href="{% url 'event.myevents' %}"><img class="nav-icon" src="{% static 'famfamfam/icons/date.png' %}"/><span class="nav-label">{% trans 'My Events' %}</span></a>
++                            {% comment %}
+                             {% if MODULE_MEMBERSHIPS_ENABLED %}
+                             {% with profile.membership as membership %}
+                             {% if membership %}
+@@ -63,6 +64,7 @@
+                             {% endif %}
+                             {% endwith %}
+                             {% endif %}
++                            {% endcomment %}
+ 
+ 							 <li class="content-item">
+                                 <a href="{% url "invoice.search" %}?search_criteria=owner_id&search_text={{ user.id }}&search_method=exact"><img class="nav-icon" src="{% static 'famfamfam/icons/page_white_width.png' %}"/><span class="nav-label">{% trans 'Invoices' %}</span></a>
