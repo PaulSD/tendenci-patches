@@ -128,11 +128,28 @@ index 117be72c4..7ce6d4c62 100644
      background-color: white;
      padding-right: 10px;
  }
+diff --git a/tendenci/apps/invoices/templates/invoices/view.html b/tendenci/apps/invoices/templates/invoices/view.html
+index c1137673f..b17c632fd 100644
+--- a/tendenci/apps/invoices/templates/invoices/view.html
++++ b/tendenci/apps/invoices/templates/invoices/view.html
+@@ -32,6 +32,12 @@
+ {% endif %}
+ 
+ {% if request.user.is_superuser %}
++	<div class="invoice-options">
++	    <ul>
++	        <li><a class="admin-options" href="{% url 'invoice.view' invoice.pk invoice.guid %}">{% trans "Invoice Link" %}</a></li>
++	    </ul>
++	</div>
++
+ 	<div class="invoice-options">
+ 	    <ul>
+ 	        <li><a class="admin-options" href="{% url 'invoice.mark_as_paid' invoice.pk %}">{% trans "Mark as Paid" %}</a></li>
 diff --git a/tendenci/apps/memberships/management/commands/send_membership_notices.py b/tendenci/apps/memberships/management/commands/send_membership_notices.py
-index 0fb1e5702..1acc2e68d 100644
+index d03f5c096..ae55f2d26 100644
 --- a/tendenci/apps/memberships/management/commands/send_membership_notices.py
 +++ b/tendenci/apps/memberships/management/commands/send_membership_notices.py
-@@ -250,7 +250,7 @@ class Command(BaseCommand):
+@@ -264,7 +264,7 @@ class Command(BaseCommand):
                  'referer_url': '%s%s?next=%s' % (site_url, reverse('auth_login'), membership.referer_url),
                  'membership_link': '%s%s' % (site_url, membership.get_absolute_url()),
                  'view_link': '%s%s' % (site_url, membership.get_absolute_url()),
@@ -142,13 +159,14 @@ index 0fb1e5702..1acc2e68d 100644
                  'membershiplink': '%s%s' % (site_url, membership.get_absolute_url()),
                  'renewlink': '%s%s' % (site_url, membership.get_absolute_url())
 diff --git a/tendenci/apps/memberships/models.py b/tendenci/apps/memberships/models.py
-index 3ad623de0..8a5c3c201 100644
+index d0a6d1b08..eecde24d6 100644
 --- a/tendenci/apps/memberships/models.py
 +++ b/tendenci/apps/memberships/models.py
-@@ -582,6 +582,14 @@ class MembershipDefault(TendenciBaseModel):
+@@ -581,6 +581,14 @@ class MembershipDefault(TendenciBaseModel):
+         return ('membership.details', [self.pk])
          # return ('admin:memberships_membershipdefault_change', [self.pk])
  
-     @models.permalink
++    @models.permalink
 +    def get_renewal_url(self):
 +        if not self.app:
 +            self.get_app()
@@ -156,11 +174,10 @@ index 3ad623de0..8a5c3c201 100644
 +            return ('membership_default.renew', [self.app.slug, self.pk])
 +        return ('membership.details', [self.pk])
 +
-+    @models.permalink
+     @models.permalink
      def get_current_membership_url(self):
          """
-         Returns link to url of the most current membership.
-@@ -2165,7 +2173,7 @@ class Notice(models.Model):
+@@ -2169,7 +2177,7 @@ class Notice(models.Model):
              'membership_link': '%s%s' % (global_setting('siteurl'), membership.get_absolute_url()),
              'view_link': '%s%s' % (global_setting('siteurl'), membership.get_absolute_url()),
              'invoice_link': '%s%s' % (global_setting('siteurl'), invoice_link),
@@ -190,7 +207,7 @@ index ad3993cb7..1ca19b9a4 100644
      <form id="t-memberships-application-form" class="form-horizontal clearfix" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
          {% if user_form.errors.values or profile_form.errors.values or demographics_form.errors.values or membership_form.errors.values or education_form.errors.values or captcha_form.errors.values and not is_edit %}
 diff --git a/tendenci/apps/memberships/urls.py b/tendenci/apps/memberships/urls.py
-index b72411a43..469e75fc1 100644
+index f434bf116..60d1d9c64 100644
 --- a/tendenci/apps/memberships/urls.py
 +++ b/tendenci/apps/memberships/urls.py
 @@ -11,7 +11,7 @@ urlpatterns = patterns(
@@ -203,10 +220,10 @@ index b72411a43..469e75fc1 100644
      url(r"^%s/expire/(?P<id>\d+)/$" % urlpath, "expire", name="membership.expire"),
  
 diff --git a/tendenci/apps/memberships/views.py b/tendenci/apps/memberships/views.py
-index c859a87c9..6d68e5581 100644
+index e8ed6fe03..06a48d103 100644
 --- a/tendenci/apps/memberships/views.py
 +++ b/tendenci/apps/memberships/views.py
-@@ -1317,7 +1317,7 @@ def membership_default_edit(request, id, template='memberships/applications/add.
+@@ -1323,7 +1323,7 @@ def membership_default_edit(request, id, template='memberships/applications/add.
  
      membership = get_object_or_404(MembershipDefault, pk=id)
      is_owner = request.user == membership.user
@@ -509,7 +526,7 @@ index de93880df..42db4f9ae 100644
  
      return reminders
 diff --git a/tendenci/templates/top_menu/_community_dropdown.html b/tendenci/templates/top_menu/_community_dropdown.html
-index 632e81898..ddd65b3e3 100644
+index 62bcd2f5b..14fa75ee9 100644
 --- a/tendenci/templates/top_menu/_community_dropdown.html
 +++ b/tendenci/templates/top_menu/_community_dropdown.html
 @@ -3,6 +3,7 @@
@@ -520,7 +537,7 @@ index 632e81898..ddd65b3e3 100644
  <li class="dropdown">
      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
          <img class="nav-icon" src="{% static 'famfamfam/icons/application.png' %}"/><span class="nav-label">{% trans "Community" %}</span>
-@@ -90,3 +91,4 @@
+@@ -93,3 +94,4 @@
          </li>
      </ul>
  </li>
