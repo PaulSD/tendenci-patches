@@ -12,16 +12,16 @@ There should be a setting to manage this without changing code.
 ("Relief Assessments" == social_services)
 
 diff --git a/tendenci/apps/corporate_memberships/templates/corporate_memberships/roster_meta.html b/tendenci/apps/corporate_memberships/templates/corporate_memberships/roster_meta.html
-index 4c988cc36..1dd07a454 100644
+index d026a52ad..e50a6e680 100644
 --- a/tendenci/apps/corporate_memberships/templates/corporate_memberships/roster_meta.html
 +++ b/tendenci/apps/corporate_memberships/templates/corporate_memberships/roster_meta.html
 @@ -44,9 +44,6 @@
- 	                <li>
- 	                    <a href="{% url "profile.edit_perms" m_user.id %}" class="permissions" title="Edit Permissions">{% trans "Permissions" %}</a>
- 	                </li>
--	                <li>
--	                    <a href="{% url "user.skills_edit" m_user.username %}" class="skills" title="Edit Skills">{% trans "Edit Skills" %}</a>
--	                </li>
+                     <li>
+                         <a href="{% url "profile.edit_perms" m_user.id %}" class="permissions" title="Edit Permissions">{% trans "Permissions" %}</a>
+                     </li>
+-                    <li>
+-                        <a href="{% url "user.skills_edit" m_user.username %}" class="skills" title="Edit Skills">{% trans "Edit Skills" %}</a>
+-                    </li>
                  {% endif %}
                  <li>
                      <a href="{% url "membership.delete" membership.id %}" class="delete" title="Delete membership">{% trans "Delete" %}</a>
@@ -40,25 +40,25 @@ index 665eccee2..f1ad92473 100644
  
                  <li>
 diff --git a/tendenci/apps/profiles/templates/profiles/top_nav_items.html b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-index 46a06cade..a2c114701 100644
+index 8eea10da2..cd067188a 100644
 --- a/tendenci/apps/profiles/templates/profiles/top_nav_items.html
 +++ b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-@@ -134,18 +134,6 @@
-                                 
-                                 <li class="content-item">
-                                     <span class="app-name">
+@@ -132,18 +132,6 @@
+                                     </span>
+                                 </li>
+ 
+-                                <li class="content-item">
+-                                    <span class="app-name">
 -                                        <a href="{% url 'user.skills' user_this.username %}">{% trans "View Skills" %}</a>
 -                                    </span>
 -                                </li>
--                                
+-
 -                                <li class="content-item">
 -                                    <span class="app-name">
 -                                        <a href="{% url 'user.skills_edit' user_this.username %}">{% trans "Edit Skills" %}</a>
 -                                    </span>
 -                                </li>
 -
--                                <li class="content-item">
--                                    <span class="app-name">
+                                 <li class="content-item">
+                                     <span class="app-name">
                                          <a href="{% url 'auth_password_change' user_this.id %}">{% trans "Change Password" %}</a>
-                                     </span>
-                                 </li>

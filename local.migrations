@@ -1,6 +1,6 @@
 diff --git a/tendenci/apps/articles/migrations/0003_auto_20170917_1709.py b/tendenci/apps/articles/migrations/0003_auto_20170917_1709.py
 new file mode 100644
-index 0000000..7e628f5
+index 000000000..7e628f58b
 --- /dev/null
 +++ b/tendenci/apps/articles/migrations/0003_auto_20170917_1709.py
 @@ -0,0 +1,20 @@
@@ -26,7 +26,7 @@ index 0000000..7e628f5
 +    ]
 diff --git a/tendenci/apps/categories/migrations/0002_auto_20170917_1709.py b/tendenci/apps/categories/migrations/0002_auto_20170917_1709.py
 new file mode 100644
-index 0000000..fa9b5ad
+index 000000000..fa9b5ad56
 --- /dev/null
 +++ b/tendenci/apps/categories/migrations/0002_auto_20170917_1709.py
 @@ -0,0 +1,18 @@
@@ -50,7 +50,7 @@ index 0000000..fa9b5ad
 +    ]
 diff --git a/tendenci/apps/contacts/migrations/0003_auto_20170917_1709.py b/tendenci/apps/contacts/migrations/0003_auto_20170917_1709.py
 new file mode 100644
-index 0000000..01cc1a3
+index 000000000..01cc1a3d2
 --- /dev/null
 +++ b/tendenci/apps/contacts/migrations/0003_auto_20170917_1709.py
 @@ -0,0 +1,20 @@
@@ -76,7 +76,7 @@ index 0000000..01cc1a3
 +    ]
 diff --git a/tendenci/apps/corporate_memberships/migrations/0010_auto_20170917_1709.py b/tendenci/apps/corporate_memberships/migrations/0010_auto_20170917_1709.py
 new file mode 100644
-index 0000000..0f23cda
+index 000000000..0f23cda4d
 --- /dev/null
 +++ b/tendenci/apps/corporate_memberships/migrations/0010_auto_20170917_1709.py
 @@ -0,0 +1,24 @@
@@ -106,7 +106,7 @@ index 0000000..0f23cda
 +    ]
 diff --git a/tendenci/apps/directories/migrations/0003_auto_20170917_1709.py b/tendenci/apps/directories/migrations/0003_auto_20170917_1709.py
 new file mode 100644
-index 0000000..1202150
+index 000000000..120215075
 --- /dev/null
 +++ b/tendenci/apps/directories/migrations/0003_auto_20170917_1709.py
 @@ -0,0 +1,20 @@
@@ -132,7 +132,7 @@ index 0000000..1202150
 +    ]
 diff --git a/tendenci/apps/directories/migrations/0006_merge.py b/tendenci/apps/directories/migrations/0006_merge.py
 new file mode 100644
-index 0000000..447886f
+index 000000000..447886fce
 --- /dev/null
 +++ b/tendenci/apps/directories/migrations/0006_merge.py
 @@ -0,0 +1,15 @@
@@ -153,7 +153,7 @@ index 0000000..447886f
 +    ]
 diff --git a/tendenci/apps/events/migrations/0007_auto_20170917_1709.py b/tendenci/apps/events/migrations/0007_auto_20170917_1709.py
 new file mode 100644
-index 0000000..dfe8492
+index 000000000..dfe84924b
 --- /dev/null
 +++ b/tendenci/apps/events/migrations/0007_auto_20170917_1709.py
 @@ -0,0 +1,20 @@
@@ -179,7 +179,7 @@ index 0000000..dfe8492
 +    ]
 diff --git a/tendenci/apps/files/migrations/0004_auto_20170917_1709.py b/tendenci/apps/files/migrations/0004_auto_20170917_1709.py
 new file mode 100644
-index 0000000..3951104
+index 000000000..395110496
 --- /dev/null
 +++ b/tendenci/apps/files/migrations/0004_auto_20170917_1709.py
 @@ -0,0 +1,21 @@
@@ -206,7 +206,7 @@ index 0000000..3951104
 +    ]
 diff --git a/tendenci/apps/forms_builder/forms/migrations/0004_auto_20170917_1709.py b/tendenci/apps/forms_builder/forms/migrations/0004_auto_20170917_1709.py
 new file mode 100644
-index 0000000..a64d8c1
+index 000000000..a64d8c1aa
 --- /dev/null
 +++ b/tendenci/apps/forms_builder/forms/migrations/0004_auto_20170917_1709.py
 @@ -0,0 +1,19 @@
@@ -231,7 +231,7 @@ index 0000000..a64d8c1
 +    ]
 diff --git a/tendenci/apps/forums/migrations/0007_auto_20170917_1709.py b/tendenci/apps/forums/migrations/0007_auto_20170917_1709.py
 new file mode 100644
-index 0000000..45c9b33
+index 000000000..45c9b3309
 --- /dev/null
 +++ b/tendenci/apps/forums/migrations/0007_auto_20170917_1709.py
 @@ -0,0 +1,20 @@
@@ -257,7 +257,7 @@ index 0000000..45c9b33
 +    ]
 diff --git a/tendenci/apps/news/migrations/0006_auto_20170917_1709.py b/tendenci/apps/news/migrations/0006_auto_20170917_1709.py
 new file mode 100644
-index 0000000..20d223f
+index 000000000..20d223f83
 --- /dev/null
 +++ b/tendenci/apps/news/migrations/0006_auto_20170917_1709.py
 @@ -0,0 +1,20 @@
@@ -283,7 +283,7 @@ index 0000000..20d223f
 +    ]
 diff --git a/tendenci/apps/photos/migrations/0002_auto_20170917_1709.py b/tendenci/apps/photos/migrations/0002_auto_20170917_1709.py
 new file mode 100644
-index 0000000..42269fa
+index 000000000..42269fa43
 --- /dev/null
 +++ b/tendenci/apps/photos/migrations/0002_auto_20170917_1709.py
 @@ -0,0 +1,26 @@
@@ -315,7 +315,7 @@ index 0000000..42269fa
 +    ]
 diff --git a/tendenci/apps/profiles/migrations/0007_auto_20170917_1709.py b/tendenci/apps/profiles/migrations/0007_auto_20170917_1709.py
 new file mode 100644
-index 0000000..9baae60
+index 000000000..9baae607f
 --- /dev/null
 +++ b/tendenci/apps/profiles/migrations/0007_auto_20170917_1709.py
 @@ -0,0 +1,20 @@
@@ -341,7 +341,7 @@ index 0000000..9baae60
 +    ]
 diff --git a/tendenci/apps/staff/migrations/0005_auto_20170917_1709.py b/tendenci/apps/staff/migrations/0005_auto_20170917_1709.py
 new file mode 100644
-index 0000000..a01e93b
+index 000000000..a01e93be7
 --- /dev/null
 +++ b/tendenci/apps/staff/migrations/0005_auto_20170917_1709.py
 @@ -0,0 +1,19 @@
@@ -366,7 +366,7 @@ index 0000000..a01e93b
 +    ]
 diff --git a/tendenci/apps/stories/migrations/0003_auto_20170917_1709.py b/tendenci/apps/stories/migrations/0003_auto_20170917_1709.py
 new file mode 100644
-index 0000000..1a92c41
+index 000000000..1a92c41ed
 --- /dev/null
 +++ b/tendenci/apps/stories/migrations/0003_auto_20170917_1709.py
 @@ -0,0 +1,19 @@
@@ -391,7 +391,7 @@ index 0000000..1a92c41
 +    ]
 diff --git a/tendenci/apps/videos/migrations/0009_auto_20170917_1709.py b/tendenci/apps/videos/migrations/0009_auto_20170917_1709.py
 new file mode 100644
-index 0000000..c8b7d3c
+index 000000000..c8b7d3c28
 --- /dev/null
 +++ b/tendenci/apps/videos/migrations/0009_auto_20170917_1709.py
 @@ -0,0 +1,19 @@

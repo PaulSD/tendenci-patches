@@ -1,8 +1,8 @@
 diff --git a/tendenci/apps/base/utils.py b/tendenci/apps/base/utils.py
-index c08ff5cf4..23fb4b274 100644
+index ffc99e7b9..4d63f4f1d 100644
 --- a/tendenci/apps/base/utils.py
 +++ b/tendenci/apps/base/utils.py
-@@ -901,6 +901,7 @@ def get_latest_version():
+@@ -978,6 +978,7 @@ def get_latest_version():
  
  
  def add_tendenci_footer(email_content, content_type='html'):

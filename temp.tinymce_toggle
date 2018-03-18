@@ -1,6 +1,6 @@
 Add a button above TinyMCE fields to allow toggling between TinyMCE and a normal textarea.
 diff --git a/tendenci/libs/tinymce/widgets.py b/tendenci/libs/tinymce/widgets.py
-index 54b31527f..6f0183435 100644
+index 923d9813a..d980bf169 100644
 --- a/tendenci/libs/tinymce/widgets.py
 +++ b/tendenci/libs/tinymce/widgets.py
 @@ -102,7 +102,26 @@ class TinyMCE(forms.Textarea):

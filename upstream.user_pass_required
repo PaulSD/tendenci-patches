@@ -1,8 +1,8 @@
 diff --git a/tendenci/apps/memberships/forms.py b/tendenci/apps/memberships/forms.py
-index e880c150d..827acfda2 100644
+index 5cf13dcb3..9609daffa 100644
 --- a/tendenci/apps/memberships/forms.py
 +++ b/tendenci/apps/memberships/forms.py
-@@ -590,7 +590,7 @@ class UserForm(FormControlWidgetMixin, forms.ModelForm):
+@@ -600,7 +600,7 @@ class UserForm(FormControlWidgetMixin, forms.ModelForm):
                  initial=u'',
                  label=passwd.label,
                  widget=forms.PasswordInput,
@@ -11,7 +11,7 @@ index e880c150d..827acfda2 100644
                  help_text=passwd.help_text
              )
              self.fields['password'].widget.attrs.update({'size': 28})
-@@ -599,20 +599,20 @@ class UserForm(FormControlWidgetMixin, forms.ModelForm):
+@@ -609,20 +609,20 @@ class UserForm(FormControlWidgetMixin, forms.ModelForm):
                  initial=u'',
                  label=_("Confirm password"),
                  widget=forms.PasswordInput,
@@ -35,4 +35,4 @@ index e880c150d..827acfda2 100644
 +                                    'invalid' : _("Allowed characters are letters, digits, dash (-), and underscore (_).")
                                  })
  
-         self.field_names = [name for name in self.fields.keys()]
+         self.field_names = [name for name in self.fields]

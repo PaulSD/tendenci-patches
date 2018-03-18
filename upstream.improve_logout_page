@@ -1,8 +1,8 @@
 diff --git a/tendenci/apps/accounts/urls.py b/tendenci/apps/accounts/urls.py
-index 70d631c70..21b99c915 100644
+index 2332135a0..d935640a4 100644
 --- a/tendenci/apps/accounts/urls.py
 +++ b/tendenci/apps/accounts/urls.py
-@@ -26,7 +26,7 @@ urlpatterns = [
+@@ -22,7 +22,7 @@ urlpatterns = [
  
      url(r'^logout/$',
          auth_views.logout,

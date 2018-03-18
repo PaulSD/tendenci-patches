@@ -129,27 +129,26 @@ index 117be72c4..7ce6d4c62 100644
      padding-right: 10px;
  }
 diff --git a/tendenci/apps/invoices/templates/invoices/view.html b/tendenci/apps/invoices/templates/invoices/view.html
-index c1137673f..b17c632fd 100644
+index 4122bcd44..c4af4f641 100644
 --- a/tendenci/apps/invoices/templates/invoices/view.html
 +++ b/tendenci/apps/invoices/templates/invoices/view.html
-@@ -32,6 +32,12 @@
- {% endif %}
+@@ -34,6 +34,11 @@
+   {% endif %}
  
- {% if request.user.is_superuser %}
-+	<div class="invoice-options">
-+	    <ul>
-+	        <li><a class="admin-options" href="{% url 'invoice.view' invoice.pk invoice.guid %}">{% trans "Invoice Link" %}</a></li>
-+	    </ul>
-+	</div>
-+
- 	<div class="invoice-options">
- 	    <ul>
- 	        <li><a class="admin-options" href="{% url 'invoice.mark_as_paid' invoice.pk %}">{% trans "Mark as Paid" %}</a></li>
+   {% if request.user.is_superuser %}
++  <div class="invoice-options">
++    <ul>
++      <li><a class="admin-options" href="{% url 'invoice.view' invoice.pk invoice.guid %}">{% trans "Invoice Link" %}</a></li>
++    </ul>
++  </div>
+   <div class="invoice-options">
+     <ul>
+       <li><a class="admin-options" href="{% url 'invoice.mark_as_paid' invoice.pk %}">{% trans "Mark as Paid" %}</a></li>
 diff --git a/tendenci/apps/memberships/management/commands/send_membership_notices.py b/tendenci/apps/memberships/management/commands/send_membership_notices.py
-index d03f5c096..ae55f2d26 100644
+index 956d37fd5..97af17ad4 100644
 --- a/tendenci/apps/memberships/management/commands/send_membership_notices.py
 +++ b/tendenci/apps/memberships/management/commands/send_membership_notices.py
-@@ -264,7 +264,7 @@ class Command(BaseCommand):
+@@ -268,7 +268,7 @@ class Command(BaseCommand):
                  'referer_url': '%s%s?next=%s' % (site_url, reverse('auth_login'), membership.referer_url),
                  'membership_link': '%s%s' % (site_url, membership.get_absolute_url()),
                  'view_link': '%s%s' % (site_url, membership.get_absolute_url()),
@@ -159,35 +158,34 @@ index d03f5c096..ae55f2d26 100644
                  'membershiplink': '%s%s' % (site_url, membership.get_absolute_url()),
                  'renewlink': '%s%s' % (site_url, membership.get_absolute_url())
 diff --git a/tendenci/apps/memberships/models.py b/tendenci/apps/memberships/models.py
-index d0a6d1b08..eecde24d6 100644
+index fa2eaa4f7..967987488 100644
 --- a/tendenci/apps/memberships/models.py
 +++ b/tendenci/apps/memberships/models.py
-@@ -581,6 +581,14 @@ class MembershipDefault(TendenciBaseModel):
-         return ('membership.details', [self.pk])
-         # return ('admin:memberships_membershipdefault_change', [self.pk])
+@@ -592,6 +592,13 @@ class MembershipDefault(TendenciBaseModel):
+         return reverse('membership.details', args=[self.pk])
+         #return reverse('admin:memberships_membershipdefault_change', args=[self.pk])
  
-+    @models.permalink
 +    def get_renewal_url(self):
 +        if not self.app:
 +            self.get_app()
 +        if self.app:
-+            return ('membership_default.renew', [self.app.slug, self.pk])
-+        return ('membership.details', [self.pk])
++            return reverse('membership_default.renew', args=[self.app.slug, self.pk])
++        return reverse('membership.details', args=[self.pk])
 +
-     @models.permalink
      def get_current_membership_url(self):
          """
-@@ -2169,7 +2177,7 @@ class Notice(models.Model):
+         Returns link to url of the most current membership.
+@@ -2272,7 +2279,7 @@ class Notice(models.Model):
              'membership_link': '%s%s' % (global_setting('siteurl'), membership.get_absolute_url()),
              'view_link': '%s%s' % (global_setting('siteurl'), membership.get_absolute_url()),
              'invoice_link': '%s%s' % (global_setting('siteurl'), invoice_link),
 -            'renew_link': '%s%s' % (global_setting('siteurl'), membership.get_absolute_url()),
 +            'renew_link': '%s%s' % (global_setting('siteurl'), membership.get_renewal_url()),
+             'link_to_setup_auto_renew': '%s%s' % (global_setting('siteurl'), reverse('memberships.auto_renew_setup', args=[membership.user.id] )),
              'corporate_membership_notice': corporate_msg,
          })
- 
 diff --git a/tendenci/apps/memberships/templates/memberships/applications/add.html b/tendenci/apps/memberships/templates/memberships/applications/add.html
-index ad3993cb7..1ca19b9a4 100644
+index df178ecf6..7fabf7c96 100644
 --- a/tendenci/apps/memberships/templates/memberships/applications/add.html
 +++ b/tendenci/apps/memberships/templates/memberships/applications/add.html
 @@ -87,6 +87,7 @@
@@ -207,23 +205,23 @@ index ad3993cb7..1ca19b9a4 100644
      <form id="t-memberships-application-form" class="form-horizontal clearfix" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
          {% if user_form.errors.values or profile_form.errors.values or demographics_form.errors.values or membership_form.errors.values or education_form.errors.values or captcha_form.errors.values and not is_edit %}
 diff --git a/tendenci/apps/memberships/urls.py b/tendenci/apps/memberships/urls.py
-index f434bf116..60d1d9c64 100644
+index ceb6e2897..fd33098ff 100644
 --- a/tendenci/apps/memberships/urls.py
 +++ b/tendenci/apps/memberships/urls.py
-@@ -11,7 +11,7 @@ urlpatterns = patterns(
+@@ -12,7 +12,7 @@ urlpatterns = [
      # memberships
-     url(r"^%s/$" % urlpath, "membership_index", name="membership.index"),
-     url(r"^%s/search/$" % urlpath, "membership_search", name="membership.search"),
--    url(r"^%s/(?P<id>\d+)/$" % urlpath, "membership_details", name="membership.details"),
-+    url(r"^%s/(?P<id>\d+)/$" % urlpath, "membership_default_edit", name="membership.details"),
-     url(r"^%s/delete/(?P<id>\d+)/$" % urlpath, "delete", name="membership.delete"),
-     url(r"^%s/expire/(?P<id>\d+)/$" % urlpath, "expire", name="membership.expire"),
+     url(r"^%s/$" % urlpath, views.membership_index, name="membership.index"),
+ #     url(r"^%s/search/$" % urlpath, views.membership_search, name="membership.search"),
+-    url(r"^%s/(?P<id>\d+)/$" % urlpath, views.membership_details, name="membership.details"),
++    url(r"^%s/(?P<id>\d+)/$" % urlpath, views.membership_default_edit, name="membership.details"),
+     url(r"^%s/delete/(?P<id>\d+)/$" % urlpath, views.delete, name="membership.delete"),
+     url(r"^%s/expire/(?P<id>\d+)/$" % urlpath, views.expire, name="membership.expire"),
  
 diff --git a/tendenci/apps/memberships/views.py b/tendenci/apps/memberships/views.py
-index e8ed6fe03..06a48d103 100644
+index 4292e9550..f9f608ac0 100644
 --- a/tendenci/apps/memberships/views.py
 +++ b/tendenci/apps/memberships/views.py
-@@ -1323,7 +1323,7 @@ def membership_default_edit(request, id, template='memberships/applications/add.
+@@ -1335,7 +1335,7 @@ def membership_default_edit(request, id, template='memberships/applications/add.
  
      membership = get_object_or_404(MembershipDefault, pk=id)
      is_owner = request.user == membership.user
@@ -279,93 +277,92 @@ index 2b2e76742..1592f214a 100644
      {% if user.is_authenticated %}
          {% if not user.profile.is_superuser %}
 diff --git a/tendenci/apps/profiles/templates/profiles/index.html b/tendenci/apps/profiles/templates/profiles/index.html
-index 9f8adf312..2a3054aea 100644
+index 3154cbaeb..8dbf46bb8 100644
 --- a/tendenci/apps/profiles/templates/profiles/index.html
 +++ b/tendenci/apps/profiles/templates/profiles/index.html
-@@ -33,16 +33,15 @@
+@@ -33,15 +33,14 @@
      <div class="alert alert-warning alert-dismissible" role="alert">
- 	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
- 	  <p>{{ message|safe }}</p>
--        <div class="alert-link">
--            <a class="btn" href="{{ link }}">{{ label }}</a>
--        </div>
- 	</div>
+       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+       <p>{{ message|safe }}</p>
+-      <div class="alert-link">
+-          <a class="btn" href="{{ link }}">{{ label }}</a>
+-      </div>
+     </div>
      {% endfor %}
  
-     <div id="t-view">
+ <div id="t-view">
+ 
      <div class="intro info">
 +        <table>
 +        <tr><td>
          <div class="profile-icon">
--        	{% if user_this == request.user %}
-+               {% if user_this == request.user %}
+             {% if user_this == request.user %}
              <a href="//gravatar.com/" target="_blank" title="Create / update your gravatar">
-                 {% gravatar user_this 128 %}
-             </a>
-@@ -50,43 +49,53 @@
-             	 {% gravatar user_this 128 %}
+@@ -51,7 +50,9 @@
+             {% gravatar user_this 128 %}
              {% endif %}
          </div>
--        
 +        </td>
-+
+ 
 +        <td>
          {% if profile.display_name %}
-             <h1>{% firstof profile.display_name %}</h1>
-             <h3>{% firstof user_this.get_full_name user_this.username %}</h3>
-         {% else %}
-             <h1>{% firstof user_this.get_full_name user_this.username %}</h1>
+         <h1>{% firstof profile.display_name %}</h1>
+         <h3>{% firstof user_this.get_full_name user_this.username %}</h3>
+@@ -59,37 +60,44 @@
+         <h1>{% firstof user_this.get_full_name user_this.username %}</h1>
          {% endif %}
+ 
 +        <table>
-             {% if profile.member_number %}
-             {% if profile|allow_edit_by:user %}
--            <div style="padding-bottom: 1em;">
--            <span class="member-icon">{% trans 'Member ID' %}: {{ profile.member_number}}</span>
-+            <tr><td>
-+            {% trans 'Member ID' %}:
-             </div>
-+            </td><td>
-+            {{ profile.member_number}}
-+            </td></tr>
-             {% endif %}
-             {% endif %}
+         {% if profile.member_number %}
+         {% if profile|allow_edit_by:user %}
+-        <div style="padding-bottom: 1em;">
+-        <span class="member-icon">{% trans 'Member ID' %}: {{ profile.member_number}}</span>
+-        </div>
++        <tr><td>
++        {% trans 'Member ID' %}:
++        </td><td>
++        {{ profile.member_number}}
++        </td></tr>
+         {% endif %}
+         {% endif %}
  
 -        <p><strong>{% trans 'Username' %}:</strong> {{ profile.user.username }}</p>
 +        <tr><td>{% trans 'Username' %}:</td><td>{{ profile.user.username }}</td></tr>
+ 
          {% if profile.company %}
--            <p>{{ profile.company }}</p>
-+            <tr><td></td><td>{{ profile.company }}</td></tr>
+-        <p>{{ profile.company }}</p>
++        <tr><td></td><td>{{ profile.company }}</td></tr>
          {% endif %}
  
          {% if profile.position_title %}
--            <p>{{ profile.position_title }}</p>
-+            <tr><td></td><td>{{ profile.position_title }}</td></tr>
+-        <p>{{ profile.position_title }}</p>
++        <tr><td></td><td>{{ profile.position_title }}</td></tr>
          {% endif %}
  
          {% if city_state %}
--            <p>{{ city_state }}</p>
-+            <tr><td>Location:</td><td>{{ city_state }}</td></tr>
+-        <p>{{ city_state }}</p>
++        <tr><td>Location:</td><td>{{ city_state }}</td></tr>
          {% endif %}
-         
+ 
          {% if user_this.skillset and user_this.skillset.is_first_responder %}
--            <p class="capitalize">{% trans "first responder" %} - <a href="{% url 'user.skills' user_this.username %}">{% trans "see skills" %}</a></p>
-+            <tr><td></td><td><p class="capitalize">{% trans "first responder" %} - <a href="{% url 'user.skills' user_this.username %}">{% trans "see skills" %}</a></p></td></tr>
+-        <p class="capitalize">{% trans "first responder" %} - <a href="{% url 'user.skills' user_this.username %}">{% trans "see skills" %}</a></p>
++        <tr><td></td><td><p class="capitalize">{% trans "first responder" %} - <a href="{% url 'user.skills' user_this.username %}">{% trans "see skills" %}</a></p></td></tr>
          {% endif %}
  
          {% if request.user == user_this or admin %}
          {% if content_counts.invoice > 0 %}
--            <p><a href="{% url "invoice.search" %}?search_criteria=owner_id&search_text={{ user_this.id }}&search_method=exact">{% trans "Invoices" %} ({{ content_counts.invoice }})</a></p>
-+            <tr><td>{% trans "Invoices" %}:</td><td><a href="{% url "invoice.search" %}?search_criteria=owner_id&search_text={{ user_this.id }}&search_method=exact">{{ content_counts.invoice }}</a></td></tr>
+-        <p><a href="{% url "invoice.search" %}?search_criteria=owner_id&search_text={{ user_this.id }}&search_method=exact">{% trans "Invoices" %} ({{ content_counts.invoice }})</a></p>
++        <tr><td></td><td><a href="{% url "invoice.search" %}?search_criteria=owner_id&search_text={{ user_this.id }}&search_method=exact">{% trans "Invoices" %} ({{ content_counts.invoice }})</a></td></tr>
          {% endif %}
          {% endif %}
 +        </table>
-+        </td>
-+        </tr>
++
++        </td></tr>
 +        </table>
  
          <div class="clear"></div>
      </div>
-@@ -99,26 +108,26 @@
+@@ -102,26 +110,26 @@
  
              {% if can_edit or not profile.hide_email %}
              <tr>
@@ -396,45 +393,45 @@ index 9f8adf312..2a3054aea 100644
                  <td>{{ profile.address }} <span class="city-state-zip">{{ city_state_zip }}</span></td>
              </tr>
              {% endif %}
-@@ -194,13 +203,15 @@
-                 <tr>
-                     <td>
-                         {% if request.user.profile.is_superuser or request.user == membership.user %}
--                         <a href="{% url "membership.details" membership.pk %}">{{ membership.membership_type }}
--                        </a>
-+                         <a href="{% url "membership.details" membership.pk %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-+                        {{ membership.membership_type }}
-                         {% else %}
-                         {{ membership.member_number }} {{ membership.membership_type }}
-                         {% endif %}
-                     </td>
-                     <td>
-+                        <span class="badge badge-secondary">{{ membership.get_status|capfirst}}</span>
+@@ -204,7 +212,7 @@
+             <tr>
+                 <td valign="top">
+                     {% if request.user.profile.is_superuser or request.user == membership.user %}
+-                    <a href="{% url "membership.details" membership.pk %}">{{ membership.membership_type }}
++                    <a href="{% url "membership.details" membership.pk %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                     </a>
+                     {% else %}
+                     {{ membership.member_number }} {{ membership.membership_type }}
+@@ -212,6 +220,8 @@
+ 
+                 </td>
+                 <td valign="top">
++                    <span class="badge badge-secondary">{{ membership.get_status|capfirst}}</span>
 +
-                         {{ membership.join_dt|date:"M j, Y" }}
+                     {{ membership.join_dt|date:"M j, Y" }}
  
-                         {% if not membership.is_pending %} - {% firstof membership.expire_dt|date:"M j, Y" "Forever" %}
-@@ -209,15 +220,15 @@
-                         {{ membership.membership_type.expiration_grace_period }} days)
+                     {% if not membership.is_pending %} - {% firstof membership.expire_dt|date:"M j, Y" "Forever" %}
+@@ -220,15 +230,15 @@
+                     {{ membership.membership_type.expiration_grace_period }} days)
  
-                         {% endif %}
+                     {% endif %}
 -
--                        <span class="inner-mitm">{{ membership.get_status|capfirst}}</span>
+-                    <span class="inner-mitm">{{ membership.get_status|capfirst}}</span>
 +                    </td>
 +                    <td>
  
-                         {% if membership.can_renew %}
-                             {% if membership.corporate_membership_id %}
-                                 <a href="{% url "membership_default.renew_under_corp" membership.corporate_membership_id membership.id %}?username={{ membership.user.username }}&membership_type_id={{ membership.membership_type.pk }}">{% trans 'Renew' %}</a>
-                             {% else %}
-                                 {% if membership.app %}
--                                <a href="{% url "membership_default.renew" membership.app.slug membership.id %}?username={{ membership.user.username }}&membership_type_id={{ membership.membership_type.pk }}">{% trans 'Renew' %}</a>
-+                                <a class="btn btn-primary" role="button" href="{% url "membership_default.renew" membership.app.slug membership.id %}?username={{ membership.user.username }}&membership_type_id={{ membership.membership_type.pk }}">{% trans 'Renew' %}</a>
-                                 {% endif %}
-                             {% endif %}
-                         {% endif %}
+                     {% if membership.can_renew %}
+                     {% if membership.corporate_membership_id %}
+                     <a href="{% url "membership_default.renew_under_corp" membership.corporate_membership_id membership.id %}?username={{ membership.user.username }}&membership_type_id={{ membership.membership_type.pk }}">{% trans 'Renew' %}</a>
+                     {% else %}
+                     {% if membership.app %}
+-                    <a href="{% url "membership_default.renew" membership.app.slug membership.id %}?username={{ membership.user.username }}&membership_type_id={{ membership.membership_type.pk }}">{% trans 'Renew' %}</a>
++                    <a class="btn btn-primary" role="button" href="{% url "membership_default.renew" membership.app.slug membership.id %}?username={{ membership.user.username }}&membership_type_id={{ membership.membership_type.pk }}">{% trans 'Renew' %}</a>
+                     {% endif %}
+                     {% endif %}
+                     {% endif %}
 diff --git a/tendenci/apps/profiles/templates/profiles/search-result.html b/tendenci/apps/profiles/templates/profiles/search-result.html
-index a8437a0b6..b56089ad3 100644
+index c3e3673e0..c3b1b8f97 100644
 --- a/tendenci/apps/profiles/templates/profiles/search-result.html
 +++ b/tendenci/apps/profiles/templates/profiles/search-result.html
 @@ -95,11 +95,11 @@
@@ -452,7 +449,7 @@ index a8437a0b6..b56089ad3 100644
                  {% endif %}
              </div>
 diff --git a/tendenci/apps/profiles/templates/profiles/top_nav_items.html b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-index 7ee3f4de8..b036acbe2 100644
+index 4a3ffeaf7..04517dad5 100644
 --- a/tendenci/apps/profiles/templates/profiles/top_nav_items.html
 +++ b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
 @@ -111,11 +111,13 @@
@@ -470,10 +467,10 @@ index 7ee3f4de8..b036acbe2 100644
                                  <li class="content-item">
                                      <span class="app-name">
 diff --git a/tendenci/apps/profiles/utils.py b/tendenci/apps/profiles/utils.py
-index de93880df..42db4f9ae 100644
+index cfe55a8c1..b8365b67f 100644
 --- a/tendenci/apps/profiles/utils.py
 +++ b/tendenci/apps/profiles/utils.py
-@@ -226,30 +226,25 @@ def get_member_reminders(user, view_self=False):
+@@ -225,30 +225,25 @@ def get_member_reminders(user, view_self=False):
  
      reminders = ()
      for membership in memberships:
@@ -513,7 +510,7 @@ index de93880df..42db4f9ae 100644
                      my_msg, renew_link)
                  reminders += ((message, renew_link, 'Renew Now'),)
              else:
-@@ -260,8 +255,9 @@ def get_member_reminders(user, view_self=False):
+@@ -259,8 +254,9 @@ def get_member_reminders(user, view_self=False):
              # not expired, but in renewal period
              if membership.can_renew():
                  message = format_html(
@@ -526,7 +523,7 @@ index de93880df..42db4f9ae 100644
  
      return reminders
 diff --git a/tendenci/templates/top_menu/_community_dropdown.html b/tendenci/templates/top_menu/_community_dropdown.html
-index 62bcd2f5b..14fa75ee9 100644
+index 88d4018c5..80096de1b 100644
 --- a/tendenci/templates/top_menu/_community_dropdown.html
 +++ b/tendenci/templates/top_menu/_community_dropdown.html
 @@ -3,6 +3,7 @@

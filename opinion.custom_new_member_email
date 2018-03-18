@@ -1,8 +1,8 @@
 diff --git a/tendenci/apps/memberships/management/commands/send_membership_notices.py b/tendenci/apps/memberships/management/commands/send_membership_notices.py
-index 8f8eefe65..d03f5c096 100644
+index 68bbfdb67..956d37fd5 100644
 --- a/tendenci/apps/memberships/management/commands/send_membership_notices.py
 +++ b/tendenci/apps/memberships/management/commands/send_membership_notices.py
-@@ -243,9 +243,23 @@ class Command(BaseCommand):
+@@ -247,9 +247,23 @@ class Command(BaseCommand):
                  payment_method_name = membership.payment_method.human_name
              else:
                  payment_method_name = ''
@@ -27,7 +27,7 @@ index 8f8eefe65..d03f5c096 100644
                  'payment_method': payment_method_name,
                  'referer_url': '%s%s?next=%s' % (site_url, reverse('auth_login'), membership.referer_url),
                  'membership_link': '%s%s' % (site_url, membership.get_absolute_url()),
-@@ -256,6 +270,14 @@ class Command(BaseCommand):
+@@ -260,6 +274,14 @@ class Command(BaseCommand):
                  'renewlink': '%s%s' % (site_url, membership.get_absolute_url())
              })
  
@@ -43,18 +43,18 @@ index 8f8eefe65..d03f5c096 100644
  
              body = body + ' <br /><br />{% include "email_footer.html" %}'
 diff --git a/tendenci/apps/memberships/models.py b/tendenci/apps/memberships/models.py
-index 127bbb261..d0a6d1b08 100644
+index 6710aea24..fa2eaa4f7 100644
 --- a/tendenci/apps/memberships/models.py
 +++ b/tendenci/apps/memberships/models.py
-@@ -2,6 +2,7 @@ import os
+@@ -3,6 +3,7 @@ import os
  import hashlib
  import uuid
  import time
 +import re
- from copy import deepcopy
  from functools import partial
  from datetime import datetime, timedelta
-@@ -94,6 +95,8 @@ FIELD_MAX_LENGTH = 2000
+ from dateutil.relativedelta import relativedelta
+@@ -93,6 +94,8 @@ FIELD_MAX_LENGTH = 2000
  
  VALID_MEMBERSHIP_STATUS_DETAIL = ['active', 'pending', 'expired', 'archive', 'disapproved']
  
@@ -63,11 +63,11 @@ index 127bbb261..d0a6d1b08 100644
  
  class MembershipType(OrderingBaseModel, TendenciBaseModel):
      PRICE_FORMAT = u'%s - %s'
-@@ -1813,8 +1816,11 @@ class MembershipDefault(TendenciBaseModel):
+@@ -1839,8 +1842,11 @@ class MembershipDefault(TendenciBaseModel):
  
-             for name, value in items.iteritems():
+             for name, value in items.items():
                  if hasattr(value, 'all'):
--                    items[name] = ', '.join([item.__unicode__() \
+-                    items[name] = ', '.join([item.__unicode__()
 -                                             for item in value.all()])
 +                    items[name] = [item.__unicode__() for item in value.all()]
 +                elif value == '[]':
@@ -77,7 +77,7 @@ index 127bbb261..d0a6d1b08 100644
  
          return items
  
-@@ -2052,10 +2058,12 @@ class Notice(models.Model):
+@@ -2153,10 +2159,12 @@ class Notice(models.Model):
      )
  
      STATUS_DETAIL_ACTIVE = 'active'
@@ -90,7 +90,7 @@ index 127bbb261..d0a6d1b08 100644
          (STATUS_DETAIL_HOLD, 'Admin Hold')
      )
  
-@@ -2165,6 +2173,14 @@ class Notice(models.Model):
+@@ -2269,6 +2277,14 @@ class Notice(models.Model):
              'corporate_membership_notice': corporate_msg,
          })
  
@@ -105,7 +105,7 @@ index 127bbb261..d0a6d1b08 100644
          return context
  
      def get_subject(self, membership=None):
-@@ -2295,7 +2311,8 @@ class Notice(models.Model):
+@@ -2397,7 +2413,8 @@ class Notice(models.Model):
          # send email to admins
          membership_recipients = get_notice_recipients('module', 'memberships', 'membershiprecipients')
          admin_recipients = get_notice_recipients('site', 'global', 'allnoticerecipients')
@@ -115,7 +115,7 @@ index 127bbb261..d0a6d1b08 100644
  
          if recipients:
              notification.send_emails(
-@@ -2306,6 +2323,25 @@ class Notice(models.Model):
+@@ -2408,6 +2425,25 @@ class Notice(models.Model):
                  'membership_total': MembershipDefault.objects.filter(status=True, status_detail='active').count(),
              })
  
@@ -140,4 +140,4 @@ index 127bbb261..d0a6d1b08 100644
 +
          return True
  
-     @models.permalink
+     def get_absolute_url(self):

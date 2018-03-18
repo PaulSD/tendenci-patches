@@ -1,11 +1,11 @@
 # Require 'Car #' field on AutoX Registrations to be unique per Event
 diff --git a/tendenci/apps/events/forms.py b/tendenci/apps/events/forms.py
-index 846c16726..7d32b7f45 100644
+index 5584e7858..cccaafcbb 100644
 --- a/tendenci/apps/events/forms.py
 +++ b/tendenci/apps/events/forms.py
 @@ -483,6 +483,39 @@ class FormForCustomRegForm(forms.ModelForm):
+                 raise forms.ValidationError(_('Free pass not available for "%s".' % corp_membership.corp_profile.name))
          return use_free_pass
- 
  
 +    # Get AutoX 'Car #' with leading zeros.
 +    # When clean_field_52() is called, the field value has already been validated as an integer,
@@ -44,11 +44,11 @@ index 846c16726..7d32b7f45 100644
          """
          Create a FormEntry instance and related FieldEntry instances for each
 diff --git a/tendenci/apps/events/views.py b/tendenci/apps/events/views.py
-index 5d085e262..a0c23d1d9 100644
+index 672ad7291..005b61762 100644
 --- a/tendenci/apps/events/views.py
 +++ b/tendenci/apps/events/views.py
-@@ -1639,6 +1639,18 @@ def member_register(request, event_id,
-     }, context_instance=RequestContext(request))
+@@ -1631,6 +1631,18 @@ def member_register(request, event_id,
+     })
  
  
 +def collect_autox_car_numbers(formset):
@@ -66,7 +66,7 @@ index 5d085e262..a0c23d1d9 100644
  @is_enabled('events')
  def register(request, event_id=0,
               individual=False,
-@@ -1875,6 +1887,8 @@ def register(request, event_id=0,
+@@ -1859,6 +1871,8 @@ def register(request, event_id=0,
              #if not request.user.profile.is_superuser:
              within_available_spots = event.limit==0 or event.spots_available >= int(total_regt_forms)
  
@@ -75,7 +75,7 @@ index 5d085e262..a0c23d1d9 100644
              if all([within_available_spots,
                      reg_form.is_valid(),
                      registrant.is_valid(),
-@@ -1978,6 +1992,7 @@ def register(request, event_id=0,
+@@ -1959,6 +1973,7 @@ def register(request, event_id=0,
                          flat_registrants.append(form)
  
          elif 'addmore' in request.POST:
@@ -83,7 +83,7 @@ index 5d085e262..a0c23d1d9 100644
              add_more_registrants = True
  
      # if not free event, store price in the list for each registrant
-@@ -2260,6 +2275,9 @@ def multi_register(request, event_id=0, template_name="events/reg8n/multi_regist
+@@ -2240,6 +2255,9 @@ def multi_register(request, event_id=0, template_name="events/reg8n/multi_regist
  
      if request.method == 'POST':
          if 'submit' in request.POST:
@@ -93,8 +93,8 @@ index 5d085e262..a0c23d1d9 100644
              if False not in (reg_form.is_valid(), registrant.is_valid(), addon_formset.is_valid()):
  
                  # override event_price to price specified by admin
-@@ -2467,6 +2485,9 @@ def registration_edit(request, reg8n_id=0, hash='', template_name="events/reg8n/
- 
+@@ -2446,6 +2464,9 @@ def registration_edit(request, reg8n_id=0, hash='', template_name="events/reg8n/
+                     form.fields[key].required = False
  
      if request.method == 'POST':
 +

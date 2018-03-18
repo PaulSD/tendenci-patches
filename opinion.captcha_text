@@ -1,71 +1,71 @@
 diff --git a/tendenci/apps/base/forms.py b/tendenci/apps/base/forms.py
-index dee92d24c..4bce369a4 100644
+index a55b754cc..837bc06c3 100644
 --- a/tendenci/apps/base/forms.py
 +++ b/tendenci/apps/base/forms.py
-@@ -104,7 +104,7 @@ class PasswordForm(forms.Form):
+@@ -113,7 +113,7 @@ def CustomCatpchaField(**kwargs):
  
  
  class CaptchaForm(FormControlWidgetMixin, forms.Form):
--    captcha = CaptchaField(label=_('Type the code below'))
-+    captcha = CaptchaField(label=_('Enter this code'))
+-    captcha = CustomCatpchaField(label=_('Type the code below'))
++    captcha = CustomCatpchaField(label=_('Enter this code'))
  
  
  class AddonUploadForm(forms.Form):
 diff --git a/tendenci/apps/contacts/forms.py b/tendenci/apps/contacts/forms.py
-index 9672489dd..5126985bc 100644
+index 112c9cf2f..30f767e05 100644
 --- a/tendenci/apps/contacts/forms.py
 +++ b/tendenci/apps/contacts/forms.py
-@@ -36,4 +36,4 @@ class SubmitContactForm(forms.Form):
+@@ -41,4 +41,4 @@ class SubmitContactForm(forms.Form):
      url = forms.URLField(label=_('URL'), max_length=200, required=False)
  
      message = forms.CharField(widget=forms.Textarea)
--    captcha = CaptchaField(label=_('Type the code below'))
-+    captcha = CaptchaField(label=_('Enter this code'))
+-    captcha = CustomCatpchaField(label=_('Type the code below'))
++    captcha = CustomCatpchaField(label=_('Enter this code'))
 diff --git a/tendenci/apps/corporate_memberships/forms.py b/tendenci/apps/corporate_memberships/forms.py
-index aa3861dbf..91e88b6b6 100644
+index 6b9762b7a..73ba0e4d4 100644
 --- a/tendenci/apps/corporate_memberships/forms.py
 +++ b/tendenci/apps/corporate_memberships/forms.py
-@@ -776,7 +776,7 @@ class CreatorForm(forms.ModelForm):
+@@ -904,7 +904,7 @@ class CreatorForm(forms.ModelForm):
  
      def __init__(self, *args, **kwargs):
          super(CreatorForm, self).__init__(*args, **kwargs)
--        self.fields['captcha'] = CaptchaField(label=_('Type the code below'))
-+        self.fields['captcha'] = CaptchaField(label=_('Enter this code'))
-         for k in self.fields.keys():
+-        self.fields['captcha'] = CustomCatpchaField(label=_('Type the code below'))
++        self.fields['captcha'] = CustomCatpchaField(label=_('Enter this code'))
+         for k in self.fields:
              self.fields[k].widget.attrs['class'] = 'form-control'
  
 diff --git a/tendenci/apps/events/forms.py b/tendenci/apps/events/forms.py
-index 7d32b7f45..af89991c0 100644
+index 749ca265a..5584e7858 100644
 --- a/tendenci/apps/events/forms.py
 +++ b/tendenci/apps/events/forms.py
-@@ -1507,7 +1507,7 @@ class Reg8nForm(forms.Form):
+@@ -1437,7 +1437,7 @@ class Reg8nForm(forms.Form):
      username = forms.CharField(max_length=50, required=False)
      phone = forms.CharField(max_length=20, required=False)
      email = EmailVerificationField(label=_("Email"))
--    captcha = CaptchaField(label=_('Type the code below'))
-+    captcha = CaptchaField(label=_('Enter this code'))
+-    captcha = CustomCatpchaField(label=_('Type the code below'))
++    captcha = CustomCatpchaField(label=_('Enter this code'))
  
      def __init__(self, event_id=None, *args, **kwargs):
          user = kwargs.pop('user', None)
-@@ -1591,7 +1591,7 @@ class RegistrationForm(forms.Form):
+@@ -1520,7 +1520,7 @@ class RegistrationForm(forms.Form):
      Registration form - not include the registrant.
      """
      discount_code = forms.CharField(label=_('Discount Code'), required=False)
--    captcha = CaptchaField(label=_('Type the code below'))
-+    captcha = CaptchaField(label=_('Enter this code'))
+-    captcha = CustomCatpchaField(label=_('Type the code below'))
++    captcha = CustomCatpchaField(label=_('Enter this code'))
  
      def __init__(self, event, *args, **kwargs):
          """
 diff --git a/tendenci/apps/events/registration/forms.py b/tendenci/apps/events/registration/forms.py
-index 19bf57126..12c24300c 100644
+index cf6321b2d..4f9436f97 100644
 --- a/tendenci/apps/events/registration/forms.py
 +++ b/tendenci/apps/events/registration/forms.py
-@@ -21,7 +21,7 @@ class RegistrationForm(forms.Form):
+@@ -22,7 +22,7 @@ class RegistrationForm(forms.Form):
      """
      amount_for_admin = forms.DecimalField(decimal_places=2, required=False)
      discount = forms.CharField(label=_('Discount Code'), required=False)
--    captcha = CaptchaField(label=_('Type the code below'))
-+    captcha = CaptchaField(label=_('Enter this code'))
+-    captcha = CustomCatpchaField(label=_('Type the code below'))
++    captcha = CustomCatpchaField(label=_('Enter this code'))
      payment_method = forms.ModelChoiceField(empty_label=None, required=True,
          queryset=PaymentMethod.objects.none(), widget=forms.RadioSelect, initial=1)
  
@@ -96,54 +96,67 @@ index 9d1c48ce1..77eba7aea 100644
                  </div>
              {% endif %}
 diff --git a/tendenci/apps/forms_builder/forms/forms.py b/tendenci/apps/forms_builder/forms/forms.py
-index e202696a6..213d88367 100644
+index 6f4ec1f60..88850cc8b 100644
 --- a/tendenci/apps/forms_builder/forms/forms.py
 +++ b/tendenci/apps/forms_builder/forms/forms.py
-@@ -184,7 +184,7 @@ class FormForForm(FormControlWidgetMixin, forms.ModelForm):
+@@ -179,7 +179,7 @@ class FormForForm(FormControlWidgetMixin, forms.ModelForm):
              add_pricing_fields(self, self.form)
  
-         if not self.user.is_authenticated() and get_setting('site', 'global', 'captcha'): # add captcha if not logged in
--            self.fields['captcha'] = CaptchaField(label=_('Type the code below'))
-+            self.fields['captcha'] = CaptchaField(label=_('Enter this code'))
+         if not self.user.is_authenticated and get_setting('site', 'global', 'captcha'): # add captcha if not logged in
+-            self.fields['captcha'] = CustomCatpchaField(label=_('Type the code below'))
++            self.fields['captcha'] = CustomCatpchaField(label=_('Enter this code'))
  
          self.add_form_control_class()
  
+diff --git a/tendenci/apps/helpdesk/forms.py b/tendenci/apps/helpdesk/forms.py
+index 12c15ad0f..343f0b4e4 100644
+--- a/tendenci/apps/helpdesk/forms.py
++++ b/tendenci/apps/helpdesk/forms.py
+@@ -381,7 +381,7 @@ class PublicTicketForm(CustomFieldMixin, forms.Form):
+ 
+             self.customfield_to_field(field, instanceargs)
+         # add the captcha field here because it has to be the last field
+-        self.fields['captcha'] = CustomCatpchaField(label=_('Type the code below'))
++        self.fields['captcha'] = CustomCatpchaField(label=_('Enter this code'))
+ 
+     def save(self):
+         """
 diff --git a/tendenci/apps/jobs/forms.py b/tendenci/apps/jobs/forms.py
-index d243e02b3..c3df17d67 100644
+index 36759ae60..b39cf342c 100644
 --- a/tendenci/apps/jobs/forms.py
 +++ b/tendenci/apps/jobs/forms.py
 @@ -58,7 +58,7 @@ class JobForm(TendenciBaseForm):
          )
      )
  
--    captcha = CaptchaField(label=_('Type the code below'))
-+    captcha = CaptchaField(label=_('Enter this code'))
+-    captcha = CustomCatpchaField(label=_('Type the code below'))
++    captcha = CustomCatpchaField(label=_('Enter this code'))
  
      start_dt = SplitDateTimeField(
          required=False,
 diff --git a/tendenci/apps/make_payments/forms.py b/tendenci/apps/make_payments/forms.py
-index ef76fd4de..0936e577e 100644
+index 0958bb19a..598039789 100644
 --- a/tendenci/apps/make_payments/forms.py
 +++ b/tendenci/apps/make_payments/forms.py
-@@ -10,7 +10,7 @@ from tendenci.apps.site_settings.utils import get_setting
+@@ -10,7 +10,7 @@ from tendenci.apps.base.forms import CustomCatpchaField
  
  
  class MakePaymentForm(forms.ModelForm):
--    captcha = CaptchaField(label=_('Type the code below'))
-+    captcha = CaptchaField(label=_('Enter this code'))
+-    captcha = CustomCatpchaField(label=_('Type the code below'))
++    captcha = CustomCatpchaField(label=_('Enter this code'))
      # TODO: Make check-paid an admin only option
      payment_amount = PriceField(max_digits=10, decimal_places=2)
      payment_method = forms.CharField(widget=forms.RadioSelect(choices=(('cc', _('Make Online Payment')),)), initial='cc',)
 diff --git a/tendenci/apps/resumes/forms.py b/tendenci/apps/resumes/forms.py
-index aa8e161c3..b5fb2c534 100644
+index c645863e6..483ddcf83 100644
 --- a/tendenci/apps/resumes/forms.py
 +++ b/tendenci/apps/resumes/forms.py
-@@ -45,7 +45,7 @@ class ResumeForm(TendenciBaseForm):
+@@ -47,7 +47,7 @@ class ResumeForm(TendenciBaseForm):
          required=False
      )
  
--    captcha = CaptchaField(label=_('Type the code below'))
-+    captcha = CaptchaField(label=_('Enter this code'))
+-    captcha = CustomCatpchaField(label=_('Type the code below'))
++    captcha = CustomCatpchaField(label=_('Enter this code'))
  
      contact_email = EmailVerificationField(label=_("Contact email"), required=False)
      contact_country = CountrySelectField(label=_("Contact country"), required=False)

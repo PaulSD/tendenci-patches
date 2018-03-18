@@ -1,35 +1,35 @@
 diff --git a/tendenci/apps/profiles/templates/profiles/index.html b/tendenci/apps/profiles/templates/profiles/index.html
-index 22775b8a0..9f8adf312 100644
+index 5d1c974ca..3154cbaeb 100644
 --- a/tendenci/apps/profiles/templates/profiles/index.html
 +++ b/tendenci/apps/profiles/templates/profiles/index.html
-@@ -167,9 +167,12 @@
+@@ -170,9 +170,12 @@
      <div class="membership info">
  
          <h2>{% trans 'Memberships' %}
 +{% comment %}
-         {% if membership_apps %}
+             {% if membership_apps %}
              <a title="{% trans 'Join membership' %}" href="{% url "membership_default.add" membership_apps.0.slug %}?username={{ user_this.username }}" class="glyph plus{% if multiple_apps %} toggle-app-links{% endif %}">+</a>
-         {% else %}
+             {% else %}
 +{% endcomment %}
 +{% if not memberships %}
              <a title="{% trans 'Create a membership application' %}" href="{% url "admin:memberships_membershipapp_add" %}" class="glyph plus">+</a>
-         {% endif %}
+             {% endif %}
          </h2>
-@@ -251,6 +254,7 @@
- 
- {% endif %}
+@@ -269,6 +272,7 @@
+     {% endif %}
+     {% endif %}
  
 +{% comment %}
      <div class="group info">
  
          <h2>{% trans 'Groups' %}
-@@ -284,6 +288,7 @@
+@@ -302,6 +306,7 @@
          {% endif %}
  
      </div>
 +{% endcomment %}
  
- {% if request.user == user_this or request.user.profile.is_superuser %}
+     {% if request.user == user_this or request.user.profile.is_superuser %}
      <div class="events info">
 diff --git a/tendenci/apps/profiles/templates/profiles/meta.html b/tendenci/apps/profiles/templates/profiles/meta.html
 index f1ad92473..911e76074 100644
@@ -48,7 +48,7 @@ index f1ad92473..911e76074 100644
                  <li>
                      <a href="{% url 'auth_password_change' profile.user_id %}" class="changepassword" title="Change Password">{% trans "Change Password" %}</a>
 diff --git a/tendenci/apps/profiles/templates/profiles/top_nav_items.html b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-index a2c114701..7ee3f4de8 100644
+index cd067188a..4a3ffeaf7 100644
 --- a/tendenci/apps/profiles/templates/profiles/top_nav_items.html
 +++ b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
 @@ -116,11 +116,13 @@
@@ -66,22 +66,22 @@ index a2c114701..7ee3f4de8 100644
  
                              {% if user.profile.is_staff %}
 diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
-index 78288b9fc..553293cf4 100644
+index c9f4c7bb9..6761225fd 100644
 --- a/tendenci/templates/top_menu/_profile_dropdown.html
 +++ b/tendenci/templates/top_menu/_profile_dropdown.html
-@@ -54,6 +54,7 @@
-                                 </a>
+@@ -59,6 +59,7 @@
+                                 <a href="{% url "invoice.search" %}?search_criteria=owner_id&search_text={{ user.id }}&search_method=exact"><img class="nav-icon" src="{% static 'famfamfam/icons/page_white_width.png' %}"/><span class="nav-label">{% trans 'Invoices' %}</span></a>
                              </li>
-                             
+ 
 +                            {% comment %}
                              {% if MODULE_MEMBERSHIPS_ENABLED %}
-                             {% with profile.membership as membership %}
+                             {% with user.profile.membership as membership %}
                              {% if membership %}
-@@ -63,6 +64,7 @@
+@@ -68,6 +69,7 @@
                              {% endif %}
                              {% endwith %}
                              {% endif %}
 +                            {% endcomment %}
  
- 							 <li class="content-item">
-                                 <a href="{% url "invoice.search" %}?search_criteria=owner_id&search_text={{ user.id }}&search_method=exact"><img class="nav-icon" src="{% static 'famfamfam/icons/page_white_width.png' %}"/><span class="nav-label">{% trans 'Invoices' %}</span></a>
+                             {% if MODULE_CORPORATE_MEMBERSHIPS_ENABLED %}
+                             {% if user.corpmembershiprep_set.count > 0 %}

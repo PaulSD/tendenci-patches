@@ -1,9 +1,9 @@
 There should be a setting to manage this without changing code.
 diff --git a/tendenci/apps/forms_builder/forms/views.py b/tendenci/apps/forms_builder/forms/views.py
-index 4144283fc..a698fa084 100644
+index f9e4abb06..3b46d62ff 100644
 --- a/tendenci/apps/forms_builder/forms/views.py
 +++ b/tendenci/apps/forms_builder/forms/views.py
-@@ -436,17 +436,7 @@ def form_detail(request, slug, template="forms/form_detail.html"):
+@@ -437,17 +437,7 @@ def form_detail(request, slug, template="forms/form_detail.html"):
  
                      user_list = User.objects.filter(email=emailfield).order_by('-last_login')
                      if user_list:

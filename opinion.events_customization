@@ -1,5 +1,5 @@
 diff --git a/tendenci/apps/events/static/css/events.css b/tendenci/apps/events/static/css/events.css
-index 87c38b71e..06f4c0eb5 100644
+index 51c678423..63d331ac9 100644
 --- a/tendenci/apps/events/static/css/events.css
 +++ b/tendenci/apps/events/static/css/events.css
 @@ -600,7 +600,7 @@ ul.errorlist {;
@@ -12,7 +12,7 @@ index 87c38b71e..06f4c0eb5 100644
  
      border-top: none;
 diff --git a/tendenci/apps/events/templates/events/day-view.html b/tendenci/apps/events/templates/events/day-view.html
-index ba06c736f..92f3e3e4e 100644
+index a0bdda7c7..c975c8c86 100644
 --- a/tendenci/apps/events/templates/events/day-view.html
 +++ b/tendenci/apps/events/templates/events/day-view.html
 @@ -1,11 +1,11 @@
@@ -89,15 +89,7 @@ index ba06c736f..92f3e3e4e 100644
  
      {% event_list date type 'single_day' as events %}
      {% for event in events %}
-@@ -135,25 +116,13 @@
-             </form>
-         </div>
-     {% empty %}
--        <div class="no-events">{% trans "No events are currently scheduled on this day." %}
-+        <div class="no-events">{% trans "No events are currently scheduled on this day." %}
-             {% comment %}
-             <br/><a href="{% url "event.add" date.year date.month date.day %}">{% trans "Add an event" %}</a>
-             {% endcomment %}
+@@ -142,18 +123,6 @@
          </div>
      {% endfor %}
  
@@ -117,7 +109,7 @@ index ba06c736f..92f3e3e4e 100644
  
  {% endblock %}
 diff --git a/tendenci/apps/events/templates/events/month-view.html b/tendenci/apps/events/templates/events/month-view.html
-index deaf996fa..1ece0358c 100644
+index a622f65d1..abcdddada 100644
 --- a/tendenci/apps/events/templates/events/month-view.html
 +++ b/tendenci/apps/events/templates/events/month-view.html
 @@ -19,18 +19,26 @@
