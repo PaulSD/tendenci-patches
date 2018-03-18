@@ -1,4 +1,3 @@
-upstream.disable_skills
 upstream.user_pass_required
 upstream.improve_logout_page
 upstream.disable_new_account_email

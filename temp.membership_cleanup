@@ -449,23 +449,23 @@ index c3e3673e0..c3b1b8f97 100644
                  {% endif %}
              </div>
 diff --git a/tendenci/apps/profiles/templates/profiles/top_nav_items.html b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-index 4a3ffeaf7..04517dad5 100644
+index f4d11dd48..80dd26beb 100644
 --- a/tendenci/apps/profiles/templates/profiles/top_nav_items.html
 +++ b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
 @@ -111,11 +111,13 @@
                                      </span>
                                  </li>
  
-+{% comment %}
++                                {% comment %}
                                  <li class="content-item">
                                      <span class="app-name">
                                          <a href="{% url 'profile.edit_groups' user_this.username %}">{% trans "Edit Groups" %}</a>
                                      </span>
                                  </li>
-+{% endcomment %}
- {% comment %}
++                                {% endcomment %}
+ 
+                                 {% if MODULE_EDUCATIONS_ENABLED %}
                                  <li class="content-item">
-                                     <span class="app-name">
 diff --git a/tendenci/apps/profiles/utils.py b/tendenci/apps/profiles/utils.py
 index cfe55a8c1..b8365b67f 100644
 --- a/tendenci/apps/profiles/utils.py

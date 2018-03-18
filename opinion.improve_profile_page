@@ -31,40 +31,6 @@ index 5d1c974ca..3154cbaeb 100644
  
      {% if request.user == user_this or request.user.profile.is_superuser %}
      <div class="events info">
-diff --git a/tendenci/apps/profiles/templates/profiles/meta.html b/tendenci/apps/profiles/templates/profiles/meta.html
-index f1ad92473..911e76074 100644
---- a/tendenci/apps/profiles/templates/profiles/meta.html
-+++ b/tendenci/apps/profiles/templates/profiles/meta.html
-@@ -41,9 +41,11 @@
-                 <li>
-                     <a href="{% url "profile.edit_groups" profile.user.username %}" class="usergroups" title=="Edit Groups">{% trans "Edit Groups" %}</a>
-                 </li>
-+{% comment %}
-                  <li>
-                     <a href="{% url "profile.edit_education" profile.user.username %}" class="educations" title=="Edit Education">{% trans "Edit Education" %}</a>
-                 </li>
-+{% endcomment %}
-                 {% endif %}
-                 <li>
-                     <a href="{% url 'auth_password_change' profile.user_id %}" class="changepassword" title="Change Password">{% trans "Change Password" %}</a>
-diff --git a/tendenci/apps/profiles/templates/profiles/top_nav_items.html b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-index cd067188a..4a3ffeaf7 100644
---- a/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-+++ b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-@@ -116,11 +116,13 @@
-                                         <a href="{% url 'profile.edit_groups' user_this.username %}">{% trans "Edit Groups" %}</a>
-                                     </span>
-                                 </li>
-+{% comment %}
-                                 <li class="content-item">
-                                     <span class="app-name">
-                                         <a href="{% url 'profile.edit_education' user_this.username %}">{% trans "Edit Education" %}</a>
-                                     </span>
-                                 </li>
-+{% endcomment %}
-                             {% endif %}
- 
-                             {% if user.profile.is_staff %}
 diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
 index c9f4c7bb9..6761225fd 100644
 --- a/tendenci/templates/top_menu/_profile_dropdown.html
