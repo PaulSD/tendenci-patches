@@ -16,7 +16,7 @@ temp.tinymce_toggle
 temp.log_membership_form_errors
 local.no_email_footer
 local.unique_autox_car_num
-local.migrations
+deploy
 incomplete.bs4beta
 incomplete.app_labels
 incomplete.app_labels_test
