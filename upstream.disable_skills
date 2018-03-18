@@ -7,6 +7,8 @@ when the PullSite script is run in a cron job.
 
 To eliminate this unnecessary button and avoid these messages, we must remove the button in code.
 
+There should be a setting to manage this without changing code.
+
 ("Relief Assessments" == social_services)
 
 diff --git a/tendenci/apps/corporate_memberships/templates/corporate_memberships/roster_meta.html b/tendenci/apps/corporate_memberships/templates/corporate_memberships/roster_meta.html

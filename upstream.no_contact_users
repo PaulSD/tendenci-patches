@@ -1,3 +1,4 @@
+There should be a setting to manage this without changing code.
 diff --git a/tendenci/apps/forms_builder/forms/views.py b/tendenci/apps/forms_builder/forms/views.py
 index 4144283fc..a698fa084 100644
 --- a/tendenci/apps/forms_builder/forms/views.py
