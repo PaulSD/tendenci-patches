@@ -1,9 +1,9 @@
 Bootstrap 4 automatically adds carets to menu items, Bootstrap 3 does not.
 Since we upgraded Tendenci to use Bootstrap 4 instead of 3, we need to remove the old carets.
-diff --git a/tendenci/apps/events/templates/events/meta.html b/tendenci/apps/events/templates/events/meta.html
+diff --git a/tendenci/themes/t8-base/templates/events/meta.html
 index de9e99a95..c436c73ce 100644
---- a/tendenci/apps/events/templates/events/meta.html
-+++ b/tendenci/apps/events/templates/events/meta.html
+--- a/tendenci/themes/t8-base/templates/events/meta.html
++++ b/tendenci/themes/t8-base/templates/events/meta.html
 @@ -63,7 +63,7 @@
                  <li><a class="t-meta-edit-link" href="{% url "event.edit" event.pk %}">{% trans "Edit" %}</a></li>
                  <li class="dropup">
@@ -13,10 +13,10 @@ index de9e99a95..c436c73ce 100644
                      {% endspaceless %}</a>
  
                      <ul class="dropdown-menu" role="menu">
-diff --git a/tendenci/templates/admin/base.html b/tendenci/templates/admin/base.html
+diff --git a/tendenci/themes/t8-base/templates/admin/base.html b/tendenci/themes/t8-base/templates/admin/base.html
 index 34b229ba6..25888a190 100644
---- a/tendenci/templates/admin/base.html
-+++ b/tendenci/templates/admin/base.html
+--- a/tendenci/themes/t8-base/templates/admin/base.html
++++ b/tendenci/themes/t8-base/templates/admin/base.html
 @@ -67,7 +67,7 @@
                      <ul class="nav navbar-nav">
                          {% if user.is_active and user.is_staff %}
@@ -26,10 +26,10 @@ index 34b229ba6..25888a190 100644
                              <ul class="dropdown-menu">
                                  {% if user.has_usable_password %}
                                  <li><a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a></li>
-diff --git a/tendenci/templates/top_menu/_apps_dropdown.html b/tendenci/templates/top_menu/_apps_dropdown.html
+diff --git a/tendenci/themes/t8-base/templates/top_menu/_apps_dropdown.html b/tendenci/themes/t8-base/templates/top_menu/_apps_dropdown.html
 index 6cfe3d075..c694cca1b 100644
---- a/tendenci/templates/top_menu/_apps_dropdown.html
-+++ b/tendenci/templates/top_menu/_apps_dropdown.html
+--- a/tendenci/themes/t8-base/templates/top_menu/_apps_dropdown.html
++++ b/tendenci/themes/t8-base/templates/top_menu/_apps_dropdown.html
 @@ -5,7 +5,6 @@
  <li class="dropdown">
      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -38,10 +38,10 @@ index 6cfe3d075..c694cca1b 100644
      </a>
  
      <ul id="t-admin-megamenu-apps-dd" class="dropdown-menu apps-dropdown" role="menu">
-diff --git a/tendenci/templates/top_menu/_community_dropdown.html b/tendenci/templates/top_menu/_community_dropdown.html
+diff --git a/tendenci/themes/t8-base/templates/top_menu/_community_dropdown.html b/tendenci/themes/t8-base/templates/top_menu/_community_dropdown.html
 index 232427ca9..88d4018c5 100644
---- a/tendenci/templates/top_menu/_community_dropdown.html
-+++ b/tendenci/templates/top_menu/_community_dropdown.html
+--- a/tendenci/themes/t8-base/templates/top_menu/_community_dropdown.html
++++ b/tendenci/themes/t8-base/templates/top_menu/_community_dropdown.html
 @@ -5,7 +5,7 @@
  
  <li class="dropdown">
@@ -51,10 +51,10 @@ index 232427ca9..88d4018c5 100644
      </a>
  
      <ul id="t-admin-megamenu-community-dd" class="dropdown-menu community-dropdown" role="menu">
-diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
+diff --git a/tendenci/themes/t8-base/templates/top_menu/_profile_dropdown.html b/tendenci/themes/t8-base/templates/top_menu/_profile_dropdown.html
 index 6761225fd..a59639d5f 100644
---- a/tendenci/templates/top_menu/_profile_dropdown.html
-+++ b/tendenci/templates/top_menu/_profile_dropdown.html
+--- a/tendenci/themes/t8-base/templates/top_menu/_profile_dropdown.html
++++ b/tendenci/themes/t8-base/templates/top_menu/_profile_dropdown.html
 @@ -16,7 +16,7 @@
              {% else %}
                  <img class="nav-icon" src="{% static 'famfamfam/icons/user.png' %}">
@@ -64,10 +64,10 @@ index 6761225fd..a59639d5f 100644
          {% endspaceless %}
      </a>
  
-diff --git a/tendenci/templates/top_menu/_support_dropdown.html b/tendenci/templates/top_menu/_support_dropdown.html
+diff --git a/tendenci/themes/t8-base/templates/top_menu/_support_dropdown.html b/tendenci/themes/t8-base/templates/top_menu/_support_dropdown.html
 index d339680b7..89da020b3 100644
---- a/tendenci/templates/top_menu/_support_dropdown.html
-+++ b/tendenci/templates/top_menu/_support_dropdown.html
+--- a/tendenci/themes/t8-base/templates/top_menu/_support_dropdown.html
++++ b/tendenci/themes/t8-base/templates/top_menu/_support_dropdown.html
 @@ -7,7 +7,6 @@
          {% spaceless %}
              <img width="16" height="16" class="nav-icon" src="{% static 'images/icons/tendenci_white.png' %}"/>
@@ -76,10 +76,10 @@ index d339680b7..89da020b3 100644
          {% endspaceless %}
      </a>
  
-diff --git a/tendenci/templates/top_menu/admin_top-new.html b/tendenci/templates/top_menu/admin_top-new.html
+diff --git a/tendenci/themes/t8-base/templates/top_menu/admin_top-new.html b/tendenci/themes/t8-base/templates/top_menu/admin_top-new.html
 index ac6900f07..0302b2c7d 100644
---- a/tendenci/templates/top_menu/admin_top-new.html
-+++ b/tendenci/templates/top_menu/admin_top-new.html
+--- a/tendenci/themes/t8-base/templates/top_menu/admin_top-new.html
++++ b/tendenci/themes/t8-base/templates/top_menu/admin_top-new.html
 @@ -34,7 +34,6 @@
                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% spaceless %}
                          <img class="nav-icon" src="{% block nav_icon_url %}{% static 'famfamfam/icons/page_white_stack.png' %}{% endblock %}">
@@ -88,10 +88,10 @@ index ac6900f07..0302b2c7d 100644
                      {% endspaceless %}</a>
  
                      {# Block containing the navigation for the current app #}
-diff --git a/tendenci/templates/top_menu/change_lang-new.html b/tendenci/templates/top_menu/change_lang-new.html
+diff --git a/tendenci/themes/t8-base/templates/top_menu/change_lang-new.html b/tendenci/themes/t8-base/templates/top_menu/change_lang-new.html
 index 57e60a72d..908c81a63 100644
---- a/tendenci/templates/top_menu/change_lang-new.html
-+++ b/tendenci/templates/top_menu/change_lang-new.html
+--- a/tendenci/themes/t8-base/templates/top_menu/change_lang-new.html
++++ b/tendenci/themes/t8-base/templates/top_menu/change_lang-new.html
 @@ -6,7 +6,7 @@
  <li class="dropdown">
      {% with request.user.profile.lang as user_lang %}

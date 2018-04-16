@@ -1,7 +1,7 @@
-diff --git a/tendenci/apps/profiles/templates/profiles/index.html b/tendenci/apps/profiles/templates/profiles/index.html
+diff --git a/tendenci/themes/t8-base/templates/profiles/index.html
 index 5d1c974ca..3154cbaeb 100644
---- a/tendenci/apps/profiles/templates/profiles/index.html
-+++ b/tendenci/apps/profiles/templates/profiles/index.html
+--- a/tendenci/themes/t8-base/templates/profiles/index.html
++++ b/tendenci/themes/t8-base/templates/profiles/index.html
 @@ -170,9 +170,12 @@
      <div class="membership info">
  
@@ -31,10 +31,10 @@ index 5d1c974ca..3154cbaeb 100644
  
      {% if request.user == user_this or request.user.profile.is_superuser %}
      <div class="events info">
-diff --git a/tendenci/templates/top_menu/_profile_dropdown.html b/tendenci/templates/top_menu/_profile_dropdown.html
+diff --git a/tendenci/themes/t8-base/templates/top_menu/_profile_dropdown.html b/tendenci/themes/t8-base/templates/top_menu/_profile_dropdown.html
 index c9f4c7bb9..6761225fd 100644
---- a/tendenci/templates/top_menu/_profile_dropdown.html
-+++ b/tendenci/templates/top_menu/_profile_dropdown.html
+--- a/tendenci/themes/t8-base/templates/top_menu/_profile_dropdown.html
++++ b/tendenci/themes/t8-base/templates/top_menu/_profile_dropdown.html
 @@ -59,6 +59,7 @@
                                  <a href="{% url "invoice.search" %}?search_criteria=owner_id&search_text={{ user.id }}&search_method=exact"><img class="nav-icon" src="{% static 'famfamfam/icons/page_white_width.png' %}"/><span class="nav-label">{% trans 'Invoices' %}</span></a>
                              </li>

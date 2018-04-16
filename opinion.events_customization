@@ -1,7 +1,7 @@
-diff --git a/tendenci/apps/events/static/css/events.css b/tendenci/apps/events/static/css/events.css
+diff --git a/tendenci/themes/t8-base/static/css/events.css b/tendenci/themes/t8-base/static/css/events.css
 index 51c678423..63d331ac9 100644
---- a/tendenci/apps/events/static/css/events.css
-+++ b/tendenci/apps/events/static/css/events.css
+--- a/tendenci/themes/t8-base/static/css/events.css
++++ b/tendenci/themes/t8-base/static/css/events.css
 @@ -600,7 +600,7 @@ ul.errorlist {;
  }
  .month-view div.day {
@@ -11,18 +11,17 @@ index 51c678423..63d331ac9 100644
      border: 1px solid silver;
  
      border-top: none;
-diff --git a/tendenci/apps/events/templates/events/day-view.html b/tendenci/apps/events/templates/events/day-view.html
+diff --git a/tendenci/themes/t8-base/templates/events/day-view.html
 index a0bdda7c7..c975c8c86 100644
---- a/tendenci/apps/events/templates/events/day-view.html
-+++ b/tendenci/apps/events/templates/events/day-view.html
-@@ -1,11 +1,11 @@
+--- a/tendenci/themes/t8-base/templates/events/day-view.html
++++ b/tendenci/themes/t8-base/templates/events/day-view.html
+@@ -1,10 +1,10 @@
 -{% extends "events/base.html" %}
 +{% extends "events/base-wide.html" %}
  {% load event_tags %}
  {% load tagging_tags %}
  {% load base_tags %}
  {% load category_tags %}
- {% load i18n %}
  
 -{% block title %}{{ block.super }} {% endblock %}
 +{% block title %}{{ cur_date|date:"N j, Y" }} {% trans 'Calendar' %}{% endblock %}
@@ -108,10 +107,10 @@ index a0bdda7c7..c975c8c86 100644
  </div>
  
  {% endblock %}
-diff --git a/tendenci/apps/events/templates/events/month-view.html b/tendenci/apps/events/templates/events/month-view.html
+diff --git a/tendenci/themes/t8-base/templates/events/month-view.html
 index a622f65d1..abcdddada 100644
---- a/tendenci/apps/events/templates/events/month-view.html
-+++ b/tendenci/apps/events/templates/events/month-view.html
+--- a/tendenci/themes/t8-base/templates/events/month-view.html
++++ b/tendenci/themes/t8-base/templates/events/month-view.html
 @@ -19,18 +19,26 @@
  
  {% block content %}
@@ -241,10 +240,10 @@ index a622f65d1..abcdddada 100644
  
  {% endblock %}
  
-diff --git a/tendenci/apps/events/templates/events/search.html b/tendenci/apps/events/templates/events/search.html
+diff --git a/tendenci/themes/t8-base/templates/events/search.html
 index 723efa3ec..390e8779c 100644
---- a/tendenci/apps/events/templates/events/search.html
-+++ b/tendenci/apps/events/templates/events/search.html
+--- a/tendenci/themes/t8-base/templates/events/search.html
++++ b/tendenci/themes/t8-base/templates/events/search.html
 @@ -18,17 +18,21 @@
  
  {% block content %}
@@ -273,10 +272,10 @@ index 723efa3ec..390e8779c 100644
      <div class="event-tabs">
          <ul class="nav nav-tabs">
              <li role="presentation" class="dropdown {% if not past %}active{% endif %}">
-diff --git a/tendenci/apps/events/templates/events/week-view.html b/tendenci/apps/events/templates/events/week-view.html
+diff --git a/tendenci/themes/t8-base/templates/events/week-view.html
 index 13721de5a..362edfe53 100644
---- a/tendenci/apps/events/templates/events/week-view.html
-+++ b/tendenci/apps/events/templates/events/week-view.html
+--- a/tendenci/themes/t8-base/templates/events/week-view.html
++++ b/tendenci/themes/t8-base/templates/events/week-view.html
 @@ -5,7 +5,7 @@
  {% load category_tags %}
  {% load i18n %}

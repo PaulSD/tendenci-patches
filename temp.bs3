@@ -1,7 +1,7 @@
-diff --git a/tendenci/apps/base/static/bootstrap3/css/bootstrap.min.css b/tendenci/apps/base/static/bootstrap3/css/bootstrap.min.css
+diff --git a/tendenci/themes/t8-base/static/bootstrap3/css/bootstrap.min.css b/tendenci/themes/t8-base/static/bootstrap3/css/bootstrap.min.css
 index b2619b091..d5d0283cb 100644
---- a/tendenci/apps/base/static/bootstrap3/css/bootstrap.min.css
-+++ b/tendenci/apps/base/static/bootstrap3/css/bootstrap.min.css
+--- a/tendenci/themes/t8-base/static/bootstrap3/css/bootstrap.min.css
++++ b/tendenci/themes/t8-base/static/bootstrap3/css/bootstrap.min.css
 @@ -2,4 +2,4 @@
   * Bootstrap v3.3.1 (http://getbootstrap.com)
   * Copyright 2011-2014 Twitter, Inc.

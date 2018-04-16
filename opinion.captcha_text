@@ -69,10 +69,10 @@ index cf6321b2d..4f9436f97 100644
      payment_method = forms.ModelChoiceField(empty_label=None, required=True,
          queryset=PaymentMethod.objects.none(), widget=forms.RadioSelect, initial=1)
  
-diff --git a/tendenci/apps/events/templates/events/reg8n/multi_register.html b/tendenci/apps/events/templates/events/reg8n/multi_register.html
+diff --git a/tendenci/themes/t8-base/templates/events/reg8n/multi_register.html
 index 77cfa2e18..83091c8ed 100644
---- a/tendenci/apps/events/templates/events/reg8n/multi_register.html
-+++ b/tendenci/apps/events/templates/events/reg8n/multi_register.html
+--- a/tendenci/themes/t8-base/templates/events/reg8n/multi_register.html
++++ b/tendenci/themes/t8-base/templates/events/reg8n/multi_register.html
 @@ -296,7 +296,7 @@
              {% if reg_form.captcha %}
                  <div class="form-field">
@@ -82,10 +82,10 @@ index 77cfa2e18..83091c8ed 100644
                      <div class="field">{{ reg_form.captcha }}</div>
                  </div>
              {% endif %}
-diff --git a/tendenci/apps/events/templates/events/registration/multi_register.html b/tendenci/apps/events/templates/events/registration/multi_register.html
+diff --git a/tendenci/themes/t8-base/templates/events/registration/multi_register.html
 index 9d1c48ce1..77eba7aea 100644
---- a/tendenci/apps/events/templates/events/registration/multi_register.html
-+++ b/tendenci/apps/events/templates/events/registration/multi_register.html
+--- a/tendenci/themes/t8-base/templates/events/registration/multi_register.html
++++ b/tendenci/themes/t8-base/templates/events/registration/multi_register.html
 @@ -299,7 +299,7 @@
              {% if reg_form.captcha %}
                  <div class="form-field">

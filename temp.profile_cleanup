@@ -1,7 +1,7 @@
-diff --git a/tendenci/apps/profiles/templates/profiles/edit.html b/tendenci/apps/profiles/templates/profiles/edit.html
+diff --git a/tendenci/themes/t8-base/templates/profiles/edit.html
 index 9450a2328..8ab3c814b 100644
---- a/tendenci/apps/profiles/templates/profiles/edit.html
-+++ b/tendenci/apps/profiles/templates/profiles/edit.html
+--- a/tendenci/themes/t8-base/templates/profiles/edit.html
++++ b/tendenci/themes/t8-base/templates/profiles/edit.html
 @@ -30,6 +30,7 @@
        <div class="forms">
  

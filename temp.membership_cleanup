@@ -1,7 +1,7 @@
-diff --git a/tendenci/apps/base/static/css/profiles.css b/tendenci/apps/base/static/css/profiles.css
+diff --git a/tendenci/themes/t8-base/static/css/profiles.css b/tendenci/themes/t8-base/static/css/profiles.css
 index 117be72c4..7ce6d4c62 100644
---- a/tendenci/apps/base/static/css/profiles.css
-+++ b/tendenci/apps/base/static/css/profiles.css
+--- a/tendenci/themes/t8-base/static/css/profiles.css
++++ b/tendenci/themes/t8-base/static/css/profiles.css
 @@ -8,22 +8,25 @@
  	width:60%;
  }
@@ -128,10 +128,10 @@ index 117be72c4..7ce6d4c62 100644
      background-color: white;
      padding-right: 10px;
  }
-diff --git a/tendenci/apps/invoices/templates/invoices/view.html b/tendenci/apps/invoices/templates/invoices/view.html
+diff --git a/tendenci/themes/t8-base/templates/invoices/view.html
 index 4122bcd44..c4af4f641 100644
---- a/tendenci/apps/invoices/templates/invoices/view.html
-+++ b/tendenci/apps/invoices/templates/invoices/view.html
+--- a/tendenci/themes/t8-base/templates/invoices/view.html
++++ b/tendenci/themes/t8-base/templates/invoices/view.html
 @@ -34,6 +34,11 @@
    {% endif %}
  
@@ -184,10 +184,10 @@ index fa2eaa4f7..967987488 100644
              'link_to_setup_auto_renew': '%s%s' % (global_setting('siteurl'), reverse('memberships.auto_renew_setup', args=[membership.user.id] )),
              'corporate_membership_notice': corporate_msg,
          })
-diff --git a/tendenci/apps/memberships/templates/memberships/applications/add.html b/tendenci/apps/memberships/templates/memberships/applications/add.html
+diff --git a/tendenci/themes/t8-base/templates/memberships/applications/add.html
 index df178ecf6..7fabf7c96 100644
---- a/tendenci/apps/memberships/templates/memberships/applications/add.html
-+++ b/tendenci/apps/memberships/templates/memberships/applications/add.html
+--- a/tendenci/themes/t8-base/templates/memberships/applications/add.html
++++ b/tendenci/themes/t8-base/templates/memberships/applications/add.html
 @@ -87,6 +87,7 @@
        {% if app.description %}<p>{{ app.description|safe }}</p>{% endif %}
      </div>
@@ -230,10 +230,10 @@ index 4292e9550..f9f608ac0 100644
  
      if not has_perm(request.user, 'memberships.change_membership', membership) and not is_owner:
          raise Http403
-diff --git a/tendenci/apps/news/templates/news/meta.html b/tendenci/apps/news/templates/news/meta.html
+diff --git a/tendenci/themes/t8-base/templates/news/meta.html
 index 2b2e76742..1592f214a 100644
---- a/tendenci/apps/news/templates/news/meta.html
-+++ b/tendenci/apps/news/templates/news/meta.html
+--- a/tendenci/themes/t8-base/templates/news/meta.html
++++ b/tendenci/themes/t8-base/templates/news/meta.html
 @@ -6,20 +6,6 @@
  <ul class="list-unstyled t-meta-data">
      {% if news.slug %}<li class="pull-right"><a href="{% url 'news.print_view' news.slug %}"><span class="glyphicon glyphicon-print"></span> {% trans "Print" %}</a></li>{% endif %}
@@ -276,10 +276,10 @@ index 2b2e76742..1592f214a 100644
      {% comment %}
      {% if user.is_authenticated %}
          {% if not user.profile.is_superuser %}
-diff --git a/tendenci/apps/profiles/templates/profiles/index.html b/tendenci/apps/profiles/templates/profiles/index.html
+diff --git a/tendenci/themes/t8-base/templates/profiles/index.html
 index 3154cbaeb..8dbf46bb8 100644
---- a/tendenci/apps/profiles/templates/profiles/index.html
-+++ b/tendenci/apps/profiles/templates/profiles/index.html
+--- a/tendenci/themes/t8-base/templates/profiles/index.html
++++ b/tendenci/themes/t8-base/templates/profiles/index.html
 @@ -33,15 +33,14 @@
      <div class="alert alert-warning alert-dismissible" role="alert">
        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -430,10 +430,10 @@ index 3154cbaeb..8dbf46bb8 100644
                      {% endif %}
                      {% endif %}
                      {% endif %}
-diff --git a/tendenci/apps/profiles/templates/profiles/search-result.html b/tendenci/apps/profiles/templates/profiles/search-result.html
+diff --git a/tendenci/themes/t8-base/templates/profiles/search-result.html
 index c3e3673e0..c3b1b8f97 100644
---- a/tendenci/apps/profiles/templates/profiles/search-result.html
-+++ b/tendenci/apps/profiles/templates/profiles/search-result.html
+--- a/tendenci/themes/t8-base/templates/profiles/search-result.html
++++ b/tendenci/themes/t8-base/templates/profiles/search-result.html
 @@ -95,11 +95,11 @@
                  </div>
  
@@ -448,10 +448,10 @@ index c3e3673e0..c3b1b8f97 100644
                          {% if profile.hide_email %}email{% endif %}{% if profile.hide_address %}, location{% endif %}{% if profile.hide_phone %}, phone{% endif %}.</em>
                  {% endif %}
              </div>
-diff --git a/tendenci/apps/profiles/templates/profiles/top_nav_items.html b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
+diff --git a/tendenci/themes/t8-base/templates/profiles/top_nav_items.html
 index f4d11dd48..80dd26beb 100644
---- a/tendenci/apps/profiles/templates/profiles/top_nav_items.html
-+++ b/tendenci/apps/profiles/templates/profiles/top_nav_items.html
+--- a/tendenci/themes/t8-base/templates/profiles/top_nav_items.html
++++ b/tendenci/themes/t8-base/templates/profiles/top_nav_items.html
 @@ -111,11 +111,13 @@
                                      </span>
                                  </li>
@@ -522,10 +522,10 @@ index cfe55a8c1..b8365b67f 100644
                  reminders += ((message, renew_link, 'Renew Here'),)
  
      return reminders
-diff --git a/tendenci/templates/top_menu/_community_dropdown.html b/tendenci/templates/top_menu/_community_dropdown.html
+diff --git a/tendenci/themes/t8-base/templates/top_menu/_community_dropdown.html b/tendenci/themes/t8-base/templates/top_menu/_community_dropdown.html
 index 88d4018c5..80096de1b 100644
---- a/tendenci/templates/top_menu/_community_dropdown.html
-+++ b/tendenci/templates/top_menu/_community_dropdown.html
+--- a/tendenci/themes/t8-base/templates/top_menu/_community_dropdown.html
++++ b/tendenci/themes/t8-base/templates/top_menu/_community_dropdown.html
 @@ -3,6 +3,7 @@
  {% load megamenu_tags %}
  

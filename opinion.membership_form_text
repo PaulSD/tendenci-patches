@@ -1,7 +1,7 @@
-diff --git a/tendenci/apps/memberships/templates/memberships/applications/add.html b/tendenci/apps/memberships/templates/memberships/applications/add.html
+diff --git a/tendenci/themes/t8-base/templates/memberships/applications/add.html
 index 16125a89b..df178ecf6 100644
---- a/tendenci/apps/memberships/templates/memberships/applications/add.html
-+++ b/tendenci/apps/memberships/templates/memberships/applications/add.html
+--- a/tendenci/themes/t8-base/templates/memberships/applications/add.html
++++ b/tendenci/themes/t8-base/templates/memberships/applications/add.html
 @@ -98,7 +98,7 @@
      <form id="t-memberships-application-form" class="form-horizontal clearfix" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
          {% if user_form.errors.values or profile_form.errors.values or demographics_form.errors.values or membership_form.errors.values or education_form.errors.values or captcha_form.errors.values and not is_edit %}
